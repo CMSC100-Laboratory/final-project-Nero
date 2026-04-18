@@ -1,0 +1,36 @@
+name: Sync to Deploy Repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all history for all branches and tags
+
+      - name: Push to Personal Deploy Repo
+        env:
+          PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
+          DESTINATION_REPO: "arvin-ferrer/farm-to-table"
+        run: |
+          if [ -z "$PERSONAL_REPO_TOKEN" ]; then
+            echo "Error: PERSONAL_REPO_TOKEN secret is not set!"
+            exit 1
+          fi
+
+          # Setup git credentials
+          git config --global user.name "GitHub Action Sync"
+          git config --global user.email "action@github.com"
+
+          # Add the destination repository as a remote
+          git remote add destination https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/${DESTINATION_REPO}.git
+
+          # Push all changes to the destination repository
+          echo "Pushing to $DESTINATION_REPO..."
+          git push destination main --force
