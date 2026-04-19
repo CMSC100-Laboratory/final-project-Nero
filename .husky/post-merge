@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Get a list of files that changed during this pull/merge
+changed_files="$(git diff-tree -r --name-only ORIG_HEAD HEAD)"
+
+# Check if package.json is in that list of changed files
+if echo "$changed_files" | grep -q "package.json"; then
+  echo "package.json changed! Automatically installing new dependencies..."
+  # Run the custom script from your root package.json
+  npm run install:all
+else
+  echo "✅ No dependency changes detected after pull."
+fi
