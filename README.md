@@ -87,3 +87,5 @@ npm run dev
 
 - The project is configured with Docker for production deployment.
 - Code pushed to the `main` branch is automatically synced and deployed to Vercel (Frontend) and Render (Backend). Do not push directly to `main` unless you are releasing a feature.
+
+  
