@@ -1,0 +1,22 @@
+name: Handle Stale PRs and Issues
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Run every day at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/stale@v9
+        with:
+          stale-issue-message: 'This issue is stale because it has been open 7 days with no activity. Please comment or this will be closed in 3 days.'
+          stale-pr-message: 'This PR is stale because it has been open 7 days with no activity. Please comment or this will be closed in 3 days.'
+          stale-issue-label: 'stale'
+          stale-pr-label: 'stale'
+          days-before-stale: 7
+          days-before-close: 3
