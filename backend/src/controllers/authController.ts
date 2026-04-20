@@ -3,7 +3,23 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel";
 
-export const register = async (req: Request, res: Response): Promise<void> => {
+interface RegisterBody {
+  firstname: string;
+  middlename?: string;
+  lastname: string;
+  email: string;
+  password: string;
+}
+
+interface LoginBody {
+  email: string;
+  password: string;
+}
+
+export const register = async (
+  req: Request<never, never, RegisterBody>,
+  res: Response
+): Promise<void> => {
   try {
     const { firstname, middlename, lastname, email, password } = req.body;
 
@@ -13,7 +29,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // hash the password before saving
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -29,43 +44,41 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       message: "User created successfully",
       userId: user._id,
     });
-  } catch (error) {
-    console.error(error);
+  } catch (_error) {
     res.status(500).json({ message: "Server error during registration" });
   }
 };
 
-export const login = async (req: Request, res: Response): Promise<void> => {
+export const login = async (
+  req: Request<never, never, LoginBody>,
+  res: Response
+): Promise<void> => {
   try {
     const { email, password } = req.body;
 
-    // find the user by email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user) {
       res.status(400).json({ message: "Invalid credentials" });
       return;
     }
 
-    // check if the password matches
-    const isMatch = await bcrypt.compare(password, user.password as string);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       res.status(400).json({ message: "Invalid credentials" });
       return;
     }
 
-    // generate JWT Token
     const token = jwt.sign(
       { id: user._id, userType: user.userType },
       process.env.JWT_SECRET || "fallback_secret_key",
       { expiresIn: "1d" }
     );
 
-    // send token in an HTTP-only cookie for security
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -78,8 +91,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         userType: user.userType,
       },
     });
-  } catch (error) {
-    console.error(error);
+  } catch (_error) {
     res.status(500).json({ message: "Server error during login" });
   }
 };
@@ -91,7 +103,13 @@ export const logout = (req: Request, res: Response) => {
 
 export const getMe = async (req: Request, res: Response): Promise<void> => {
   try {
-    const user = (req as any).user;
+    const user = req.user;
+
+    if (!user) {
+      res.status(401).json({ message: "Not authorized" });
+      return;
+    }
+
     res.status(200).json({
       user: {
         id: user._id,
@@ -101,8 +119,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
         userType: user.userType,
       },
     });
-  } catch (error) {
-    console.error(error);
+  } catch (_error) {
     res.status(500).json({ message: "Server error getting user profile" });
   }
 };
