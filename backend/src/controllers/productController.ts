@@ -12,7 +12,13 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { productName, description, productType, quantity, price } = req.body;
+    const { productName, description, productType, quantity, price } = req.body as {
+      productName: string;
+      description: string;
+      productType: 1 | 2 | undefined;
+      quantity: number;
+      price: number;
+    };
     const newProduct = await Product.create({
       productName,
       description,
