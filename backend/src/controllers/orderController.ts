@@ -1,15 +1,20 @@
 import { Request, Response } from "express";
 import Order from "../models/orderModel";
-import { Types } from "mongoose";
-import "../types/express.d";
 
-export const getOrders = async (req: Request, res: Response) => {
+interface CreateOrderBody {
+  transactionId: string;
+  productId: string;
+  orderQuantity: number;
+}
+
+export const getOrders = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = req.user;
     if (!user) {
       res.status(401).json({ message: "Not authorized" });
       return;
     }
+
     const orders = await Order.find({ email: user.email });
     res.status(200).json(orders);
   } catch (_error) {
@@ -17,18 +22,24 @@ export const getOrders = async (req: Request, res: Response) => {
   }
 };
 
-export const createOrder = async (req: Request, res: Response) => {
+export const createOrder = async (
+  req: Request<never, never, CreateOrderBody>,
+  res: Response
+): Promise<void> => {
   try {
     const user = req.user;
     if (!user) {
       res.status(401).json({ message: "Not authorized" });
       return;
     }
-    const { transactionId, productId, orderQuantity } = req.body as {
-      transactionId: string;
-      productId: Types.ObjectId;
-      orderQuantity: number;
-    };
+
+    const { transactionId, productId, orderQuantity } = req.body;
+
+    if (!transactionId || !productId || !orderQuantity) {
+      res.status(400).json({ message: "Missing required order fields" });
+      return;
+    }
+
     const newOrder = await Order.create({
       transactionId,
       productId,
@@ -37,18 +48,20 @@ export const createOrder = async (req: Request, res: Response) => {
       email: user.email,
       dateOrdered: new Date(),
     });
-    res.status(200).json(newOrder);
+
+    res.status(201).json(newOrder);
   } catch (_error) {
     res.status(500).json({ message: "Error creating order" });
   }
 };
 
-export const cancelOrder = async (req: Request, res: Response) => {
+export const cancelOrder = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const user = req.user;
     if (!user) {
-      return res.status(401).json({ message: "Not authorized" });
+      res.status(401).json({ message: "Not authorized" });
+      return;
     }
 
     const cancelledOrders = await Order.updateMany(
@@ -57,12 +70,12 @@ export const cancelOrder = async (req: Request, res: Response) => {
     );
 
     if (cancelledOrders.matchedCount === 0) {
-      return res.status(404).json({ message: "No orders found to cancel." });
+      res.status(404).json({ message: "No pending orders found with this transaction ID." });
+      return;
     }
-    return res.status(200).json({
-      message: "Successfully cancelled order.",
-    });
+
+    res.status(200).json({ message: "Successfully cancelled order." });
   } catch (_error) {
-    return res.status(500).json({ message: "Error deleting product" });
+    res.status(500).json({ message: "Error cancelling order" });
   }
 };
