@@ -15,6 +15,21 @@ interface LoginBody {
   email: string;
   password: string;
 }
+// helper function to generate JWT token and set it as a cookie
+const generateTokenAndSetCookie = (res: Response, userId: unknown, userType: string) => {
+  if (process.env.JWT_SECRET === undefined) {
+    throw new Error("JWT secret not configured");
+  }
+
+  const token = jwt.sign({ id: userId, userType }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 24 * 60 * 60 * 1000,
+  });
+};
 
 export const register = async (
   req: Request<never, never, RegisterBody>,
@@ -40,11 +55,14 @@ export const register = async (
       password: hashedPassword,
     });
 
+    generateTokenAndSetCookie(res, user._id, user.userType);
+
     res.status(201).json({
-      message: "User created successfully",
+      message: "User created successfully, and logged in successfully",
       userId: user._id,
     });
   } catch (_error) {
+    console.error("Error during registration:", _error);
     res.status(500).json({ message: "Server error during registration" });
   }
 };
@@ -68,18 +86,7 @@ export const login = async (
       return;
     }
 
-    const token = jwt.sign(
-      { id: user._id, userType: user.userType },
-      process.env.JWT_SECRET || "fallback_secret_key",
-      { expiresIn: "1d" }
-    );
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    generateTokenAndSetCookie(res, user._id, user.userType);
 
     res.status(200).json({
       message: "Logged in successfully",
