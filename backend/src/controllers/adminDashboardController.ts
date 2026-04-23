@@ -3,10 +3,10 @@ import User from "../models/userModel";
 import Order from "../models/orderModel";
 import Product from "../models/productModel";
 
-// Fetch all registered users and the total count.
-export const users = async (req: Request, res: Response) => {
+// Fetch all registered users.
+export const users = async (req: Request, res: Response): Promise<void> => {
   try {
-    const users = await User.find();
+    const users = await User.find().select("-password");
     res.status(200).json(users);
   } catch (_error) {
     res.status(500).json({ message: "Error fetching users" });
@@ -14,9 +14,9 @@ export const users = async (req: Request, res: Response) => {
 };
 
 // Fetch all orders from all users.
-export const orders = async (req: Request, res: Response) => {
+export const orders = async (req: Request, res: Response): Promise<void> => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().sort({ createdAt: -1 });
     res.status(200).json(orders);
   } catch (_error) {
     res.status(500).json({ message: "Error fetching orders" });
@@ -24,7 +24,7 @@ export const orders = async (req: Request, res: Response) => {
 };
 
 // Confirm an order and decrease the product inventory quantity.
-export const confirm = async (req: Request, res: Response): Promise<void> => {
+export const confirm = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
 
@@ -62,11 +62,11 @@ export const confirm = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// Fetch sales report data.
-export const sales = async (req: Request, res: Response) => {
+// Fetch sales report data (only confirmed orders).
+export const sales = async (req: Request, res: Response): Promise<void> => {
   try {
-    const sales = await Order.find();
-    res.status(200).json(sales);
+    const confirmedSales = await Order.find({ orderStatus: 1 }).sort({ createdAt: -1 });
+    res.status(200).json(confirmedSales);
   } catch (_error) {
     res.status(500).json({ message: "Error fetching sales" });
   }

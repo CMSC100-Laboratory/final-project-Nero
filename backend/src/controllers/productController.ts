@@ -47,7 +47,7 @@ export const editProduct = async (
     const { id } = req.params;
     const { productName, description, productType, quantity, price } = req.body;
 
-    const updateData: Record<string, any> = {};
+    const updateData: Partial<ProductBody> = {};
     if (productName !== undefined) updateData.productName = productName;
     if (description !== undefined) updateData.description = description;
     if (productType !== undefined) updateData.productType = productType;

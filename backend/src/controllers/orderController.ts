@@ -35,11 +35,6 @@ export const createOrder = async (
 
     const { transactionId, productId, orderQuantity } = req.body;
 
-    if (!transactionId || !productId || !orderQuantity) {
-      res.status(400).json({ message: "Missing required order fields" });
-      return;
-    }
-
     const newOrder = await Order.create({
       transactionId,
       productId,
