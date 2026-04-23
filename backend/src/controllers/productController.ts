@@ -1,7 +1,15 @@
 import { Request, Response } from "express";
 import Product from "../models/productModel";
 
-export const getProducts = async (req: Request, res: Response) => {
+interface ProductBody {
+  productName: string;
+  description: string;
+  productType: 1 | 2;
+  quantity: number;
+  price: number;
+}
+
+export const getProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     const products = await Product.find();
     res.status(200).json(products);
@@ -10,15 +18,13 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
-export const createProduct = async (req: Request, res: Response) => {
+export const createProduct = async (
+  req: Request<never, never, ProductBody>,
+  res: Response
+): Promise<void> => {
   try {
-    const { productName, description, productType, quantity, price } = req.body as {
-      productName: string;
-      description: string;
-      productType: 1 | 2 | undefined;
-      quantity: number;
-      price: number;
-    };
+    const { productName, description, productType, quantity, price } = req.body;
+
     const newProduct = await Product.create({
       productName,
       description,
@@ -26,13 +32,17 @@ export const createProduct = async (req: Request, res: Response) => {
       quantity,
       price,
     });
-    res.status(200).json(newProduct);
+
+    res.status(201).json(newProduct);
   } catch (_error) {
     res.status(500).json({ message: "Error creating product" });
   }
 };
 
-export const editProduct = async (req: Request, res: Response): Promise<void> => {
+export const editProduct = async (
+  req: Request<{ id: string }, never, Partial<ProductBody>>,
+  res: Response
+): Promise<void> => {
   try {
     const { id } = req.params;
     const { productName, description, productType, quantity, price } = req.body;
@@ -60,15 +70,18 @@ export const editProduct = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const deleteProduct = async (req: Request, res: Response) => {
+export const deleteProduct = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const deletedProduct = await Product.findByIdAndDelete(id);
+
     if (!deletedProduct) {
-      return res.status(404).json({ message: "Product not found." });
+      res.status(404).json({ message: "Product not found." });
+      return;
     }
-    return res.status(200).json({ message: "Product deleted successfully." });
+
+    res.status(200).json({ message: "Product deleted successfully." });
   } catch (_error) {
-    return res.status(500).json({ message: "Error deleting product" });
+    res.status(500).json({ message: "Error deleting product" });
   }
 };
