@@ -16,10 +16,16 @@ export const protect = async (req: Request, res: Response, next: NextFunction): 
       return;
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || "fallback_secret_key"
-    ) as JwtPayload;
+    // const decoded = jwt.verify(
+    //   token,
+    //   process.env.JWT_SECRET || "fallback_secret_key"
+    // ) as JwtPayload;
+
+    // removed the fallback secret key for better security
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT secret not configured");
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
 
     const user = await User.findById(decoded.id).select("-password");
 
