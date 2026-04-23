@@ -32,19 +32,31 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const editProduct = async (req: Request, res: Response) => {
+export const editProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+    const { productName, description, productType, quantity, price } = req.body;
+
+    const updateData: Record<string, any> = {};
+    if (productName !== undefined) updateData.productName = productName;
+    if (description !== undefined) updateData.description = description;
+    if (productType !== undefined) updateData.productType = productType;
+    if (quantity !== undefined) updateData.quantity = quantity;
+    if (price !== undefined) updateData.price = price;
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
     });
+
     if (!updatedProduct) {
-      return res.status(404).json({ message: "Product not found." });
+      res.status(404).json({ message: "Product not found." });
+      return;
     }
-    return res.status(200).json(updatedProduct);
+
+    res.status(200).json(updatedProduct);
   } catch (_error) {
-    return res.status(500).json({ message: "Error editing product" });
+    res.status(500).json({ message: "Error editing product" });
   }
 };
 
