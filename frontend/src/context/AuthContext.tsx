@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext, useCallback } from "react";
 import type { ReactNode } from "react";
+import { apiFetch } from "@/lib/api";
 interface User {
   id: string;
   firstname: string;
@@ -20,7 +21,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // function to ping the backend and check if the HttpOnly cookie is still valid
   const checkAuth = useCallback(async () => {
     try {
-      const response = await fetch("/api/auth/me");
+      const response = await apiFetch("/api/auth/me");
       if (response.ok) {
         const data = (await response.json()) as { user: User };
         setUser(data.user);
