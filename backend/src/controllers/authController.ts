@@ -26,7 +26,7 @@ const generateTokenAndSetCookie = (res: Response, userId: unknown, userType: str
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
     maxAge: 24 * 60 * 60 * 1000,
   });
 };
@@ -104,7 +104,12 @@ export const login = async (
 };
 
 export const logout = (req: Request, res: Response) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+  });
+
   res.status(200).json({ message: "Logged out successfully" });
 };
 
