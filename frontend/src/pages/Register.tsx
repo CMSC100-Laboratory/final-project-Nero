@@ -1,5 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { apiFetch } from "@/lib/api";
+import { User, Mail, Lock, ShieldCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import Footer from "@/components/Footer";
 import loginImage from "../assets/login_signup.jpg";
 
 export default function Register() {
@@ -24,9 +31,8 @@ export default function Register() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await apiFetch("/api/auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstname, lastname, email, password }),
       });
 
@@ -69,209 +75,145 @@ export default function Register() {
             <h1 className="font-display text-3xl font-bold text-foreground mb-6">Create Account</h1>
 
             {error && (
-              <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
-                {error}
-              </div>
+              <Alert variant="destructive" className="mb-4">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Name row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* First Name */}
-                <div>
-                  <label
+                <div className="space-y-2">
+                  <Label
                     htmlFor="register-firstname"
-                    className="block text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-2"
+                    className="text-xs font-semibold tracking-widest text-muted-foreground uppercase"
                   >
                     First Name
-                  </label>
+                  </Label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                        />
-                      </svg>
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground pointer-events-none">
+                      <User className="h-5 w-5" />
                     </span>
-                    <input
+                    <Input
                       id="register-firstname"
                       type="text"
                       placeholder="Juan"
                       value={firstname}
                       onChange={(e) => setFirstname(e.target.value)}
                       required
-                      className="w-full rounded-lg border border-input bg-[#f5f6f7] py-3 pl-12 pr-4 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+                      className="h-12 pl-12 bg-[#f5f6f7] focus-visible:ring-primary/40"
                     />
                   </div>
                 </div>
 
                 {/* Last Name */}
-                <div>
-                  <label
+                <div className="space-y-2">
+                  <Label
                     htmlFor="register-lastname"
-                    className="block text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-2"
+                    className="text-xs font-semibold tracking-widest text-muted-foreground uppercase"
                   >
                     Last Name
-                  </label>
+                  </Label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                        />
-                      </svg>
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground pointer-events-none">
+                      <User className="h-5 w-5" />
                     </span>
-                    <input
+                    <Input
                       id="register-lastname"
                       type="text"
                       placeholder="Dela Cruz"
                       value={lastname}
                       onChange={(e) => setLastname(e.target.value)}
                       required
-                      className="w-full rounded-lg border border-input bg-[#f5f6f7] py-3 pl-12 pr-4 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+                      className="h-12 pl-12 bg-[#f5f6f7] focus-visible:ring-primary/40"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Email */}
-              <div>
-                <label
+              <div className="space-y-2">
+                <Label
                   htmlFor="register-email"
-                  className="block text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-2"
+                  className="text-xs font-semibold tracking-widest text-muted-foreground uppercase"
                 >
                   Email Address
-                </label>
+                </Label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0l-9.75 6.093L2.25 6.75"
-                      />
-                    </svg>
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground pointer-events-none">
+                    <Mail className="h-5 w-5" />
                   </span>
-                  <input
+                  <Input
                     id="register-email"
                     type="email"
                     placeholder="example@web.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full rounded-lg border border-input bg-[#f5f6f7] py-3 pl-12 pr-4 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+                    className="h-12 pl-12 bg-[#f5f6f7] focus-visible:ring-primary/40"
                   />
                 </div>
               </div>
 
               {/* Password */}
-              <div>
-                <label
+              <div className="space-y-2">
+                <Label
                   htmlFor="register-password"
-                  className="block text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-2"
+                  className="text-xs font-semibold tracking-widest text-muted-foreground uppercase"
                 >
                   Password
-                </label>
+                </Label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-                      />
-                    </svg>
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground pointer-events-none">
+                    <Lock className="h-5 w-5" />
                   </span>
-                  <input
+                  <Input
                     id="register-password"
                     type="password"
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full rounded-lg border border-input bg-[#f5f6f7] py-3 pl-12 pr-4 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+                    className="h-12 pl-12 bg-[#f5f6f7] focus-visible:ring-primary/40"
                   />
                 </div>
               </div>
 
               {/* Confirm Password */}
-              <div>
-                <label
+              <div className="space-y-2">
+                <Label
                   htmlFor="register-confirm-password"
-                  className="block text-xs font-semibold tracking-widest text-muted-foreground uppercase mb-2"
+                  className="text-xs font-semibold tracking-widest text-muted-foreground uppercase"
                 >
                   Confirm Password
-                </label>
+                </Label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-                      />
-                    </svg>
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground pointer-events-none">
+                    <ShieldCheck className="h-5 w-5" />
                   </span>
-                  <input
+                  <Input
                     id="register-confirm-password"
                     type="password"
                     placeholder="••••••••"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
-                    className="w-full rounded-lg border border-input bg-[#f5f6f7] py-3 pl-12 pr-4 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+                    className="h-12 pl-12 bg-[#f5f6f7] focus-visible:ring-primary/40"
                   />
                 </div>
               </div>
 
               {/* Submit */}
-              <button
+              <Button
                 id="register-submit"
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-full bg-primary text-primary-foreground font-semibold py-3 text-sm hover:bg-primary/90 active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full rounded-full py-3 text-sm font-semibold active:scale-[0.98] transition-all"
+                size="lg"
               >
                 {isSubmitting ? "Creating account…" : "Create Account"}
-              </button>
+              </Button>
             </form>
 
             <p className="mt-6 text-center text-sm text-muted-foreground">
@@ -287,15 +229,7 @@ export default function Register() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-primary text-primary-foreground py-5 px-8">
-        <div className="max-w-[880px] mx-auto">
-          <p className="font-display font-bold text-sm tracking-wide">UmaMASA</p>
-          <p className="text-[11px] tracking-[0.15em] uppercase text-primary-foreground/70 mt-0.5">
-            Department of Agriculture
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
