@@ -1,5 +1,12 @@
 import express from "express";
-import { users, orders, confirm, sales } from "../controllers/adminDashboardController";
+import {
+  users,
+  orders,
+  confirm,
+  sales,
+  updateUser,
+  deleteUser,
+} from "../controllers/adminDashboardController";
 import { protect, adminOnly } from "../middleware/authMiddleware";
 
 const router = express.Router();
@@ -15,5 +22,11 @@ router.put("/orders/:id/confirm", protect, adminOnly, confirm);
 
 // GET /api/admin/sales
 router.get("/sales", protect, adminOnly, sales);
+
+// PUT /api/admin/users/:id
+router.put("/users/:id", protect, adminOnly, updateUser);
+
+// DELETE /api/admin/users/:id
+router.delete("/users/:id", protect, adminOnly, deleteUser);
 
 export default router;
