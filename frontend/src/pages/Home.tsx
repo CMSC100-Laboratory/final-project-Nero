@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
 import {
   Select,
   SelectContent,
@@ -30,6 +32,8 @@ const MOCK_PRODUCTS = Array.from({ length: 15 }).map((_, i) => ({
 export default function Home() {
   const [filter, setFilter] = useState("none");
   const [sort, setSort] = useState("best-match");
+  const { addItem } = useCart();
+  const navigate = useNavigate();
 
   const [selectedProduct, setSelectedProduct] = useState<(typeof MOCK_PRODUCTS)[0] | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -37,6 +41,13 @@ export default function Home() {
   const openProduct = (product: (typeof MOCK_PRODUCTS)[0]) => {
     setSelectedProduct(product);
     setQuantity(1); // Reset quantity
+  };
+
+  const handleAddToCart = () => {
+    if (!selectedProduct) return;
+    addItem(selectedProduct, quantity);
+    setSelectedProduct(null);
+    navigate("/cart");
   };
 
   return (
@@ -192,7 +203,8 @@ export default function Home() {
                       </div>
                     </div>
                     <Button
-                      className="w-full mt-5 rounded-full font-semibold h-12 text-[15px] bg-[#d9d9d9] hover:bg-[#c9c9c9] text-foreground border-transparent shadow-none"
+                      onClick={handleAddToCart}
+                      className="w-full mt-5 rounded-full font-semibold h-12 text-[15px] shadow-sm hover:shadow-md transition-all active:scale-95"
                       size="lg"
                     >
                       Add to Cart

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 import { apiFetch } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export default function Navbar() {
   const { isAuthenticated, user } = useAuth();
+  const { totalItems } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -88,7 +90,14 @@ export default function Navbar() {
                   to="/cart"
                   className="group flex items-center gap-1.5 hover:text-primary transition-colors relative py-1"
                 >
-                  <ShoppingCart className="h-4 w-4 mb-0.5 text-primary/70 group-hover:text-primary transition-colors" />
+                  <div className="relative">
+                    <ShoppingCart className="h-4 w-4 mb-0.5 text-primary/70 group-hover:text-primary transition-colors" />
+                    {totalItems > 0 && (
+                      <span className="absolute -top-2 -right-2 min-w-[16px] h-4 px-1 bg-destructive text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
+                        {totalItems > 99 ? "99+" : totalItems}
+                      </span>
+                    )}
+                  </div>
                   <span>Cart</span>
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full rounded-full"></span>
                 </Link>
@@ -136,7 +145,14 @@ export default function Navbar() {
                     </DropdownMenuItem>
                     <DropdownMenuItem className="py-2.5 cursor-pointer rounded-md" asChild>
                       <Link to="/cart" className="flex items-center gap-2">
-                        <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+                        <div className="relative">
+                          <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+                          {totalItems > 0 && (
+                            <span className="absolute -top-1.5 -right-1.5 min-w-[14px] h-3.5 px-0.5 bg-destructive text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
+                              {totalItems > 99 ? "99+" : totalItems}
+                            </span>
+                          )}
+                        </div>
                         <span className="font-medium">Cart</span>
                       </Link>
                     </DropdownMenuItem>
