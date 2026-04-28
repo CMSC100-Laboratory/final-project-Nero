@@ -21,7 +21,7 @@ import { Minus, Plus } from "lucide-react";
 
 // Temporary mock data for the UI
 const MOCK_PRODUCTS = Array.from({ length: 15 }).map((_, i) => ({
-  id: i + 1,
+  id: String(i + 1),
   name: "ProductName",
   category: "CATEGORY/S",
   price: 100.0,
