@@ -6,6 +6,7 @@ import Register from "@/pages/Register";
 import Cart from "@/pages/Cart";
 import Checkout from "@/pages/Checkout";
 import PrivateRoute from "@/components/PrivateRoute";
+import Orders from "@/pages/Orders";
 
 function App() {
   const location = useLocation();
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/orders" element={<Orders />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

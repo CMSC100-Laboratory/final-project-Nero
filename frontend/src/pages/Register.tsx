@@ -35,9 +35,9 @@ export default function Register() {
         method: "POST",
         body: JSON.stringify({ firstname, lastname, email, password }),
       });
-
+      // if (response.ok )
       if (response.ok) {
-        navigate("/login");
+        navigate("/");
       } else {
         const data = (await response.json()) as { message?: string };
         setError(data.message || "Registration failed.");
@@ -219,7 +219,7 @@ export default function Register() {
             <p className="mt-6 text-center text-sm text-muted-foreground">
               Already have an account?{" "}
               <Link
-                to="/login"
+                to="/"
                 className="font-semibold text-foreground underline underline-offset-2 hover:text-primary transition-colors"
               >
                 Sign in
