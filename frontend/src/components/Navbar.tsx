@@ -3,7 +3,16 @@ import { useAuth } from "@/context/AuthContext";
 import { apiFetch } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, User, LogOut, Store, Package, ShoppingCart, Leaf } from "lucide-react";
+import {
+  Search,
+  User,
+  LogOut,
+  Store,
+  Package,
+  ShoppingCart,
+  Leaf,
+  ClipboardList,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -92,6 +101,16 @@ export default function Navbar() {
                   <span>Cart</span>
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full rounded-full"></span>
                 </Link>
+                {user?.userType === "admin" && (
+                  <Link
+                    to="/inventory"
+                    className="group flex items-center gap-1.5 hover:text-primary transition-colors relative py-1"
+                  >
+                    <ClipboardList className="h-4 w-4 mb-0.5 text-primary/70 group-hover:text-primary transition-colors" />
+                    <span>Inventory</span>
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full rounded-full"></span>
+                  </Link>
+                )}
               </div>
 
               <DropdownMenu>
@@ -140,6 +159,14 @@ export default function Navbar() {
                         <span className="font-medium">Cart</span>
                       </Link>
                     </DropdownMenuItem>
+                    {user?.userType === "admin" && (
+                      <DropdownMenuItem className="py-2.5 cursor-pointer rounded-md" asChild>
+                        <Link to="/inventory" className="flex items-center gap-2">
+                          <ClipboardList className="h-4 w-4 text-muted-foreground" />
+                          <span className="font-medium">Inventory</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuSeparator className="my-1" />
                   </div>
 

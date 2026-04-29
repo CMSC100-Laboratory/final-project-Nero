@@ -5,6 +5,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import PrivateRoute from "@/components/PrivateRoute";
 import Orders from "@/pages/Orders";
+import Inventory from "@/pages/Inventory";
 
 function App() {
   const location = useLocation();
@@ -17,6 +18,7 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Home />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/inventory" element={<Inventory />} />
         </Route>
 
         <Route path="/login" element={<Login />} />
