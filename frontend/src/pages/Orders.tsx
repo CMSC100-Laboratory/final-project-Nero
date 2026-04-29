@@ -7,7 +7,7 @@ import { useState } from "react";
 const MOCK_ORDERS = [
   {
     id: 1,
-    name: "ProductNameNameNameName",
+    name: "ProductName",
     category: "CATEGORY/S",
     price: 100.0,
     quantity: 2,

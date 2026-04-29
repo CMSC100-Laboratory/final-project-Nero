@@ -53,19 +53,24 @@ export default function Navbar() {
 
         {isAuthenticated ? (
           <>
-            {/* Center - Interactive Search */}
-            <div className="hidden flex-1 md:flex justify-center px-6">
-              <div className="relative w-full max-w-md transition-all duration-300 focus-within:max-w-lg group">
-                <Input
-                  type="search"
-                  placeholder="Search fresh produce..."
-                  className="w-full rounded-full bg-muted/50 border-transparent pl-5 pr-12 h-10 focus-visible:bg-background focus-visible:border-primary/30 focus-visible:ring-2 focus-visible:ring-primary/20 transition-all shadow-sm focus-within:shadow-md"
-                />
-                <button className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 transition-transform active:scale-95">
-                  <Search className="h-4 w-4" />
-                </button>
+            {/* Center - Interactive Search (Only for users) */}
+            {user?.userType === "user" && (
+              <div className="hidden flex-1 md:flex justify-center px-6">
+                <div className="relative w-full max-w-md transition-all duration-300 focus-within:max-w-lg group">
+                  <Input
+                    type="search"
+                    placeholder="Search fresh produce..."
+                    className="w-full rounded-full bg-muted/50 border-transparent pl-5 pr-12 h-10 focus-visible:bg-background focus-visible:border-primary/30 focus-visible:ring-2 focus-visible:ring-primary/20 transition-all shadow-sm focus-within:shadow-md"
+                  />
+                  <button className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 transition-transform active:scale-95">
+                    <Search className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
+
+            {/* If Admin, just spacer */}
+            {user?.userType === "admin" && <div className="hidden flex-1 md:flex"></div>}
 
             {/* Right - Links & Profile */}
             <div className="flex items-center gap-6">
@@ -101,6 +106,53 @@ export default function Navbar() {
                   <span>Cart</span>
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full rounded-full"></span>
                 </Link>
+                {user?.userType === "user" ? (
+                  <>
+                    <Link
+                      to="/"
+                      className="group flex items-center gap-1.5 hover:text-primary transition-colors relative py-1"
+                    >
+                      <Store className="h-4 w-4 mb-0.5 text-primary/70 group-hover:text-primary transition-colors" />
+                      <span>Market</span>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full rounded-full"></span>
+                    </Link>
+                    <Link
+                      to="/orders"
+                      className="group flex items-center gap-1.5 hover:text-primary transition-colors relative py-1"
+                    >
+                      <Package className="h-4 w-4 mb-0.5 text-primary/70 group-hover:text-primary transition-colors" />
+                      <span>Orders</span>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full rounded-full"></span>
+                    </Link>
+                    <Link
+                      to="/cart"
+                      className="group flex items-center gap-1.5 hover:text-primary transition-colors relative py-1"
+                    >
+                      <ShoppingCart className="h-4 w-4 mb-0.5 text-primary/70 group-hover:text-primary transition-colors" />
+                      <span>Cart</span>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full rounded-full"></span>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/dashboard"
+                      className="group flex items-center gap-1.5 hover:text-primary transition-colors relative py-1"
+                    >
+                      <Store className="h-4 w-4 mb-0.5 text-primary/70 group-hover:text-primary transition-colors" />
+                      <span>Dashboard</span>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full rounded-full"></span>
+                    </Link>
+                    <Link
+                      to="/inventory"
+                      className="group flex items-center gap-1.5 hover:text-primary transition-colors relative py-1"
+                    >
+                      <Package className="h-4 w-4 mb-0.5 text-primary/70 group-hover:text-primary transition-colors" />
+                      <span>Inventory</span>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full rounded-full"></span>
+                    </Link>
+                  </>
+                )}
               </div>
 
               <DropdownMenu>
@@ -156,6 +208,43 @@ export default function Navbar() {
                         <span className="font-medium">Cart</span>
                       </Link>
                     </DropdownMenuItem>
+                    {user?.userType === "user" ? (
+                      <>
+                        <DropdownMenuItem className="py-2.5 cursor-pointer rounded-md" asChild>
+                          <Link to="/" className="flex items-center gap-2">
+                            <Store className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-medium">Market</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="py-2.5 cursor-pointer rounded-md" asChild>
+                          <Link to="/orders" className="flex items-center gap-2">
+                            <Package className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-medium">Orders</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="py-2.5 cursor-pointer rounded-md" asChild>
+                          <Link to="/cart" className="flex items-center gap-2">
+                            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-medium">Cart</span>
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <DropdownMenuItem className="py-2.5 cursor-pointer rounded-md" asChild>
+                          <Link to="/dashboard" className="flex items-center gap-2">
+                            <Store className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-medium">Dashboard</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="py-2.5 cursor-pointer rounded-md" asChild>
+                          <Link to="/inventory" className="flex items-center gap-2">
+                            <Package className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-medium">Inventory</span>
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
+                    )}
                     <DropdownMenuSeparator className="my-1" />
                   </div>
 

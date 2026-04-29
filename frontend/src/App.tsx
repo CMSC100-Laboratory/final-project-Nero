@@ -7,6 +7,7 @@ import Cart from "@/pages/Cart";
 import Checkout from "@/pages/Checkout";
 import PrivateRoute from "@/components/PrivateRoute";
 import Orders from "@/pages/Orders";
+import Inventory from "@/pages/Inventory";
 import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
@@ -17,11 +18,29 @@ function App() {
     <>
       {!isAuthPage && <Navbar />}
       <Routes>
-        <Route element={<PrivateRoute />}>
+        <Route element={<PrivateRoute allowedRoles={["user"]} />}>
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orders" element={<Orders />} />
+          <Route
+            path="/cart"
+            element={
+              <div className="p-8 text-center text-xl font-bold">Cart Page (Coming Soon)</div>
+            }
+          />
+        </Route>
+
+        <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+          <Route
+            path="/dashboard"
+            element={
+              <div className="p-8 text-center text-xl font-bold">
+                Admin Dashboard (Statistics etc.)
+              </div>
+            }
+          />
+          <Route path="/inventory" element={<Inventory />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

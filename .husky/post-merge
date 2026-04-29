@@ -11,3 +11,4 @@ if echo "$changed_files" | grep -q "package.json"; then
 else
   echo "✅ No dependency changes detected after pull."
 fi
+.
