@@ -7,13 +7,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import {
   Table,
   TableBody,
   TableCell,
@@ -22,41 +15,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { apiFetch } from "@/lib/api";
-import { Plus, Pencil, Trash2, ImagePlus, Loader2, AlertTriangle } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react";
+import { ProductFormModal, DeleteProductDialog, type Product } from "@/components/ProductModal";
 
 /* ------------------------------------------------------------------ */
-/*  Types                                                              */
+/*  Constants                                                          */
 /* ------------------------------------------------------------------ */
-
-interface Product {
-  _id: string;
-  productName: string;
-  description: string;
-  productType: 1 | 2;
-  quantity: number;
-  price: number;
-  createdAt?: string;
-}
-
-interface ProductFormData {
-  productName: string;
-  description: string;
-  productType: 1 | 2;
-  quantity: number;
-  price: number;
-}
-
-const EMPTY_FORM: ProductFormData = {
-  productName: "",
-  description: "",
-  productType: 1,
-  quantity: 0,
-  price: 0,
-};
 
 const PRODUCT_TYPE_LABELS: Record<number, string> = {
   1: "Crops",
@@ -80,13 +45,9 @@ export default function Inventory() {
   // Modal state
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [form, setForm] = useState<ProductFormData>(EMPTY_FORM);
-  const [isSaving, setIsSaving] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
 
   // Delete dialog
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   /* ---------- fetch ---------- */
   const fetchProducts = useCallback(async () => {
@@ -135,109 +96,12 @@ export default function Inventory() {
   /* ---------- modal helpers ---------- */
   const openCreateModal = () => {
     setEditingProduct(null);
-    setForm(EMPTY_FORM);
-    setFormError(null);
     setModalOpen(true);
   };
 
   const openEditModal = (product: Product) => {
     setEditingProduct(product);
-    setForm({
-      productName: product.productName,
-      description: product.description,
-      productType: product.productType,
-      quantity: product.quantity,
-      price: product.price,
-    });
-    setFormError(null);
     setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    setEditingProduct(null);
-    setForm(EMPTY_FORM);
-    setFormError(null);
-  };
-
-  /* ---------- save (create / update) ---------- */
-  const handleSave = async () => {
-    // Simple validation
-    if (!form.productName.trim()) {
-      setFormError("Product name is required");
-      return;
-    }
-    if (!form.description.trim()) {
-      setFormError("Description is required");
-      return;
-    }
-    if (form.price < 0) {
-      setFormError("Price must be a non-negative number");
-      return;
-    }
-    if (form.quantity < 0) {
-      setFormError("Stock must be a non-negative number");
-      return;
-    }
-
-    try {
-      setIsSaving(true);
-      setFormError(null);
-
-      const body = JSON.stringify({
-        productName: form.productName.trim(),
-        description: form.description.trim(),
-        productType: form.productType,
-        quantity: form.quantity,
-        price: form.price,
-      });
-
-      let res: Response;
-      if (editingProduct) {
-        // UPDATE
-        res = await apiFetch(`/api/products/${editingProduct._id}`, {
-          method: "PUT",
-          body,
-        });
-      } else {
-        // CREATE
-        res = await apiFetch("/api/products", {
-          method: "POST",
-          body,
-        });
-      }
-
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({}))) as { message?: string };
-        throw new Error(err.message || "Failed to save product");
-      }
-
-      closeModal();
-      await fetchProducts();
-    } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Failed to save product");
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  /* ---------- delete ---------- */
-  const handleDelete = async () => {
-    if (!deleteTarget) return;
-    try {
-      setIsDeleting(true);
-      const res = await apiFetch(`/api/products/${deleteTarget._id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Failed to delete product");
-      setDeleteTarget(null);
-      await fetchProducts();
-    } catch {
-      // Could add a toast here; for now just close
-      setDeleteTarget(null);
-    } finally {
-      setIsDeleting(false);
-    }
   };
 
   /* ---------- helpers ---------- */
@@ -421,207 +285,25 @@ export default function Inventory() {
         </div>
       </main>
 
-      {/*  ADD / EDIT PRODUCT MODAL                                      */}
-      <Dialog open={modalOpen} onOpenChange={(open) => !open && closeModal()}>
-        <DialogContent className="sm:max-w-[540px] p-0 gap-0 rounded-2xl overflow-hidden">
-          {/* Header bar */}
-          <div className="flex items-center justify-between px-6 pt-6 pb-2">
-            <DialogHeader className="p-0 space-y-0">
-              <DialogTitle className="text-2xl font-extrabold tracking-tight">
-                {editingProduct ? "Edit product" : "Add new product"}
-              </DialogTitle>
-              <DialogDescription className="sr-only">
-                {editingProduct
-                  ? "Update the product details below"
-                  : "Fill out the form to create a new product"}
-              </DialogDescription>
-            </DialogHeader>
-            <Button
-              onClick={handleSave}
-              disabled={isSaving}
-              className="rounded-full font-semibold h-9 px-5 text-sm bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm gap-2"
-            >
-              {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
-              Save product
-            </Button>
-          </div>
+      {/*  ADD / EDIT PRODUCT MODAL  */}
+      <ProductFormModal
+        open={modalOpen}
+        onOpenChange={(open) => {
+          setModalOpen(open);
+          if (!open) setEditingProduct(null);
+        }}
+        editingProduct={editingProduct}
+        onSaved={() => void fetchProducts()}
+      />
 
-          {/* Form body */}
-          <div className="px-6 pb-6 pt-4 space-y-5">
-            {formError && (
-              <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 rounded-lg px-3 py-2.5 font-medium">
-                <AlertTriangle className="h-4 w-4 shrink-0" />
-                {formError}
-              </div>
-            )}
-
-            {/* Product name */}
-            <div className="space-y-1.5">
-              <Label
-                htmlFor="productName"
-                className="text-xs font-semibold text-muted-foreground uppercase tracking-wider"
-              >
-                Product name
-              </Label>
-              <Input
-                id="productName"
-                placeholder="Product name…"
-                value={form.productName}
-                onChange={(e) => setForm((f) => ({ ...f, productName: e.target.value }))}
-                className="h-11 rounded-lg border-input bg-muted/30 focus-visible:bg-background text-base"
-              />
-            </div>
-
-            {/* Type / Price / Stock row */}
-            <div className="grid grid-cols-3 gap-4">
-              {/* Product type */}
-              <div className="space-y-1.5">
-                <Label
-                  htmlFor="productType"
-                  className="text-xs font-semibold text-muted-foreground uppercase tracking-wider"
-                >
-                  Product type
-                </Label>
-                <Select
-                  value={String(form.productType)}
-                  onValueChange={(v) => setForm((f) => ({ ...f, productType: Number(v) as 1 | 2 }))}
-                >
-                  <SelectTrigger
-                    id="productType"
-                    className="h-11 rounded-lg border-input bg-muted/30 focus:bg-background text-sm"
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-xl">
-                    <SelectItem value="1">Crops</SelectItem>
-                    <SelectItem value="2">Poultry</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Price */}
-              <div className="space-y-1.5">
-                <Label
-                  htmlFor="price"
-                  className="text-xs font-semibold text-muted-foreground uppercase tracking-wider"
-                >
-                  Price
-                </Label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium">
-                    ₱
-                  </span>
-                  <Input
-                    id="price"
-                    type="number"
-                    min={0}
-                    step={0.01}
-                    placeholder="0.00"
-                    value={form.price || ""}
-                    onChange={(e) =>
-                      setForm((f) => ({
-                        ...f,
-                        price: parseFloat(e.target.value) || 0,
-                      }))
-                    }
-                    className="h-11 rounded-lg border-input bg-muted/30 focus-visible:bg-background pl-7 text-sm"
-                  />
-                </div>
-              </div>
-
-              {/* Stock */}
-              <div className="space-y-1.5">
-                <Label
-                  htmlFor="stock"
-                  className="text-xs font-semibold text-muted-foreground uppercase tracking-wider"
-                >
-                  Initial stock
-                </Label>
-                <Input
-                  id="stock"
-                  type="number"
-                  min={0}
-                  placeholder="0"
-                  value={form.quantity || ""}
-                  onChange={(e) =>
-                    setForm((f) => ({
-                      ...f,
-                      quantity: parseInt(e.target.value, 10) || 0,
-                    }))
-                  }
-                  className="h-11 rounded-lg border-input bg-muted/30 focus-visible:bg-background text-sm"
-                />
-              </div>
-            </div>
-
-            {/* Image upload placeholder + Description side by side on wider screens */}
-            <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-4">
-              {/* Image placeholder */}
-              <div className="space-y-1.5">
-                <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                  Image
-                </Label>
-                <div className="aspect-square w-full max-w-[140px] rounded-lg border-2 border-dashed border-border bg-muted/20 flex flex-col items-center justify-center gap-1.5 cursor-not-allowed opacity-60 select-none">
-                  <ImagePlus className="h-6 w-6 text-muted-foreground/60" />
-                  <span className="text-[10px] text-muted-foreground/60 font-medium text-center leading-tight">
-                    Upload image
-                  </span>
-                </div>
-              </div>
-
-              {/* Description */}
-              <div className="space-y-1.5">
-                <Label
-                  htmlFor="description"
-                  className="text-xs font-semibold text-muted-foreground uppercase tracking-wider"
-                >
-                  Description
-                </Label>
-                <Textarea
-                  id="description"
-                  placeholder="Description…"
-                  rows={5}
-                  value={form.description}
-                  onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-                  className="rounded-lg border-input bg-muted/30 focus-visible:bg-background text-sm resize-none"
-                />
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/*  DELETE CONFIRMATION DIALOG                                    */}
-      <Dialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-        <DialogContent className="sm:max-w-[400px] p-6 gap-5 rounded-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-lg font-bold">Delete product</DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground">
-              Are you sure you want to delete{" "}
-              <span className="font-semibold text-foreground">{deleteTarget?.productName}</span>?
-              This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex items-center justify-end gap-3 pt-2">
-            <Button
-              variant="outline"
-              onClick={() => setDeleteTarget(null)}
-              className="rounded-full font-semibold h-9 px-5"
-              disabled={isDeleting}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleDelete}
-              disabled={isDeleting}
-              className="rounded-full font-semibold h-9 px-5 bg-destructive hover:bg-destructive/90 text-destructive-foreground gap-2"
-            >
-              {isDeleting && <Loader2 className="h-4 w-4 animate-spin" />}
-              Delete
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/*  DELETE CONFIRMATION DIALOG  */}
+      <DeleteProductDialog
+        product={deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTarget(null);
+        }}
+        onDeleted={() => void fetchProducts()}
+      />
     </div>
   );
 }
