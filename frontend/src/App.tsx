@@ -6,6 +6,7 @@ import Register from "@/pages/Register";
 import PrivateRoute from "@/components/PrivateRoute";
 import Orders from "@/pages/Orders";
 import Inventory from "@/pages/Inventory";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   const location = useLocation();
@@ -41,6 +42,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        {/* Test routes for admin-side screens; remove when real screens implemented */}
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/inventory" element={<AdminDashboard />} />
+
+        {/* Catch-all: redirect unknown routes to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </>
