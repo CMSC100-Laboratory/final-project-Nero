@@ -2,6 +2,7 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
+import Footer from "@/components/Footer";
 
 // Temporary mock data for the UI
 const MOCK_ORDERS = [
@@ -47,8 +48,8 @@ export default function Orders() {
   const [status, setStatus] = useState("All");
 
   return (
-    <div>
-      <main className="container pt-8 md:pt-14 px-4 max-w-[1200px] mx-auto animate-fade-in">
+    <div className="min-h-screen flex flex-col bg-background">
+      <main className="container flex-1 pt-8 md:pt-14 px-4 max-w-[1200px] mx-auto animate-fade-in pb-20">
         {/* Header section */}
         <h1 className="font-display text-4xl md:text-5xl font-extrabold text-foreground mb-10 tracking-tight">
           Orders
@@ -197,6 +198,7 @@ export default function Orders() {
           )}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

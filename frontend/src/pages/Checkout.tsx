@@ -23,6 +23,7 @@ import {
   Clock,
   ChevronRight,
 } from "lucide-react";
+import Footer from "@/components/Footer";
 
 export default function Checkout() {
   const { items, totalItems, totalPrice, clearCart } = useCart();
@@ -303,6 +304,8 @@ export default function Checkout() {
           </div>
         </main>
       </div>
+
+      <Footer />
 
       {/* Success Dialog */}
       <Dialog open={successOpen} onOpenChange={setSuccessOpen}>
