@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/api";
 import { Plus, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react";
 import { ProductFormModal, DeleteProductDialog, type Product } from "@/components/ProductModal";
-
+import AdminSidebar from "@/components/AdminSidebar";
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
 /* ------------------------------------------------------------------ */
@@ -112,8 +112,10 @@ export default function Inventory() {
   /* ------------------------------------------------------------------ */
 
   return (
-    <div className="min-h-screen bg-[#ecedef] pb-16">
-      <main className="container pt-8 md:pt-14 px-4 max-w-[1200px] mx-auto animate-fade-in">
+    <div className="min-h-screen bg-[#ecedef] pb-16 flex">
+      <AdminSidebar />
+
+      <main className="container pt-8 md:pt-14 px-4 max-w-[1200px] mx-auto animate-fade-in flex-1 sm:pl-[90px]">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-2">
           <div>
