@@ -193,7 +193,7 @@ export default function AdminDashboard() {
                     boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
                     padding: "12px",
                   }}
-                  formatter={(value: number) => [`₱${Number(value).toLocaleString()}`, "Sales"]}
+                  formatter={(value) => [`₱${Number(value || 0).toLocaleString()}`, "Sales"]}
                 />
                 <Area
                   type="monotone"
