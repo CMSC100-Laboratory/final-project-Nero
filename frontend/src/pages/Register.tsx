@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiFetch } from "@/lib/api";
-import { User, Mail, Lock, ShieldCheck } from "lucide-react";
+import { User, Mail, Lock, ShieldCheck, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import Footer from "@/components/Footer";
+import { useTheme } from "@/context/ThemeContext";
 import loginImage from "../assets/login_signup.jpg";
 
 export default function Register() {
@@ -18,6 +19,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,10 +52,23 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#ecedef]">
+    <div className="min-h-screen flex flex-col bg-background relative">
+      {/* Theme Toggle */}
+      <button
+        onClick={toggleTheme}
+        className="absolute top-6 right-6 p-3 rounded-full bg-card border border-border shadow-sm hover:shadow-md transition-all z-50 text-foreground"
+        title="Toggle Theme"
+      >
+        {theme === "light" ? (
+          <Moon className="w-5 h-5" />
+        ) : (
+          <Sun className="w-5 h-5 text-amber-500" />
+        )}
+      </button>
+
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-[880px] bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row animate-fade-in">
+        <div className="w-full max-w-[880px] bg-card rounded-3xl shadow-xl border border-border overflow-hidden flex flex-col md:flex-row animate-fade-in transition-all">
           {/* Left – Image Panel */}
           <div className="relative md:w-[46%] min-h-[240px] md:min-h-[580px]">
             <img
@@ -62,7 +77,7 @@ export default function Register() {
               className="absolute inset-0 w-full h-full object-cover"
             />
             {/* Brand overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             <div className="absolute bottom-8 left-8 right-8">
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white tracking-wide drop-shadow-lg">
                 UMAMASA
@@ -102,7 +117,7 @@ export default function Register() {
                       value={firstname}
                       onChange={(e) => setFirstname(e.target.value)}
                       required
-                      className="h-12 pl-12 bg-[#f5f6f7] focus-visible:ring-primary/40"
+                      className="h-12 pl-12 bg-muted/50 border-border focus-visible:ring-primary/40 focus-visible:bg-card transition-all"
                     />
                   </div>
                 </div>
@@ -126,7 +141,7 @@ export default function Register() {
                       value={lastname}
                       onChange={(e) => setLastname(e.target.value)}
                       required
-                      className="h-12 pl-12 bg-[#f5f6f7] focus-visible:ring-primary/40"
+                      className="h-12 pl-12 bg-muted/50 border-border focus-visible:ring-primary/40 focus-visible:bg-card transition-all"
                     />
                   </div>
                 </div>
@@ -151,7 +166,7 @@ export default function Register() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-12 pl-12 bg-[#f5f6f7] focus-visible:ring-primary/40"
+                    className="h-12 pl-12 bg-muted/50 border-border focus-visible:ring-primary/40 focus-visible:bg-card transition-all"
                   />
                 </div>
               </div>
@@ -175,7 +190,7 @@ export default function Register() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="h-12 pl-12 bg-[#f5f6f7] focus-visible:ring-primary/40"
+                    className="h-12 pl-12 bg-muted/50 border-border focus-visible:ring-primary/40 focus-visible:bg-card transition-all"
                   />
                 </div>
               </div>
@@ -199,7 +214,7 @@ export default function Register() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
-                    className="h-12 pl-12 bg-[#f5f6f7] focus-visible:ring-primary/40"
+                    className="h-12 pl-12 bg-muted/50 border-border focus-visible:ring-primary/40 focus-visible:bg-card transition-all"
                   />
                 </div>
               </div>
@@ -209,7 +224,7 @@ export default function Register() {
                 id="register-submit"
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-full py-3 text-sm font-semibold active:scale-[0.98] transition-all"
+                className="w-full rounded-full py-3 text-sm font-semibold active:scale-[0.98] transition-all bg-emerald-600 hover:bg-emerald-700 text-white"
                 size="lg"
               >
                 {isSubmitting ? "Creating account…" : "Create Account"}

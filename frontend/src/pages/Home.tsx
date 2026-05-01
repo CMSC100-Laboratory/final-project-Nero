@@ -52,7 +52,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#ecedef] ">
+    <div className="min-h-screen bg-background ">
       <main className="container pt-8 md:pt-14 px-4 max-w-[1200px] mx-auto animate-fade-in">
         {/* Header section */}
         <h1 className="font-display text-4xl md:text-5xl font-extrabold text-foreground mb-10 tracking-tight">
@@ -72,10 +72,10 @@ export default function Home() {
                 Filter by
               </span>
               <Select value={filter} onValueChange={setFilter}>
-                <SelectTrigger className="w-full sm:w-[140px] h-9 bg-black/5 border-transparent focus:ring-primary/40 rounded-full text-xs font-medium">
+                <SelectTrigger className="w-full sm:w-[140px] h-9 bg-muted border-transparent focus:ring-primary/40 rounded-full text-xs font-medium">
                   <SelectValue placeholder="Select filter" />
                 </SelectTrigger>
-                <SelectContent className="rounded-xl">
+                <SelectContent className="rounded-xl border-border bg-card">
                   <SelectItem value="none">None</SelectItem>
                   <SelectItem value="vegetables">Vegetables</SelectItem>
                   <SelectItem value="fruits">Fruits</SelectItem>
@@ -91,10 +91,10 @@ export default function Home() {
                 Sort by
               </span>
               <Select value={sort} onValueChange={setSort}>
-                <SelectTrigger className="w-full sm:w-[150px] h-9 bg-black/5 border-transparent focus:ring-primary/40 rounded-full text-xs font-medium">
+                <SelectTrigger className="w-full sm:w-[150px] h-9 bg-muted border-transparent focus:ring-primary/40 rounded-full text-xs font-medium">
                   <SelectValue placeholder="Sort order" />
                 </SelectTrigger>
-                <SelectContent className="rounded-xl">
+                <SelectContent className="rounded-xl border-border bg-card">
                   <SelectItem value="best-match">Best match</SelectItem>
                   <SelectItem value="price-low-high">Price: Low to High</SelectItem>
                   <SelectItem value="price-high-low">Price: High to Low</SelectItem>
@@ -115,10 +115,10 @@ export default function Home() {
             >
               <CardContent className="p-0 flex flex-col gap-3">
                 {/* Image Placeholder mimicking the wireframe cross */}
-                <div className="relative aspect-[4/5] w-full bg-[#dcdcdc] flex items-center justify-center overflow-hidden group-hover:opacity-90 transition-opacity">
+                <div className="relative aspect-[4/5] w-full bg-muted flex items-center justify-center overflow-hidden group-hover:opacity-90 transition-opacity border border-border/50">
                   <div className="absolute inset-0 pointer-events-none opacity-40">
                     <svg
-                      className="w-full h-full stroke-black/30 stroke-[1]"
+                      className="w-full h-full stroke-foreground/20 stroke-[1]"
                       viewBox="0 0 100 100"
                       preserveAspectRatio="none"
                     >
@@ -157,10 +157,10 @@ export default function Home() {
               {/* Top: Image & Info */}
               <div className="flex flex-col md:flex-row gap-6 md:gap-8">
                 {/* Image */}
-                <div className="w-full md:w-1/2 aspect-square bg-[#dcdcdc] relative flex items-center justify-center overflow-hidden border border-black/5">
+                <div className="w-full md:w-1/2 aspect-square bg-muted relative flex items-center justify-center overflow-hidden border border-border">
                   <div className="absolute inset-0 pointer-events-none opacity-40">
                     <svg
-                      className="w-full h-full stroke-black/30 stroke-[1]"
+                      className="w-full h-full stroke-foreground/20 stroke-[1]"
                       viewBox="0 0 100 100"
                       preserveAspectRatio="none"
                     >
@@ -187,17 +187,17 @@ export default function Home() {
                       Quantity
                     </label>
                     <div className="flex items-center gap-4">
-                      <div className="flex items-center bg-black/5 rounded-full px-1 py-1">
+                      <div className="flex items-center bg-muted rounded-full px-1 py-1 border border-border">
                         <button
                           onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/10 transition-colors"
+                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-background transition-colors"
                         >
                           <Minus className="h-3.5 w-3.5" />
                         </button>
                         <span className="w-10 text-center font-bold text-[15px]">{quantity}</span>
                         <button
                           onClick={() => setQuantity(quantity + 1)}
-                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/10 transition-colors"
+                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-background transition-colors"
                         >
                           <Plus className="h-3.5 w-3.5" />
                         </button>

@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import { useTheme } from "@/context/ThemeContext";
 import { apiFetch } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, User, LogOut, Store, Package, ShoppingCart, Leaf } from "lucide-react";
+import { Search, User, LogOut, Store, Package, ShoppingCart, Leaf, Moon, Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +19,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 export default function Navbar() {
   const { isAuthenticated, user } = useAuth();
   const { totalItems } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -209,6 +211,24 @@ export default function Navbar() {
                     )}
                     <DropdownMenuSeparator className="my-1" />
                   </div>
+
+                  <DropdownMenuItem
+                    onClick={toggleTheme}
+                    className="py-2.5 cursor-pointer rounded-md transition-colors"
+                  >
+                    {theme === "light" ? (
+                      <>
+                        <Moon className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <span className="font-medium">Dark Mode</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sun className="mr-2 h-4 w-4 text-amber-500" />
+                        <span className="font-medium">Light Mode</span>
+                      </>
+                    )}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="my-1" />
 
                   <DropdownMenuItem
                     onClick={handleLogout}

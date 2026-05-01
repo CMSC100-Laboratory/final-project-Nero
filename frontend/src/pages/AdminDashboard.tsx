@@ -152,13 +152,19 @@ export default function AdminDashboard() {
   const getStatusInfo = (status: number) => {
     switch (status) {
       case 1:
-        return { label: "CONFIRMED", color: "bg-indigo-50 text-indigo-700" };
+        return {
+          label: "CONFIRMED",
+          color: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+        };
       case 3:
-        return { label: "COMPLETED", color: "bg-emerald-50 text-emerald-700" };
+        return {
+          label: "COMPLETED",
+          color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+        };
       case 2:
-        return { label: "CANCELLED", color: "bg-red-50 text-red-700" };
+        return { label: "CANCELLED", color: "bg-red-500/10 text-red-600 dark:text-red-400" };
       default:
-        return { label: "PENDING", color: "bg-amber-50 text-amber-700" };
+        return { label: "PENDING", color: "bg-amber-500/10 text-amber-600 dark:text-amber-400" };
     }
   };
 
@@ -189,7 +195,7 @@ export default function AdminDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] flex">
+      <div className="min-h-screen bg-background flex">
         <AdminSidebar />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-10 h-10 animate-spin text-emerald-600" />
@@ -199,15 +205,15 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] pb-16 flex">
+    <div className="min-h-screen bg-background pb-16 flex">
       <AdminSidebar />
       <main className="container pt-8 md:pt-14 px-4 sm:px-8 max-w-[1200px] mx-auto animate-fade-in flex-1 sm:pl-[90px]">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-backwards">
           <div>
-            <h1 className="font-display text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="font-display text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
               Dashboard Overview
             </h1>
-            <p className="text-sm font-medium text-slate-500 mt-2">
+            <p className="text-sm font-medium text-muted-foreground mt-2">
               Welcome back! Here's what's happening with your store today.
             </p>
           </div>
@@ -215,67 +221,67 @@ export default function AdminDashboard() {
 
         {/* Top Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-slate-100 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150 fill-mode-backwards">
+          <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150 fill-mode-backwards">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
+                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                   Total Users
                 </p>
-                <h3 className="text-4xl font-bold text-slate-900 mt-2">{users.length}</h3>
+                <h3 className="text-4xl font-bold text-foreground mt-2">{users.length}</h3>
               </div>
-              <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-2xl group-hover:scale-110 transition-transform">
                 <Users className="w-6 h-6" />
               </div>
             </div>
-            <div className="flex items-center text-sm font-medium text-emerald-600 mt-2">
+            <div className="flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 mt-2">
               <TrendingUp className="w-4 h-4 mr-1" />
               <span>Registered accounts</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-slate-100 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300 fill-mode-backwards">
+          <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300 fill-mode-backwards">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
+                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                   Total Revenue
                 </p>
-                <h3 className="text-4xl font-bold text-slate-900 mt-2">
+                <h3 className="text-4xl font-bold text-foreground mt-2">
                   ₱{totalSales.toLocaleString()}
                 </h3>
               </div>
-              <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-2xl group-hover:scale-110 transition-transform">
                 <DollarSign className="w-6 h-6" />
               </div>
             </div>
-            <div className="flex items-center text-sm font-medium text-emerald-600 mt-2">
+            <div className="flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 mt-2">
               <TrendingUp className="w-4 h-4 mr-1" />
               <span>Confirmed earnings</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-slate-100 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500 fill-mode-backwards">
+          <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500 fill-mode-backwards">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
+                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                   Pending Orders
                 </p>
-                <h3 className="text-4xl font-bold text-slate-900 mt-2">{pendingOrdersCount}</h3>
+                <h3 className="text-4xl font-bold text-foreground mt-2">{pendingOrdersCount}</h3>
               </div>
-              <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-2xl group-hover:scale-110 transition-transform">
                 <Package className="w-6 h-6" />
               </div>
             </div>
-            <div className="flex items-center text-sm font-medium text-slate-500 mt-2">
+            <div className="flex items-center text-sm font-medium text-muted-foreground mt-2">
               <span>Needs your attention</span>
             </div>
           </div>
         </div>
 
         {/* Middle Section: Monthly Sales Analytics */}
-        <div className="bg-white rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-slate-100 mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-700 fill-mode-backwards">
+        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-700 fill-mode-backwards">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-bold text-slate-900">Revenue Analytics</h3>
-            <div className="px-4 py-1.5 bg-slate-100 text-slate-600 text-xs font-semibold rounded-full border border-slate-200">
+            <h3 className="text-lg font-bold text-foreground">Revenue Analytics</h3>
+            <div className="px-4 py-1.5 bg-muted text-muted-foreground text-xs font-semibold rounded-full border border-border">
               {new Date().getFullYear()}
             </div>
           </div>
@@ -288,27 +294,34 @@ export default function AdminDashboard() {
                     <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="hsl(var(--border))" />
                 <XAxis
                   dataKey="name"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 500 }}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 13, fontWeight: 500 }}
                   dy={10}
                 />
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 500 }}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 13, fontWeight: 500 }}
                   dx={-10}
                   tickFormatter={(val) => `₱${val >= 1000 ? (val / 1000).toFixed(1) + "k" : val}`}
                 />
                 <Tooltip
                   contentStyle={{
+                    backgroundColor: "hsl(var(--card))",
                     borderRadius: "16px",
-                    border: "none",
+                    border: "1px solid hsl(var(--border))",
                     boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
                     padding: "12px",
+                  }}
+                  itemStyle={{ color: "hsl(var(--foreground))" }}
+                  labelStyle={{
+                    color: "hsl(var(--muted-foreground))",
+                    fontWeight: "bold",
+                    marginBottom: "4px",
                   }}
                   formatter={(value) => [`₱${Number(value || 0).toLocaleString()}`, "Revenue"]}
                 />
@@ -329,34 +342,34 @@ export default function AdminDashboard() {
         {/* Bottom Section: Popular Products & Recent Orders */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-1000 fill-mode-backwards">
           {/* Popular Products */}
-          <div className="bg-white rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-slate-100 flex flex-col">
+          <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-bold text-slate-900">Popular Products</h3>
-              <button className="text-emerald-600 hover:text-emerald-700 text-sm font-semibold flex items-center transition-colors">
+              <h3 className="text-lg font-bold text-foreground">Popular Products</h3>
+              <button className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 text-sm font-semibold flex items-center transition-colors">
                 View All <ArrowUpRight className="w-4 h-4 ml-1" />
               </button>
             </div>
 
             <div className="flex-1 overflow-x-auto">
               {popularProducts.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-slate-400 py-10">
+                <div className="h-full flex flex-col items-center justify-center text-muted-foreground py-10">
                   <Package className="w-8 h-8 mb-2 opacity-20" />
                   <p className="text-sm font-medium">No sales data yet</p>
                 </div>
               ) : (
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-100">
-                      <th className="pb-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    <tr className="border-b border-border">
+                      <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                         Product
                       </th>
-                      <th className="pb-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                         Price
                       </th>
-                      <th className="pb-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-center">
+                      <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-center">
                         Sold
                       </th>
-                      <th className="pb-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-right">
+                      <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right">
                         Revenue
                       </th>
                     </tr>
@@ -365,22 +378,22 @@ export default function AdminDashboard() {
                     {popularProducts.map((product, idx) => (
                       <tr
                         key={idx}
-                        className="border-b border-slate-50 hover:bg-slate-50/80 transition-colors group"
+                        className="border-b border-border/50 hover:bg-muted/30 transition-colors group"
                       >
                         <td className="py-4 pr-4">
-                          <span className="text-sm font-semibold text-slate-800 line-clamp-1">
+                          <span className="text-sm font-semibold text-foreground line-clamp-1">
                             {product.name}
                           </span>
                         </td>
-                        <td className="py-4 text-sm text-slate-600 font-medium">
+                        <td className="py-4 text-sm text-muted-foreground font-medium">
                           ₱{product.price.toFixed(2)}
                         </td>
                         <td className="py-4 text-center">
-                          <span className="text-sm font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-lg">
+                          <span className="text-sm font-bold text-foreground bg-muted px-3 py-1 rounded-lg">
                             {product.sold}
                           </span>
                         </td>
-                        <td className="py-4 text-sm font-bold text-slate-900 text-right">
+                        <td className="py-4 text-sm font-bold text-foreground text-right">
                           ₱{product.revenue.toLocaleString()}
                         </td>
                       </tr>
@@ -392,37 +405,37 @@ export default function AdminDashboard() {
           </div>
 
           {/* Recent Orders */}
-          <div className="bg-white rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-slate-100 flex flex-col">
+          <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-bold text-slate-900">Recent Orders</h3>
-              <button className="text-emerald-600 hover:text-emerald-700 text-sm font-semibold flex items-center transition-colors">
+              <h3 className="text-lg font-bold text-foreground">Recent Orders</h3>
+              <button className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 text-sm font-semibold flex items-center transition-colors">
                 View All <ArrowUpRight className="w-4 h-4 ml-1" />
               </button>
             </div>
 
             <div className="flex-1 overflow-x-auto">
               {recentOrders.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-slate-400 py-10">
+                <div className="h-full flex flex-col items-center justify-center text-muted-foreground py-10">
                   <Package className="w-8 h-8 mb-2 opacity-20" />
                   <p className="text-sm font-medium">No orders yet</p>
                 </div>
               ) : (
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-100">
-                      <th className="pb-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    <tr className="border-b border-border">
+                      <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                         Order ID
                       </th>
-                      <th className="pb-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                         Customer
                       </th>
-                      <th className="pb-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                         Amount
                       </th>
-                      <th className="pb-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-right">
+                      <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right">
                         Status
                       </th>
-                      <th className="pb-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-right"></th>
+                      <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -431,21 +444,21 @@ export default function AdminDashboard() {
                       return (
                         <tr
                           key={order._id}
-                          className="border-b border-slate-50 hover:bg-slate-50/80 transition-colors group/row"
+                          className="border-b border-border/50 hover:bg-muted/30 transition-colors group/row"
                         >
-                          <td className="py-4 text-sm font-semibold text-slate-800">
+                          <td className="py-4 text-sm font-semibold text-foreground">
                             #{order.transactionId.slice(-8).toUpperCase()}
                           </td>
-                          <td className="py-4 text-sm text-slate-600 font-medium whitespace-nowrap pr-4">
+                          <td className="py-4 text-sm text-muted-foreground font-medium whitespace-nowrap pr-4">
                             {order.email}
                           </td>
-                          <td className="py-4 text-sm font-bold text-slate-900">
+                          <td className="py-4 text-sm font-bold text-foreground">
                             ₱
                             {((order.productId?.price || 0) * order.orderQuantity).toLocaleString()}
                           </td>
                           <td className="py-4 text-right">
                             <span
-                              className={`inline-flex items-center justify-center px-3 py-1.5 text-[11px] font-bold rounded-full uppercase tracking-widest ${statusInfo.color}`}
+                              className={`inline-flex items-center justify-center px-3 py-1.5 text-[11px] font-bold rounded-full uppercase tracking-widest ${statusInfo.color} dark:opacity-90`}
                             >
                               {statusInfo.label}
                             </span>
@@ -453,15 +466,15 @@ export default function AdminDashboard() {
                           <td className="py-4 text-right pl-4">
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <button className="p-2 opacity-0 group-hover/row:opacity-100 hover:bg-slate-200/50 rounded-full transition-all text-slate-400 hover:text-slate-600 focus:opacity-100 outline-none">
+                                <button className="p-2 opacity-0 group-hover/row:opacity-100 hover:bg-muted rounded-full transition-all text-muted-foreground hover:text-foreground focus:opacity-100 outline-none">
                                   <MoreHorizontal className="h-4 w-4" />
                                 </button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent
                                 align="end"
-                                className="w-48 rounded-xl shadow-lg border-slate-100"
+                                className="w-48 rounded-xl shadow-lg border-border"
                               >
-                                <DropdownMenuLabel className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
+                                <DropdownMenuLabel className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
                                   Quick Actions
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
@@ -488,7 +501,7 @@ export default function AdminDashboard() {
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem
                                       onClick={() => handleUpdateStatus(order._id, "cancel")}
-                                      className="text-xs font-medium cursor-pointer flex items-center gap-2 text-red-600 focus:text-red-700 focus:bg-red-50 py-2"
+                                      className="text-xs font-medium cursor-pointer flex items-center gap-2 text-red-600 focus:text-red-700 focus:bg-red-50 dark:focus:bg-red-950/30 py-2"
                                     >
                                       <XCircle className="h-4 w-4" />
                                       Cancel Order

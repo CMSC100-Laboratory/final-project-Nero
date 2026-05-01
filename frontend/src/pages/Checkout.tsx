@@ -81,8 +81,8 @@ export default function Checkout() {
 
   if (items.length === 0 && !successOpen) {
     return (
-      <div className="min-h-screen bg-[#ecedef] flex flex-col items-center justify-center gap-4 animate-fade-in">
-        <ShoppingBag className="w-16 h-16 text-primary/40" strokeWidth={1.5} />
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 animate-fade-in">
+        <ShoppingBag className="w-16 h-16 text-muted-foreground/40" strokeWidth={1.5} />
         <p className="font-display text-xl font-bold text-foreground">No items to checkout</p>
         <Button
           onClick={() => navigate("/")}
@@ -97,7 +97,7 @@ export default function Checkout() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#ecedef] pb-16">
+      <div className="min-h-screen bg-background pb-16">
         <main className="container pt-8 md:pt-14 px-4 max-w-[900px] mx-auto animate-fade-in">
           {/* Back nav */}
           <button
@@ -116,7 +116,7 @@ export default function Checkout() {
             {/* Left — Delivery & Payment */}
             <div className="flex-1 flex flex-col gap-5">
               {/* Delivery Address */}
-              <Card className="bg-white border-transparent shadow-sm rounded-2xl">
+              <Card className="bg-card border border-border shadow-sm rounded-2xl">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -135,10 +135,11 @@ export default function Checkout() {
                     }}
                     placeholder="Enter your full delivery address…"
                     rows={3}
-                    className={`w-full rounded-xl border px-4 py-3 text-sm bg-black/[0.03] resize-none focus:outline-none focus:ring-2 transition-all placeholder:text-muted-foreground/60 ${addressError
+                    className={`w-full rounded-xl border px-4 py-3 text-sm bg-muted/50 resize-none focus:outline-none focus:ring-2 transition-all placeholder:text-muted-foreground/60 ${
+                      addressError
                         ? "border-destructive focus:ring-destructive/30"
-                        : "border-transparent focus:ring-primary/30 focus:border-primary/30"
-                      }`}
+                        : "border-border focus:ring-primary/30 focus:border-primary/30"
+                    }`}
                   />
                   {addressError && (
                     <p className="text-xs text-destructive mt-1.5 font-medium">{addressError}</p>
@@ -147,7 +148,7 @@ export default function Checkout() {
               </Card>
 
               {/* Payment Method */}
-              <Card className="bg-white border-transparent shadow-sm rounded-2xl">
+              <Card className="bg-card border border-border shadow-sm rounded-2xl">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -174,7 +175,7 @@ export default function Checkout() {
               </Card>
 
               {/* Order Items */}
-              <Card className="bg-white border-transparent shadow-sm rounded-2xl">
+              <Card className="bg-card border border-border shadow-sm rounded-2xl">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -194,7 +195,7 @@ export default function Checkout() {
                   <div className="flex flex-col gap-3">
                     {items.map(({ product, quantity }) => (
                       <div key={product.id} className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-[#f0ede8] flex items-center justify-center shrink-0 overflow-hidden">
+                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center shrink-0 overflow-hidden border border-border/50">
                           {product.image ? (
                             <img
                               src={product.image}
@@ -203,7 +204,7 @@ export default function Checkout() {
                             />
                           ) : (
                             <svg
-                              className="w-full h-full stroke-black/20 stroke-[1]"
+                              className="w-full h-full stroke-foreground/20 stroke-[1]"
                               viewBox="0 0 100 100"
                               preserveAspectRatio="none"
                             >
@@ -230,7 +231,7 @@ export default function Checkout() {
 
             {/* Right — Payment Summary */}
             <div className="w-full lg:w-72 shrink-0 sticky top-24 flex flex-col gap-4">
-              <Card className="bg-white border-transparent shadow-sm rounded-2xl">
+              <Card className="bg-card border border-border shadow-sm rounded-2xl">
                 <CardContent className="p-6 flex flex-col gap-4">
                   <h2 className="font-display font-bold text-xl text-foreground">
                     Payment Summary
@@ -260,11 +261,15 @@ export default function Checkout() {
                   </div>
 
                   {/* Status badge */}
-                  <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200">
+                  <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
                     <Clock className="w-4 h-4 text-amber-500 shrink-0" />
                     <div>
-                      <p className="text-xs font-semibold text-amber-700">Pending Order</p>
-                      <p className="text-xs text-amber-600">Will be confirmed by the seller</p>
+                      <p className="text-xs font-semibold text-amber-600 dark:text-amber-400">
+                        Pending Order
+                      </p>
+                      <p className="text-xs text-amber-600/80 dark:text-amber-400/80">
+                        Will be confirmed by the seller
+                      </p>
                     </div>
                   </div>
 
@@ -301,10 +306,13 @@ export default function Checkout() {
 
       {/* Success Dialog */}
       <Dialog open={successOpen} onOpenChange={setSuccessOpen}>
-        <DialogContent className="sm:max-w-md rounded-2xl text-center items-center p-8">
+        <DialogContent className="sm:max-w-md rounded-2xl text-center items-center p-8 bg-card border-border">
           <DialogHeader className="items-center">
-            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-2">
-              <CheckCircle2 className="w-9 h-9 text-green-600" strokeWidth={2} />
+            <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mb-2">
+              <CheckCircle2
+                className="w-9 h-9 text-emerald-600 dark:text-emerald-400"
+                strokeWidth={2}
+              />
             </div>
             <DialogTitle className="font-display text-2xl font-extrabold">
               Order Placed!
