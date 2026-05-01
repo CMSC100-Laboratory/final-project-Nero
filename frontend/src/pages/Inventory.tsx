@@ -247,7 +247,22 @@ export default function Inventory() {
                     <TableCell className="font-mono text-xs text-muted-foreground">
                       #{product._id.slice(-10)}
                     </TableCell>
-                    <TableCell className="font-semibold text-sm">{product.productName}</TableCell>
+                    <TableCell className="font-semibold text-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center overflow-hidden shrink-0 border border-border/50">
+                          {product.imageUrl ? (
+                            <img
+                              src={product.imageUrl}
+                              alt={product.productName}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <Plus className="h-4 w-4 text-muted-foreground/40" />
+                          )}
+                        </div>
+                        {product.productName}
+                      </div>
+                    </TableCell>
                     <TableCell className="text-sm">
                       {PRODUCT_TYPE_LABELS[product.productType] ?? "Unknown"}
                     </TableCell>
