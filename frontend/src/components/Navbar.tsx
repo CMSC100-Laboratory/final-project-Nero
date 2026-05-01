@@ -36,6 +36,10 @@ export default function Navbar() {
     );
   };
 
+  if (user?.userType === "admin") {
+    return null;
+  }
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl shadow-sm">
       <div className="container flex h-16 items-center justify-between gap-4">
