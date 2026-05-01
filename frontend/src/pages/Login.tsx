@@ -89,10 +89,10 @@ export default function Login() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="w-full max-w-[950px] bg-card/95 backdrop-blur-2xl rounded-[2.5rem] shadow-2xl border border-border/40 overflow-hidden flex flex-col md:flex-row transition-all duration-500"
+          className="w-full max-w-[1000px] bg-card/95 backdrop-blur-2xl rounded-[2.5rem] shadow-2xl border border-border/40 overflow-hidden flex flex-col md:flex-row transition-all duration-500"
         >
           {/* Left – Visual Panel */}
-          <div className="relative md:w-[50%] min-h-[300px] md:min-h-[600px] overflow-hidden group">
+          <div className="relative md:w-[45%] min-h-[300px] md:min-h-[680px] overflow-hidden group">
             <motion.img
               initial={{ scale: 1.1 }}
               animate={{ scale: 1 }}
@@ -101,7 +101,6 @@ export default function Login() {
               alt="Nature and Agriculture"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
 
             <div className="absolute inset-0 flex flex-col justify-end p-10 md:p-14">
               <motion.div
