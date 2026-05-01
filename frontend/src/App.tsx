@@ -9,6 +9,7 @@ import PrivateRoute from "@/components/PrivateRoute";
 import Orders from "@/pages/Orders";
 import Inventory from "@/pages/Inventory";
 import AdminDashboard from "./pages/AdminDashboard";
+import SalesReport from "./pages/SalesReport";
 import UserManagement from "./pages/UserManagement";
 import NotFound from "@/pages/NotFound";
 
@@ -32,6 +33,7 @@ function App() {
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/userman" element={<UserManagement />} />
           <Route path="/inventory" element={<Inventory />} />
+          <Route path="/analytics" element={<SalesReport />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
         </Route>
