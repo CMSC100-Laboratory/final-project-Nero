@@ -17,7 +17,7 @@ export const users = async (req: Request, res: Response): Promise<void> => {
 // Fetch all orders from all users.
 export const orders = async (req: Request, res: Response): Promise<void> => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 });
+    const orders = await Order.find().populate("productId").sort({ createdAt: -1 });
     res.status(200).json(orders);
   } catch (_error) {
     res.status(500).json({ message: "Error fetching orders" });
@@ -63,10 +63,67 @@ export const confirm = async (req: Request<{ id: string }>, res: Response): Prom
   }
 };
 
+// Mark an order as completed.
+export const complete = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const order = await Order.findById(id);
+    if (!order) {
+      res.status(404).json({ message: "Order not found" });
+      return;
+    }
+
+    if (order.orderStatus !== 1) {
+      res.status(400).json({ message: "Only confirmed orders can be marked as completed" });
+      return;
+    }
+
+    order.orderStatus = 3;
+    await order.save();
+
+    res.status(200).json({ message: "Order marked as completed" });
+  } catch (_error) {
+    res.status(500).json({ message: "Error completing order" });
+  }
+};
+
+// Cancel an order from the admin side.
+export const adminCancelOrder = async (
+  req: Request<{ id: string }>,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const order = await Order.findById(id);
+    if (!order) {
+      res.status(404).json({ message: "Order not found" });
+      return;
+    }
+
+    // If it was already confirmed, return items to stock
+    if (order.orderStatus === 1) {
+      const product = await Product.findById(order.productId);
+      if (product) {
+        product.quantity += order.orderQuantity;
+        await product.save();
+      }
+    }
+
+    order.orderStatus = 2;
+    await order.save();
+
+    res.status(200).json({ message: "Order cancelled by admin" });
+  } catch (_error) {
+    res.status(500).json({ message: "Error cancelling order" });
+  }
+};
+
 // Fetch sales report data (only confirmed orders).
 export const sales = async (req: Request, res: Response): Promise<void> => {
   try {
-    const confirmedSales = await Order.find({ orderStatus: 1 }).sort({ createdAt: -1 });
+    const confirmedSales = await Order.find({ orderStatus: 1 })
+      .populate("productId")
+      .sort({ createdAt: -1 });
     res.status(200).json(confirmedSales);
   } catch (_error) {
     res.status(500).json({ message: "Error fetching sales" });
