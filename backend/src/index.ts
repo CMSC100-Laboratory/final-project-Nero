@@ -1,6 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
@@ -10,8 +12,6 @@ import adminDashboardRoutes from "./routes/adminDashboardRoutes";
 import productRoutes from "./routes/productRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import { seedAdmin } from "./utils/seedAdmin";
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;

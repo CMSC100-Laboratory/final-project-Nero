@@ -7,6 +7,7 @@ interface ProductBody {
   productType: 1 | 2;
   quantity: number;
   price: number;
+  imageUrl?: string;
 }
 
 export const getProducts = async (req: Request, res: Response): Promise<void> => {
@@ -24,6 +25,7 @@ export const createProduct = async (
 ): Promise<void> => {
   try {
     const { productName, description, productType, quantity, price } = req.body;
+    const imageUrl = req.file?.path;
 
     const newProduct = await Product.create({
       productName,
@@ -31,6 +33,7 @@ export const createProduct = async (
       productType,
       quantity,
       price,
+      imageUrl,
     });
 
     res.status(201).json(newProduct);
@@ -46,6 +49,7 @@ export const editProduct = async (
   try {
     const { id } = req.params;
     const { productName, description, productType, quantity, price } = req.body;
+    const imageUrl = req.file?.path;
 
     const updateData: Partial<ProductBody> = {};
     if (productName !== undefined) updateData.productName = productName;
@@ -53,6 +57,7 @@ export const editProduct = async (
     if (productType !== undefined) updateData.productType = productType;
     if (quantity !== undefined) updateData.quantity = quantity;
     if (price !== undefined) updateData.price = price;
+    if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
 
     const updatedProduct = await Product.findByIdAndUpdate(id, updateData, {
       new: true,

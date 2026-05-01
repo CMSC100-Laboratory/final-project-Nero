@@ -7,6 +7,7 @@ export interface IProduct extends Document {
   productType: 1 | 2;
   quantity: number;
   price: number;
+  imageUrl?: string;
 }
 
 const productSchema = new Schema<IProduct>(
@@ -16,6 +17,7 @@ const productSchema = new Schema<IProduct>(
     productType: { type: Number, required: true, enum: [1, 2] },
     quantity: { type: Number, required: true },
     price: { type: Number, required: true },
+    imageUrl: { type: String },
   },
   { timestamps: true }
 );
