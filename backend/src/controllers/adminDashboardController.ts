@@ -118,10 +118,10 @@ export const adminCancelOrder = async (
   }
 };
 
-// Fetch sales report data (only confirmed orders).
+// Fetch sales report data (confirmed + completed orders).
 export const sales = async (req: Request, res: Response): Promise<void> => {
   try {
-    const confirmedSales = await Order.find({ orderStatus: 1 })
+    const confirmedSales = await Order.find({ orderStatus: { $in: [1, 3] } })
       .populate("productId")
       .sort({ createdAt: -1 });
     res.status(200).json(confirmedSales);
