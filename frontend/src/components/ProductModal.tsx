@@ -31,6 +31,7 @@ export interface Product {
   productType: 1 | 2;
   quantity: number;
   price: number;
+  imageUrl?: string;
   createdAt?: string;
 }
 
@@ -40,6 +41,8 @@ interface ProductFormData {
   productType: 1 | 2;
   quantity: number;
   price: number;
+  imageFile: File | null;
+  imagePreview: string | null;
 }
 
 const EMPTY_FORM: ProductFormData = {
@@ -48,6 +51,8 @@ const EMPTY_FORM: ProductFormData = {
   productType: 1,
   quantity: 0,
   price: 0,
+  imageFile: null,
+  imagePreview: null,
 };
 
 /* ------------------------------------------------------------------ */
@@ -84,6 +89,8 @@ export function ProductFormModal({
           productType: editingProduct.productType,
           quantity: editingProduct.quantity,
           price: editingProduct.price,
+          imageFile: null,
+          imagePreview: editingProduct.imageUrl || null,
         });
       } else {
         setForm(EMPTY_FORM);
@@ -91,6 +98,17 @@ export function ProductFormModal({
       setFormError(null);
     }
   }, [open, editingProduct]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setForm((f) => ({
+        ...f,
+        imageFile: file,
+        imagePreview: URL.createObjectURL(file),
+      }));
+    }
+  };
 
   const handleSave = async () => {
     // Simple validation
@@ -115,24 +133,27 @@ export function ProductFormModal({
       setIsSaving(true);
       setFormError(null);
 
-      const body = JSON.stringify({
-        productName: form.productName.trim(),
-        description: form.description.trim(),
-        productType: form.productType,
-        quantity: form.quantity,
-        price: form.price,
-      });
+      const formData = new FormData();
+      formData.append("productName", form.productName.trim());
+      formData.append("description", form.description.trim());
+      formData.append("productType", String(form.productType));
+      formData.append("quantity", String(form.quantity));
+      formData.append("price", String(form.price));
+
+      if (form.imageFile) {
+        formData.append("image", form.imageFile);
+      }
 
       let res: Response;
       if (editingProduct) {
         res = await apiFetch(`/api/products/${editingProduct._id}`, {
           method: "PUT",
-          body,
+          body: formData, // apiFetch will handle removing JSON content-type when body is FormData
         });
       } else {
         res = await apiFetch("/api/products", {
           method: "POST",
-          body,
+          body: formData,
         });
       }
 
@@ -290,12 +311,39 @@ export function ProductFormModal({
               <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 Image
               </Label>
-              <div className="aspect-square w-full max-w-[140px] rounded-lg border-2 border-dashed border-border bg-muted/20 flex flex-col items-center justify-center gap-1.5 cursor-not-allowed opacity-60 select-none">
-                <ImagePlus className="h-6 w-6 text-muted-foreground/60" />
-                <span className="text-[10px] text-muted-foreground/60 font-medium text-center leading-tight">
-                  Upload image
-                </span>
-              </div>
+              <input
+                type="file"
+                id="product-image-upload"
+                className="hidden"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+              <label
+                htmlFor="product-image-upload"
+                className={`aspect-square w-full max-w-[140px] rounded-lg border-2 border-dashed border-border bg-muted/20 flex flex-col items-center justify-center gap-1.5 cursor-pointer hover:bg-muted/40 hover:border-emerald-500/50 transition-all overflow-hidden relative group/img ${
+                  form.imagePreview ? "border-solid border-emerald-500/30" : ""
+                }`}
+              >
+                {form.imagePreview ? (
+                  <>
+                    <img
+                      src={form.imagePreview}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity">
+                      <ImagePlus className="h-6 w-6 text-white" />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <ImagePlus className="h-6 w-6 text-muted-foreground/60" />
+                    <span className="text-[10px] text-muted-foreground/60 font-medium text-center leading-tight">
+                      Upload image
+                    </span>
+                  </>
+                )}
+              </label>
             </div>
 
             {/* Description */}
