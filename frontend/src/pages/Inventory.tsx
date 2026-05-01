@@ -112,7 +112,7 @@ export default function Inventory() {
   /* ------------------------------------------------------------------ */
 
   return (
-    <div className="min-h-screen bg-[#ecedef] pb-16 flex">
+    <div className="min-h-screen bg-background pb-16 flex">
       <AdminSidebar />
 
       <main className="container pt-8 md:pt-14 px-4 max-w-[1200px] mx-auto animate-fade-in flex-1 sm:pl-[90px]">
@@ -150,10 +150,10 @@ export default function Inventory() {
                 Filter by
               </span>
               <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger className="w-full sm:w-[130px] h-9 bg-black/5 border-transparent focus:ring-primary/40 rounded-full text-xs font-medium">
+                <SelectTrigger className="w-full sm:w-[130px] h-9 bg-muted/50 border-border focus:ring-primary/40 rounded-full text-xs font-medium">
                   <SelectValue placeholder="None" />
                 </SelectTrigger>
-                <SelectContent className="rounded-xl">
+                <SelectContent className="rounded-xl border-border bg-card">
                   <SelectItem value="none">None</SelectItem>
                   <SelectItem value="crops">Crops</SelectItem>
                   <SelectItem value="poultry">Poultry</SelectItem>
@@ -167,10 +167,10 @@ export default function Inventory() {
                 Sort by
               </span>
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-full sm:w-[140px] h-9 bg-black/5 border-transparent focus:ring-primary/40 rounded-full text-xs font-medium">
+                <SelectTrigger className="w-full sm:w-[140px] h-9 bg-muted/50 border-border focus:ring-primary/40 rounded-full text-xs font-medium">
                   <SelectValue placeholder="Newest" />
                 </SelectTrigger>
-                <SelectContent className="rounded-xl">
+                <SelectContent className="rounded-xl border-border bg-card">
                   <SelectItem value="newest">Newest</SelectItem>
                   <SelectItem value="price-low">Price ↑</SelectItem>
                   <SelectItem value="price-high">Price ↓</SelectItem>
@@ -182,7 +182,7 @@ export default function Inventory() {
         </div>
 
         {/* Table Card */}
-        <div className="bg-white rounded-xl border border-border/50 shadow-sm overflow-hidden">
+        <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
           {isLoading ? (
             <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground">
               <Loader2 className="h-5 w-5 animate-spin" />

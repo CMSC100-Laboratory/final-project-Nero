@@ -57,35 +57,55 @@ export default function Orders() {
         {/* Filters section */}
         <ButtonGroup className="w-full">
           <Button
-            className="w-full rounded-full font-semibold h-12 text-[15px] bg-[#d9d9d9] hover:bg-[#c9c9c9] text-foreground border-transparent shadow-none"
+            className={`w-full rounded-full font-semibold h-12 text-[15px] border-transparent shadow-none ${
+              status === "All"
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
             size="lg"
             onClick={() => setStatus("All")}
           >
             All
           </Button>
           <Button
-            className="w-full rounded-full font-semibold h-12 text-[15px] bg-[#d9d9d9] hover:bg-[#c9c9c9] text-foreground border-transparent shadow-none"
+            className={`w-full rounded-full font-semibold h-12 text-[15px] border-transparent shadow-none ${
+              status === "Pending"
+                ? "bg-amber-500 text-white"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
             size="lg"
             onClick={() => setStatus("Pending")}
           >
             Pending
           </Button>
           <Button
-            className="w-full rounded-full font-semibold h-12 text-[15px] bg-[#d9d9d9] hover:bg-[#c9c9c9] text-foreground border-transparent shadow-none"
+            className={`w-full rounded-full font-semibold h-12 text-[15px] border-transparent shadow-none ${
+              status === "Confirmed"
+                ? "bg-blue-500 text-white"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
             size="lg"
             onClick={() => setStatus("Confirmed")}
           >
             Confirmed
           </Button>
           <Button
-            className="w-full rounded-full font-semibold h-12 text-[15px] bg-[#d9d9d9] hover:bg-[#c9c9c9] text-foreground border-transparent shadow-none"
+            className={`w-full rounded-full font-semibold h-12 text-[15px] border-transparent shadow-none ${
+              status === "Completed"
+                ? "bg-emerald-500 text-white"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
             size="lg"
             onClick={() => setStatus("Completed")}
           >
             Completed
           </Button>
           <Button
-            className="w-full rounded-full font-semibold h-12 text-[15px] bg-[#d9d9d9] hover:bg-[#c9c9c9] text-foreground border-transparent shadow-none"
+            className={`w-full rounded-full font-semibold h-12 text-[15px] border-transparent shadow-none ${
+              status === "Cancelled"
+                ? "bg-red-500 text-white"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
             size="lg"
             onClick={() => setStatus("Cancelled")}
           >
@@ -99,11 +119,11 @@ export default function Orders() {
             (order) => (
               <Card
                 key={order.id}
-                className="p-3 sm:p-4 w-full overflow-hidden border-[#566342]-1 shadow-none rounded-20 group cursor-pointer"
+                className="p-3 sm:p-4 w-full overflow-hidden border-border bg-card shadow-sm rounded-2xl group cursor-pointer hover:shadow-md transition-all"
               >
                 <CardContent className="p-0 flex flex-row gap-3 sm:gap-5">
                   {/* Image */}
-                  <div className="w-[100px] sm:w-[150px] md:w-[200px] aspect-square bg-[#dcdcdc] shrink-0 relative flex items-center justify-center overflow-hidden border border-black/5 rounded-xl"></div>
+                  <div className="w-[100px] sm:w-[150px] md:w-[200px] aspect-square bg-muted shrink-0 relative flex items-center justify-center overflow-hidden border border-border rounded-xl"></div>
 
                   {/* Left content info */}
                   <div className="flex flex-col gap-1 sm:gap-2 flex-1 min-w-0">
@@ -121,7 +141,7 @@ export default function Orders() {
                     </p>
                     <div className="hidden sm:block flex-1"></div>
                     <Button
-                      className="hidden sm:flex w-[200px] rounded-full font-semibold h-11 text-[15px] bg-[#d9d9d9] hover:bg-[#c9c9c9] text-foreground border-transparent shadow-none"
+                      className="hidden sm:flex w-[200px] rounded-full font-semibold h-11 text-[15px] bg-emerald-600 hover:bg-emerald-700 text-white border-transparent shadow-none active:scale-95 transition-all"
                       size="lg"
                     >
                       Buy again
@@ -132,17 +152,17 @@ export default function Orders() {
                   <div className="flex flex-col gap-2 items-end justify-between shrink-0">
                     {/* Top info */}
                     <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1 sm:gap-3">
-                      <p className="text-[10px] sm:text-[16px] text-black/40 truncate">
+                      <p className="text-[10px] sm:text-[16px] text-muted-foreground truncate">
                         #{order.orderId}
                       </p>
 
                       {/* Status */}
                       <div
-                        className={`px-2 py-1 md:p-3 md:w-[140px] lg:w-[190px] align-middle text-center rounded-full font-semibold text-[10px] sm:text-[15px] text-foreground 
-                      ${order.status === "Completed" && "bg-[#A7FF84]"}
-                      ${order.status === "Pending" && "bg-[#FFD884]"}
-                      ${order.status === "Confirmed" && "bg-[#84D8FF]"}
-                      ${order.status === "Cancelled" && "bg-[#FF8484]"}`}
+                        className={`px-2 py-1 md:p-3 md:w-[140px] lg:w-[190px] align-middle text-center rounded-full font-bold text-[10px] sm:text-[15px]
+                      ${order.status === "Completed" && "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"}
+                      ${order.status === "Pending" && "bg-amber-500/10 text-amber-600 dark:text-amber-400"}
+                      ${order.status === "Confirmed" && "bg-blue-500/10 text-blue-600 dark:text-blue-400"}
+                      ${order.status === "Cancelled" && "bg-red-500/10 text-red-600 dark:text-red-400"}`}
                       >
                         {order.status}
                       </div>

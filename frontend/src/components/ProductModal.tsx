@@ -173,7 +173,7 @@ export function ProductFormModal({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onOpenChange(false)}>
-      <DialogContent className="sm:max-w-[540px] p-0 gap-0 rounded-2xl overflow-hidden">
+      <DialogContent className="sm:max-w-[540px] p-0 gap-0 rounded-2xl overflow-hidden bg-card border-border">
         {/* Header bar */}
         <div className="flex items-center justify-between px-6 pt-6 pb-2">
           <DialogHeader className="p-0 space-y-0">
@@ -218,7 +218,7 @@ export function ProductFormModal({
               placeholder="Product name…"
               value={form.productName}
               onChange={(e) => setForm((f) => ({ ...f, productName: e.target.value }))}
-              className="h-11 rounded-lg border-input bg-muted/30 focus-visible:bg-background text-base"
+              className="h-11 rounded-lg border-border bg-muted/30 focus-visible:bg-card text-base transition-all"
             />
           </div>
 
@@ -238,11 +238,11 @@ export function ProductFormModal({
               >
                 <SelectTrigger
                   id="productType"
-                  className="h-11 rounded-lg border-input bg-muted/30 focus:bg-background text-sm"
+                  className="h-11 rounded-lg border-border bg-muted/30 focus:bg-card text-sm transition-all"
                 >
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="rounded-xl">
+                <SelectContent className="rounded-xl border-border bg-card">
                   <SelectItem value="1">Crops</SelectItem>
                   <SelectItem value="2">Poultry</SelectItem>
                 </SelectContent>
@@ -274,7 +274,7 @@ export function ProductFormModal({
                       price: parseFloat(e.target.value) || 0,
                     }))
                   }
-                  className="h-11 rounded-lg border-input bg-muted/30 focus-visible:bg-background pl-7 text-sm"
+                  className="h-11 rounded-lg border-border bg-muted/30 focus-visible:bg-card pl-7 text-sm transition-all"
                 />
               </div>
             </div>
@@ -299,7 +299,7 @@ export function ProductFormModal({
                     quantity: parseInt(e.target.value, 10) || 0,
                   }))
                 }
-                className="h-11 rounded-lg border-input bg-muted/30 focus-visible:bg-background text-sm"
+                className="h-11 rounded-lg border-border bg-muted/30 focus-visible:bg-card text-sm transition-all"
               />
             </div>
           </div>
@@ -360,7 +360,7 @@ export function ProductFormModal({
                 rows={5}
                 value={form.description}
                 onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-                className="rounded-lg border-input bg-muted/30 focus-visible:bg-background text-sm resize-none"
+                className="rounded-lg border-border bg-muted/30 focus-visible:bg-card text-sm resize-none transition-all"
               />
             </div>
           </div>
@@ -408,7 +408,7 @@ export function DeleteProductDialog({
 
   return (
     <Dialog open={!!product} onOpenChange={(open) => !open && onOpenChange(false)}>
-      <DialogContent className="sm:max-w-[400px] p-6 gap-5 rounded-2xl">
+      <DialogContent className="sm:max-w-[400px] p-6 gap-5 rounded-2xl bg-card border-border">
         <DialogHeader>
           <DialogTitle className="text-lg font-bold">Delete product</DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground">
