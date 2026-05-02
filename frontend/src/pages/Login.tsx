@@ -190,12 +190,9 @@ export default function Login() {
                   >
                     Password
                   </Label>
-                  <Link
-                    to="#"
-                    className="text-[10px] font-bold text-primary hover:underline uppercase tracking-wider"
-                  >
+                  <span className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-wider cursor-not-allowed">
                     Forgot?
-                  </Link>
+                  </span>
                 </div>
                 <div className="relative group">
                   <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted-foreground transition-colors group-focus-within:text-primary">
