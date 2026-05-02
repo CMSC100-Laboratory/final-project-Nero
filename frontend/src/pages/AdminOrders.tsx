@@ -18,6 +18,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Product {
   _id: string;
@@ -63,8 +70,13 @@ const formatDate = (dateString: string) => {
 };
 
 export default function AdminOrders() {
+  // backend state
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // filter sort state
+  const [filterType, setFilterType] = useState("none");
+  const [sortBy, setSortBy] = useState("newest");
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -103,6 +115,30 @@ export default function AdminOrders() {
     }
   };
 
+  const filteredOrders = orders
+    .filter((o) => {
+      if (filterType === "none") return true;
+      if (filterType === "pending") return o.orderStatus === 0;
+      if (filterType === "confirmed") return o.orderStatus === 1;
+      if (filterType === "cancelled") return o.orderStatus === 2;
+      if (filterType === "completed") return o.orderStatus === 3;
+      return true;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "newest":
+          return new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime();
+        case "oldest":
+          return new Date(a.createdAt ?? 0).getTime() - new Date(b.createdAt ?? 0).getTime();
+        case "price-low":
+          return a.productId.price * a.orderQuantity - b.productId.price * b.orderQuantity;
+        case "price-high":
+          return b.productId.price * a.orderQuantity - a.productId.price * b.orderQuantity;
+        default:
+          return 0;
+      }
+    });
+
   return (
     <div className="min-h-screen bg-background flex">
       <AdminSidebar />
@@ -119,12 +155,63 @@ export default function AdminOrders() {
           </div>
         </div>
 
+        {/* Subheader: count + filters */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 mt-4">
+          <p className="text-sm text-muted-foreground">
+            Showing <span className="font-semibold text-foreground">{filteredOrders.length}</span>{" "}
+            of <span className="font-semibold text-foreground">{orders.length}</span> products
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
+            {/* Filter */}
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <span className="text-xs font-semibold tracking-widest text-muted-foreground uppercase whitespace-nowrap">
+                Filter by Status
+              </span>
+              <Select value={filterType} onValueChange={setFilterType}>
+                <SelectTrigger className="w-full sm:w-[130px] h-9 bg-muted/50 border-border focus:ring-primary/40 rounded-full text-xs font-medium">
+                  <SelectValue placeholder="None" />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl border-border bg-card">
+                  <SelectItem value="none">None</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="confirmed">Confirmed</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Sort */}
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <span className="text-xs font-semibold tracking-widest text-muted-foreground uppercase whitespace-nowrap">
+                Sort by
+              </span>
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-full sm:w-[140px] h-9 bg-muted/50 border-border focus:ring-primary/40 rounded-full text-xs font-medium">
+                  <SelectValue placeholder="Newest" />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl border-border bg-card">
+                  <SelectItem value="newest">Newest</SelectItem>
+                  <SelectItem value="oldest">Oldest</SelectItem>
+                  <SelectItem value="price-low">Price ↑</SelectItem>
+                  <SelectItem value="price-high">Price ↓</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+
         {/* Table */}
-        <div className="mt-10 bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+        <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
           {isLoading ? (
             <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground">
               <Loader2 className="h-5 w-5 animate-spin" />
               <span className="font-medium">Loading orders…</span>
+            </div>
+          ) : filteredOrders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 gap-3 text-muted-foreground">
+              <p className="font-medium">No orders found.</p>
             </div>
           ) : (
             <Table>
@@ -160,105 +247,95 @@ export default function AdminOrders() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {orders.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={8} className="h-24 text-center">
-                      No orders found.
+                {filteredOrders.map((order) => (
+                  <TableRow key={order._id} className="group">
+                    <TableCell className="font-mono text-xs text-muted-foreground">
+                      {order.transactionId.slice(-8).toUpperCase() + "..."}
                     </TableCell>
-                  </TableRow>
-                ) : (
-                  orders.map((order) => (
-                    <TableRow key={order._id} className="group">
-                      <TableCell className="font-mono text-xs text-muted-foreground">
-                        {order.transactionId.slice(-8).toUpperCase() + "..."}
-                      </TableCell>
-                      <TableCell className="font-semibold text-sm">{order.email}</TableCell>
-                      <TableCell className="text-sm font-medium text-muted-foreground whitespace-nowrap">
-                        {formatDate(order.createdAt)}
-                      </TableCell>
-                      {/* <TableCell className="font-mono text-xs text-muted-foreground">
+                    <TableCell className="font-semibold text-sm">{order.email}</TableCell>
+                    <TableCell className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+                      {formatDate(order.createdAt)}
+                    </TableCell>
+                    {/* <TableCell className="font-mono text-xs text-muted-foreground">
                         {order.productId?._id.slice(-8).toUpperCase() + "..." || "N/A"}
                       </TableCell> */}
-                      <TableCell className="text-sm font-medium">
-                        {order.productId?.productName || "Deleted Product"}
-                      </TableCell>
-                      <TableCell className="text-sm">{order.orderQuantity}</TableCell>
-                      <TableCell className="text-sm font-medium">
-                        ₱{((order.productId?.price || 0) * order.orderQuantity).toFixed(2)}
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase border ${getStatusInfo(order.orderStatus).color}`}
+                    <TableCell className="text-sm font-medium">
+                      {order.productId?.productName || "Deleted Product"}
+                    </TableCell>
+                    <TableCell className="text-sm">{order.orderQuantity}</TableCell>
+                    <TableCell className="text-sm font-medium">
+                      ₱{((order.productId?.price || 0) * order.orderQuantity).toFixed(2)}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase border ${getStatusInfo(order.orderStatus).color}`}
+                      >
+                        {getStatusInfo(order.orderStatus).label}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-foreground outline-none">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="end"
+                          className="w-48 rounded-xl shadow-lg border-border"
                         >
-                          {getStatusInfo(order.orderStatus).label}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <button className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-foreground outline-none">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent
-                            align="end"
-                            className="w-48 rounded-xl shadow-lg border-border"
+                          <DropdownMenuLabel className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
+                            Actions
+                          </DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {order.orderStatus === 0 && (
+                            <DropdownMenuItem
+                              onClick={() => handleUpdateStatus(order._id, "confirm")}
+                              className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
+                            >
+                              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                              Confirm Order
+                            </DropdownMenuItem>
+                          )}
+                          {order.orderStatus === 1 && (
+                            <DropdownMenuItem
+                              onClick={() => handleUpdateStatus(order._id, "complete")}
+                              className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
+                            >
+                              <Truck className="h-4 w-4 text-blue-500" />
+                              Mark Completed
+                            </DropdownMenuItem>
+                          )}
+                          {order.orderStatus < 2 && (
+                            <DropdownMenuItem
+                              onClick={() => handleUpdateStatus(order._id, "cancel")}
+                              className="text-xs font-medium cursor-pointer flex items-center gap-2 text-red-600 focus:text-red-700 py-2"
+                            >
+                              <XCircle className="h-4 w-4" />
+                              Cancel Order
+                            </DropdownMenuItem>
+                          )}
+                          <DropdownMenuItem
+                            onClick={() => void navigator.clipboard.writeText(order.transactionId)}
+                            className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
                           >
-                            <DropdownMenuLabel className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
-                              Actions
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            {order.orderStatus === 0 && (
-                              <DropdownMenuItem
-                                onClick={() => handleUpdateStatus(order._id, "confirm")}
-                                className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
-                              >
-                                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                                Confirm Order
-                              </DropdownMenuItem>
-                            )}
-                            {order.orderStatus === 1 && (
-                              <DropdownMenuItem
-                                onClick={() => handleUpdateStatus(order._id, "complete")}
-                                className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
-                              >
-                                <Truck className="h-4 w-4 text-blue-500" />
-                                Mark Completed
-                              </DropdownMenuItem>
-                            )}
-                            {order.orderStatus < 2 && (
-                              <DropdownMenuItem
-                                onClick={() => handleUpdateStatus(order._id, "cancel")}
-                                className="text-xs font-medium cursor-pointer flex items-center gap-2 text-red-600 focus:text-red-700 py-2"
-                              >
-                                <XCircle className="h-4 w-4" />
-                                Cancel Order
-                              </DropdownMenuItem>
-                            )}
-                            <DropdownMenuItem
-                              onClick={() =>
-                                void navigator.clipboard.writeText(order.transactionId)
-                              }
-                              className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
-                            >
-                              <Hash className="h-4 w-4 text-blue-500" />
-                              Copy Order ID
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                void navigator.clipboard.writeText(order.productId?._id || "")
-                              }
-                              className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
-                            >
-                              <Tag className="h-4 w-4 text-blue-500" />
-                              Copy Product ID
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
+                            <Hash className="h-4 w-4 text-blue-500" />
+                            Copy Order ID
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              void navigator.clipboard.writeText(order.productId?._id || "")
+                            }
+                            className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
+                          >
+                            <Tag className="h-4 w-4 text-blue-500" />
+                            Copy Product ID
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           )}
