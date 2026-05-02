@@ -36,7 +36,7 @@ function App() {
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/userman" element={<UserManagement />} />
           <Route path="/inventory" element={<Inventory />} />
-          <Route path="/orderslist" element={<AdminOrders />} />
+          <Route path="/ordersman" element={<AdminOrders />} />
           <Route path="/analytics" element={<SalesReport />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
