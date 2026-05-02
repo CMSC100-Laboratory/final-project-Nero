@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import SalesReport from "./pages/SalesReport";
 import UserManagement from "./pages/UserManagement";
 import NotFound from "@/pages/NotFound";
+import Sagbot from "@/components/Sagbot";
 
 function App() {
   const location = useLocation();
@@ -20,6 +21,7 @@ function App() {
   return (
     <>
       {!isAuthPage && <Navbar />}
+      {!isAuthPage && <Sagbot />}
       <Routes>
         <Route element={<PrivateRoute allowedRoles={["user"]} />}>
           <Route path="/" element={<Home />} />
