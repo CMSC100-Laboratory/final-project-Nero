@@ -110,7 +110,7 @@ export default function AdminSidebar() {
         </NavLink>
 
         <NavLink
-          to="/orders"
+          to="/orderslist"
           className={({ isActive }) => `${baseLinkStyle} ${isActive ? activeStyle : inactiveStyle}`}
         >
           <TruckIcon
