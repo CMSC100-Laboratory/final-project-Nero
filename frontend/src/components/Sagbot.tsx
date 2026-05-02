@@ -252,7 +252,7 @@ const RULES: Rule[] = [
       "what can i buy",
     ],
     response:
-      "UmaMASA offers a wide variety of fresh agricultural products including:\n\n🥦 **Vegetables**\n🍎 **Fruits**\n🧀 **Dairy**\n🥩 **Meat**\n\nVisit the **Market** page to browse all available products. You can filter by category and sort by price or newest arrivals!",
+      "UmaMASA offers a wide variety of fresh agricultural products including:\n\n🥦 **Vegetables**\n🍎 **Fruits**\n\nVisit the **Market** page to browse all available products. You can filter by category and sort by price or newest arrivals!",
     priority: 6,
   },
   {
@@ -287,7 +287,7 @@ const RULES: Rule[] = [
 
 // ─── Matching Engine ─────────────────────────────────────────────────
 const FALLBACK_RESPONSE =
-  "I appreciate your question, but I'm sorry — that's outside of my scope as Sagbot. 😅 I can help you with browsing products, placing orders, payment, delivery, and account-related questions on UmaMASA.\n\nIf you need further assistance, please contact our support:\n📞 (02) 8928-8741\n📧 info@da.gov.ph";
+  "I appreciate your question, but I'm sorry — that's outside of my scope as Sagbot. 😅 I can help you with browsing products, placing orders, payment, delivery, and account-related questions on UmaMASA.\n\nIf you need further assistance, please contact our support:\n arvinGOAT@indiantech.com";
 
 function getResponse(input: string): string {
   const normalized = input.toLowerCase().trim();
