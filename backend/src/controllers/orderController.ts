@@ -15,7 +15,9 @@ export const getOrders = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const orders = await Order.find({ email: user.email });
+    const orders = await Order.find({ email: user.email })
+      .populate("productId")
+      .sort({ createdAt: -1 });
     res.status(200).json(orders);
   } catch (_error) {
     res.status(500).json({ message: "Error fetching orders" });
