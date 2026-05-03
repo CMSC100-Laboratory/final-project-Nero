@@ -27,7 +27,7 @@ const limiter = rateLimit({
 });
 app.use("/api/auth", limiter);
 
-// CORS Configuration
+// CORS Configuration — only explicitly listed origins are allowed
 const allowedOrigins = [
   "http://localhost:5173",
   "https://umamasa.app",
@@ -35,13 +35,18 @@ const allowedOrigins = [
   "https://farm-to-table-ruby.vercel.app",
 ];
 
+// Also allow CLIENT_URL from env (for flexible deployments)
+if (process.env.CLIENT_URL && !allowedOrigins.includes(process.env.CLIENT_URL)) {
+  allowedOrigins.push(process.env.CLIENT_URL);
+}
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
+      // Allow requests with no origin (like server-to-server or health checks)
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith(".vercel.app")) {
+      if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -53,6 +58,24 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// CSRF Protection — verify Origin header on state-changing requests
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (["GET", "HEAD", "OPTIONS"].includes(req.method)) {
+    return next();
+  }
+
+  const origin = req.headers.origin as string | undefined;
+
+  // Requests from browsers will always include an Origin header on cross-origin
+  // POST/PUT/DELETE. If present, it must match our allowed list.
+  if (origin && !allowedOrigins.includes(origin)) {
+    res.status(403).json({ message: "Forbidden: invalid origin" });
+    return;
+  }
+
+  next();
+});
 
 // Health check route
 app.get("/api/health", (_req: Request, res: Response) => {
