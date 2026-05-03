@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Order from "../models/orderModel";
+import Product from "../models/productModel";
 
 interface CreateOrderBody {
   transactionId: string;
@@ -36,6 +37,20 @@ export const createOrder = async (
     }
 
     const { transactionId, productId, orderQuantity } = req.body;
+
+    // Validate that the product exists and has enough stock
+    const product = await Product.findById(productId);
+    if (!product) {
+      res.status(404).json({ message: "Product not found" });
+      return;
+    }
+
+    if (product.quantity < orderQuantity) {
+      res.status(400).json({
+        message: `Insufficient stock. Only ${product.quantity} units available.`,
+      });
+      return;
+    }
 
     const newOrder = await Order.create({
       transactionId,

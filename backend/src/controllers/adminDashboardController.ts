@@ -25,41 +25,46 @@ export const orders = async (req: Request, res: Response): Promise<void> => {
 };
 
 // Confirm an order and decrease the product inventory quantity.
+// Uses a MongoDB transaction to prevent race conditions (overselling).
 export const confirm = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
+  const session = await mongoose.startSession();
   try {
     const { id } = req.params;
 
-    const order = await Order.findById(id);
-    if (!order) {
-      res.status(404).json({ message: "Order not found" });
-      return;
-    }
+    await session.withTransaction(async () => {
+      const order = await Order.findById(id).session(session);
+      if (!order) {
+        res.status(404).json({ message: "Order not found" });
+        return;
+      }
 
-    if (order.orderStatus !== 0) {
-      res.status(400).json({ message: "Order already processed" });
-      return;
-    }
+      if (order.orderStatus !== 0) {
+        res.status(400).json({ message: "Order already processed" });
+        return;
+      }
 
-    const product = await Product.findById(order.productId);
-    if (!product) {
-      res.status(404).json({ message: "Product not found" });
-      return;
-    }
+      // Atomically decrement stock only if sufficient quantity exists
+      const product = await Product.findOneAndUpdate(
+        { _id: order.productId, quantity: { $gte: order.orderQuantity } },
+        { $inc: { quantity: -order.orderQuantity } },
+        { new: true, session }
+      );
 
-    if (product.quantity < order.orderQuantity) {
-      res.status(400).json({ message: "Insufficient stock" });
-      return;
-    }
+      if (!product) {
+        res.status(400).json({ message: "Insufficient stock or product not found" });
+        return;
+      }
 
-    product.quantity -= order.orderQuantity;
-    await product.save();
+      order.orderStatus = 1;
+      await order.save({ session });
 
-    order.orderStatus = 1;
-    await order.save();
-
-    res.status(200).json({ message: "Order confirmed" });
+      res.status(200).json({ message: "Order confirmed" });
+    });
   } catch (_error) {
+    console.error("Error confirming order:", _error);
     res.status(500).json({ message: "Error confirming order" });
+  } finally {
+    await session.endSession();
   }
 };
 
@@ -88,33 +93,41 @@ export const complete = async (req: Request<{ id: string }>, res: Response): Pro
 };
 
 // Cancel an order from the admin side.
+// Uses a MongoDB transaction to safely restore stock for confirmed orders.
 export const adminCancelOrder = async (
   req: Request<{ id: string }>,
   res: Response
 ): Promise<void> => {
+  const session = await mongoose.startSession();
   try {
     const { id } = req.params;
-    const order = await Order.findById(id);
-    if (!order) {
-      res.status(404).json({ message: "Order not found" });
-      return;
-    }
 
-    // If it was already confirmed, return items to stock
-    if (order.orderStatus === 1) {
-      const product = await Product.findById(order.productId);
-      if (product) {
-        product.quantity += order.orderQuantity;
-        await product.save();
+    await session.withTransaction(async () => {
+      const order = await Order.findById(id).session(session);
+      if (!order) {
+        res.status(404).json({ message: "Order not found" });
+        return;
       }
-    }
 
-    order.orderStatus = 2;
-    await order.save();
+      // If it was already confirmed, return items to stock atomically
+      if (order.orderStatus === 1) {
+        await Product.findByIdAndUpdate(
+          order.productId,
+          { $inc: { quantity: order.orderQuantity } },
+          { session }
+        );
+      }
 
-    res.status(200).json({ message: "Order cancelled by admin" });
+      order.orderStatus = 2;
+      await order.save({ session });
+
+      res.status(200).json({ message: "Order cancelled by admin" });
+    });
   } catch (_error) {
+    console.error("Error cancelling order:", _error);
     res.status(500).json({ message: "Error cancelling order" });
+  } finally {
+    await session.endSession();
   }
 };
 
