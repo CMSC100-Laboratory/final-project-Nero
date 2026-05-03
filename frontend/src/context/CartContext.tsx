@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useCallback } from "react";
+import { createContext, useContext, useReducer, useCallback, useEffect } from "react";
 import type { ReactNode } from "react";
 
 export interface CartProduct {
@@ -24,6 +24,31 @@ type CartAction =
   | { type: "REMOVE_ITEM"; productId: string }
   | { type: "UPDATE_QUANTITY"; productId: string; quantity: number }
   | { type: "CLEAR_CART" };
+
+const CART_STORAGE_KEY = "umamasa_cart";
+
+function loadCartFromStorage(): CartState {
+  try {
+    const stored = localStorage.getItem(CART_STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored) as CartState;
+      if (Array.isArray(parsed.items)) {
+        return parsed;
+      }
+    }
+  } catch {
+    // Corrupted data — start fresh
+  }
+  return { items: [] };
+}
+
+function saveCartToStorage(state: CartState): void {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Storage full or unavailable — fail silently
+  }
+}
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
@@ -73,7 +98,12 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(cartReducer, { items: [] });
+  const [state, dispatch] = useReducer(cartReducer, undefined, loadCartFromStorage);
+
+  // Persist to localStorage whenever cart changes
+  useEffect(() => {
+    saveCartToStorage(state);
+  }, [state]);
 
   const totalItems = state.items.reduce((sum, i) => sum + i.quantity, 0);
   const totalPrice = state.items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
