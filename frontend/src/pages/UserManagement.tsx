@@ -36,22 +36,63 @@ export default function UserManagement() {
   const [sortBy, setSortBy] = useState<"Newest" | "Oldest">("Newest");
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await apiFetch("/api/admin/users");
-        if (res.ok) {
-          const data = await res.json();
-          setUsers(data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch users", error);
-      } finally {
-        setIsLoading(false);
+  const fetchUsers = async () => {
+    try {
+      const res = await apiFetch("/api/admin/users");
+      if (res.ok) {
+        const data = await res.json();
+        setUsers(data);
       }
-    };
-    fetchUsers();
+    } catch (error) {
+      console.error("Failed to fetch users", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchUsers();
   }, []);
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm("Are you sure you want to delete this account? This action cannot be undone.")) {
+      return;
+    }
+    try {
+      const res = await apiFetch(`/api/admin/users/${userId}`, { method: "DELETE" });
+      if (res.ok) {
+        setUsers((prev) => prev.filter((u) => u._id !== userId));
+      } else {
+        const data = (await res.json()) as { message: string };
+        alert(data.message || "Failed to delete user");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Network error. Please try again.");
+    }
+  };
+
+  const handlePromoteUser = async (userId: string) => {
+    if (!confirm("Are you sure you want to promote this user to admin?")) {
+      return;
+    }
+    try {
+      const res = await apiFetch(`/api/admin/users/${userId}`, {
+        method: "PUT",
+        body: JSON.stringify({ userType: "admin" }),
+      });
+      if (res.ok) {
+        await fetchUsers();
+      } else {
+        const data = (await res.json()) as { message: string };
+        alert(data.message || "Failed to update user role");
+      }
+    } catch (error) {
+      console.error("Error promoting user:", error);
+      alert("Network error. Please try again.");
+    }
+  };
 
   const filteredAndSortedUsers = useMemo(() => {
     let result = [...users];
@@ -286,11 +327,17 @@ export default function UserManagement() {
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator className="bg-border" />
                             {u.userType !== "admin" && (
-                              <DropdownMenuItem className="text-xs font-bold text-foreground cursor-pointer flex items-center gap-2 py-2.5 px-3 rounded-lg focus:bg-indigo-500/10 focus:text-indigo-600 dark:focus:text-indigo-400">
+                              <DropdownMenuItem
+                                onClick={() => void handlePromoteUser(u._id)}
+                                className="text-xs font-bold text-foreground cursor-pointer flex items-center gap-2 py-2.5 px-3 rounded-lg focus:bg-indigo-500/10 focus:text-indigo-600 dark:focus:text-indigo-400"
+                              >
                                 <Shield className="h-4 w-4" /> Make Admin
                               </DropdownMenuItem>
                             )}
-                            <DropdownMenuItem className="text-xs font-bold text-red-600 cursor-pointer flex items-center gap-2 py-2.5 px-3 rounded-lg focus:bg-red-500/10 focus:text-red-600 dark:focus:bg-red-950/30 mt-1">
+                            <DropdownMenuItem
+                              onClick={() => void handleDeleteUser(u._id)}
+                              className="text-xs font-bold text-red-600 cursor-pointer flex items-center gap-2 py-2.5 px-3 rounded-lg focus:bg-red-500/10 focus:text-red-600 dark:focus:bg-red-950/30 mt-1"
+                            >
                               <UserX className="h-4 w-4" /> Delete Account
                             </DropdownMenuItem>
                           </DropdownMenuContent>
