@@ -10,6 +10,7 @@ interface ProductBody {
   imageUrl?: string;
 }
 
+// retrieves products
 export const getProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     const products = await Product.find();
@@ -19,6 +20,7 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
+// creates a product
 export const createProduct = async (
   req: Request<never, never, ProductBody>,
   res: Response
@@ -42,6 +44,7 @@ export const createProduct = async (
   }
 };
 
+// edits a product
 export const editProduct = async (
   req: Request<{ id: string }, never, Partial<ProductBody>>,
   res: Response
@@ -75,6 +78,7 @@ export const editProduct = async (
   }
 };
 
+// deletes a product
 export const deleteProduct = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
   try {
     const { id } = req.params;

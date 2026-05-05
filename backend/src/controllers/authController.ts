@@ -32,6 +32,7 @@ const generateTokenAndSetCookie = (res: Response, userId: unknown, userType: str
   });
 };
 
+// register a new user
 export const register = async (
   req: Request<never, never, RegisterBody>,
   res: Response
@@ -115,10 +116,12 @@ export const logout = (req: Request, res: Response) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
+// retrieves the profile of the currently authenticated user.
 export const getMe = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = req.user;
 
+    // checks if user is authenticated
     if (!user) {
       res.status(401).json({ message: "Not authorized" });
       return;
