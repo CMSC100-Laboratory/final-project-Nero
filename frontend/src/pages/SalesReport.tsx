@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import AdminSidebar from "@/components/AdminSidebar";
+
 import {
   AreaChart,
   Area,
@@ -220,11 +220,8 @@ export default function SalesReport() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex">
-        <AdminSidebar />
-        <div className="flex-1 flex items-center justify-center">
-          <Loader2 className="w-10 h-10 animate-spin text-emerald-600" />
-        </div>
+      <div className="flex-1 flex items-center justify-center">
+        <Loader2 className="w-10 h-10 animate-spin text-emerald-600" />
       </div>
     );
   }
@@ -232,368 +229,364 @@ export default function SalesReport() {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-background pb-16 flex">
-      <AdminSidebar />
+    <main className="container pt-8 md:pt-14 px-4 sm:px-8 max-w-[1200px] mx-auto animate-fade-in flex-1 pb-16">
+      {/* Page header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-backwards">
+        <div>
+          <h1 className="font-display text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
+            Revenue Analytics
+          </h1>
+          <p className="text-sm font-medium text-muted-foreground mt-2">
+            Track your store performance, sales breakdown, and product revenue.
+          </p>
+        </div>
+      </div>
 
-      <main className="container pt-8 md:pt-14 px-4 sm:px-8 max-w-[1200px] mx-auto animate-fade-in flex-1 sm:pl-[90px]">
-        {/* Page header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-backwards">
-          <div>
-            <h1 className="font-display text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
-              Revenue Analytics
-            </h1>
-            <p className="text-sm font-medium text-muted-foreground mt-2">
-              Track your store performance, sales breakdown, and product revenue.
-            </p>
+      {/* ── KPI Cards ─────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Total Sales */}
+        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150 fill-mode-backwards">
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Total Sales
+              </p>
+              <h3 className="text-4xl font-bold text-foreground mt-2">
+                ₱
+                {totalSales.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </h3>
+            </div>
+            <div className="p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-2xl group-hover:scale-110 transition-transform">
+              <DollarSign className="w-6 h-6" />
+            </div>
+          </div>
+          <div className="flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 mt-2">
+            <span>Confirmed &amp; completed revenue</span>
           </div>
         </div>
 
-        {/* ── KPI Cards ─────────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {/* Total Sales */}
-          <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150 fill-mode-backwards">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                  Total Sales
-                </p>
-                <h3 className="text-4xl font-bold text-foreground mt-2">
-                  ₱
-                  {totalSales.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </h3>
-              </div>
-              <div className="p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-2xl group-hover:scale-110 transition-transform">
-                <DollarSign className="w-6 h-6" />
-              </div>
+        {/* Products Sold */}
+        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300 fill-mode-backwards">
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Products Sold
+              </p>
+              <h3 className="text-4xl font-bold text-foreground mt-2">
+                {totalProductsSold.toLocaleString()}
+              </h3>
             </div>
-            <div className="flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 mt-2">
-              <span>Confirmed &amp; completed revenue</span>
+            <div className="p-3 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-2xl group-hover:scale-110 transition-transform">
+              <Package className="w-6 h-6" />
             </div>
           </div>
-
-          {/* Products Sold */}
-          <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300 fill-mode-backwards">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                  Products Sold
-                </p>
-                <h3 className="text-4xl font-bold text-foreground mt-2">
-                  {totalProductsSold.toLocaleString()}
-                </h3>
-              </div>
-              <div className="p-3 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-2xl group-hover:scale-110 transition-transform">
-                <Package className="w-6 h-6" />
-              </div>
-            </div>
-            <div className="flex items-center text-sm font-medium text-muted-foreground mt-2">
-              <span>Total units across all orders</span>
-            </div>
-          </div>
-
-          {/* Total Transactions */}
-          <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500 fill-mode-backwards">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                  Transactions
-                </p>
-                <h3 className="text-4xl font-bold text-foreground mt-2">
-                  {totalTransactions.toLocaleString()}
-                </h3>
-              </div>
-              <div className="p-3 bg-violet-500/10 text-violet-600 dark:text-violet-400 rounded-2xl group-hover:scale-110 transition-transform">
-                <ShoppingCart className="w-6 h-6" />
-              </div>
-            </div>
-            <div className="flex items-center text-sm font-medium text-muted-foreground mt-2">
-              <span>Unique completed transactions</span>
-            </div>
+          <div className="flex items-center text-sm font-medium text-muted-foreground mt-2">
+            <span>Total units across all orders</span>
           </div>
         </div>
 
-        {/* ── Revenue Analytics Area Chart ────────────────────────────────── */}
-        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-700 fill-mode-backwards">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
-            <div className="flex items-center gap-4">
-              <h3 className="text-lg font-bold text-foreground">Revenue Analytics</h3>
-              <Select value={timePeriod} onValueChange={(v) => setTimePeriod(v as TimePeriod)}>
+        {/* Total Transactions */}
+        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500 fill-mode-backwards">
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Transactions
+              </p>
+              <h3 className="text-4xl font-bold text-foreground mt-2">
+                {totalTransactions.toLocaleString()}
+              </h3>
+            </div>
+            <div className="p-3 bg-violet-500/10 text-violet-600 dark:text-violet-400 rounded-2xl group-hover:scale-110 transition-transform">
+              <ShoppingCart className="w-6 h-6" />
+            </div>
+          </div>
+          <div className="flex items-center text-sm font-medium text-muted-foreground mt-2">
+            <span>Unique completed transactions</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Revenue Analytics Area Chart ────────────────────────────────── */}
+      <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-700 fill-mode-backwards">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+          <div className="flex items-center gap-4">
+            <h3 className="text-lg font-bold text-foreground">Revenue Analytics</h3>
+            <Select value={timePeriod} onValueChange={(v) => setTimePeriod(v as TimePeriod)}>
+              <SelectTrigger
+                id="time-period-select"
+                className="w-[110px] h-8 text-xs font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20 rounded-lg hover:bg-emerald-500/20 transition-colors"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="rounded-xl">
+                <SelectItem value="WEEK">Week</SelectItem>
+                <SelectItem value="MONTH">Month</SelectItem>
+                <SelectItem value="YEAR">Year</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="px-4 py-1.5 bg-muted text-muted-foreground text-xs font-semibold rounded-full border border-border">
+            {new Date().getFullYear()}
+          </div>
+        </div>
+
+        <div className="h-[380px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>
+              <defs>
+                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="hsl(var(--border))" />
+              <XAxis
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12, fontWeight: 500 }}
+                dy={10}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12, fontWeight: 500 }}
+                dx={-10}
+                tickFormatter={(val) => `₱${val >= 1000 ? (val / 1000).toFixed(1) + "k" : val}`}
+              />
+              <Tooltip
+                cursor={{
+                  stroke: "hsl(var(--muted-foreground))",
+                  strokeWidth: 1,
+                  strokeDasharray: "none",
+                }}
+                contentStyle={{
+                  backgroundColor: "hsl(var(--card))",
+                  borderRadius: "12px",
+                  border: "1px solid hsl(var(--border))",
+                  boxShadow: "0 10px 25px -5px rgba(0,0,0,0.15)",
+                  padding: "10px 14px",
+                }}
+                itemStyle={{ color: "hsl(var(--foreground))", fontWeight: 600, fontSize: 13 }}
+                labelStyle={{
+                  color: "hsl(var(--muted-foreground))",
+                  fontWeight: "bold",
+                  fontSize: 13,
+                  marginBottom: "4px",
+                }}
+                formatter={(value) => [
+                  `₱${Number(value || 0).toLocaleString(undefined, { minimumFractionDigits: 0 })}`,
+                  "Revenue",
+                ]}
+              />
+              <Area
+                type="monotone"
+                dataKey="sales"
+                stroke="#10b981"
+                strokeWidth={3}
+                fillOpacity={1}
+                fill="url(#areaGradient)"
+                activeDot={{
+                  r: 7,
+                  strokeWidth: 3,
+                  stroke: "hsl(var(--card))",
+                  fill: "#10b981",
+                }}
+                dot={false}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* ── Sales per Product Table ────────────────────────────────────── */}
+      <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border animate-in fade-in slide-in-from-bottom-8 duration-700 delay-1000 fill-mode-backwards">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+          <h3 className="text-lg font-bold text-foreground">Sales per product</h3>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            {/* Filter by product type */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap">
+                Filter by
+              </span>
+              <Select
+                value={typeFilter}
+                onValueChange={(v) => setTypeFilter(v as ProductTypeFilter)}
+              >
                 <SelectTrigger
-                  id="time-period-select"
-                  className="w-[110px] h-8 text-xs font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20 rounded-lg hover:bg-emerald-500/20 transition-colors"
+                  id="type-filter-select"
+                  className="w-[120px] h-8 text-sm font-medium rounded-lg"
                 >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl">
-                  <SelectItem value="WEEK">Week</SelectItem>
-                  <SelectItem value="MONTH">Month</SelectItem>
-                  <SelectItem value="YEAR">Year</SelectItem>
+                  <SelectItem value="all">None</SelectItem>
+                  <SelectItem value="1">Crops</SelectItem>
+                  <SelectItem value="2">Poultry</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className="px-4 py-1.5 bg-muted text-muted-foreground text-xs font-semibold rounded-full border border-border">
-              {new Date().getFullYear()}
-            </div>
-          </div>
 
-          <div className="h-[380px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>
-                <defs>
-                  <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="hsl(var(--border))" />
-                <XAxis
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12, fontWeight: 500 }}
-                  dy={10}
-                />
-                <YAxis
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12, fontWeight: 500 }}
-                  dx={-10}
-                  tickFormatter={(val) => `₱${val >= 1000 ? (val / 1000).toFixed(1) + "k" : val}`}
-                />
-                <Tooltip
-                  cursor={{
-                    stroke: "hsl(var(--muted-foreground))",
-                    strokeWidth: 1,
-                    strokeDasharray: "none",
-                  }}
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    borderRadius: "12px",
-                    border: "1px solid hsl(var(--border))",
-                    boxShadow: "0 10px 25px -5px rgba(0,0,0,0.15)",
-                    padding: "10px 14px",
-                  }}
-                  itemStyle={{ color: "hsl(var(--foreground))", fontWeight: 600, fontSize: 13 }}
-                  labelStyle={{
-                    color: "hsl(var(--muted-foreground))",
-                    fontWeight: "bold",
-                    fontSize: 13,
-                    marginBottom: "4px",
-                  }}
-                  formatter={(value) => [
-                    `₱${Number(value || 0).toLocaleString(undefined, { minimumFractionDigits: 0 })}`,
-                    "Revenue",
-                  ]}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="sales"
-                  stroke="#10b981"
-                  strokeWidth={3}
-                  fillOpacity={1}
-                  fill="url(#areaGradient)"
-                  activeDot={{
-                    r: 7,
-                    strokeWidth: 3,
-                    stroke: "hsl(var(--card))",
-                    fill: "#10b981",
-                  }}
-                  dot={false}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            {/* Sort by */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap">
+                Sort by
+              </span>
+              <Select
+                value={`${sortField}-${sortDirection}`}
+                onValueChange={(v) => {
+                  const [field, dir] = v.split("-");
+                  setSortField(field as SortField);
+                  setSortDirection(dir as SortDirection);
+                }}
+              >
+                <SelectTrigger
+                  id="sort-field-select"
+                  className="w-[165px] h-8 text-sm font-medium rounded-lg"
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                  <SelectItem value="qtySold-desc">Qty sold (Desc.)</SelectItem>
+                  <SelectItem value="qtySold-asc">Qty sold (Asc.)</SelectItem>
+                  <SelectItem value="totalSales-desc">Total sales (Desc.)</SelectItem>
+                  <SelectItem value="totalSales-asc">Total sales (Asc.)</SelectItem>
+                  <SelectItem value="productName-asc">Name A–Z</SelectItem>
+                  <SelectItem value="productName-desc">Name Z–A</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
 
-        {/* ── Sales per Product Table ────────────────────────────────────── */}
-        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border animate-in fade-in slide-in-from-bottom-8 duration-700 delay-1000 fill-mode-backwards">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-            <h3 className="text-lg font-bold text-foreground">Sales per product</h3>
-
-            <div className="flex items-center gap-3 flex-wrap">
-              {/* Filter by product type */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap">
-                  Filter by
-                </span>
-                <Select
-                  value={typeFilter}
-                  onValueChange={(v) => setTypeFilter(v as ProductTypeFilter)}
-                >
-                  <SelectTrigger
-                    id="type-filter-select"
-                    className="w-[120px] h-8 text-sm font-medium rounded-lg"
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-xl">
-                    <SelectItem value="all">None</SelectItem>
-                    <SelectItem value="1">Crops</SelectItem>
-                    <SelectItem value="2">Poultry</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Sort by */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap">
-                  Sort by
-                </span>
-                <Select
-                  value={`${sortField}-${sortDirection}`}
-                  onValueChange={(v) => {
-                    const [field, dir] = v.split("-");
-                    setSortField(field as SortField);
-                    setSortDirection(dir as SortDirection);
-                  }}
-                >
-                  <SelectTrigger
-                    id="sort-field-select"
-                    className="w-[165px] h-8 text-sm font-medium rounded-lg"
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-xl">
-                    <SelectItem value="qtySold-desc">Qty sold (Desc.)</SelectItem>
-                    <SelectItem value="qtySold-asc">Qty sold (Asc.)</SelectItem>
-                    <SelectItem value="totalSales-desc">Total sales (Desc.)</SelectItem>
-                    <SelectItem value="totalSales-asc">Total sales (Asc.)</SelectItem>
-                    <SelectItem value="productName-asc">Name A–Z</SelectItem>
-                    <SelectItem value="productName-desc">Name Z–A</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+        {/* Table */}
+        <div className="overflow-x-auto">
+          {productRows.length === 0 ? (
+            <div className="flex flex-col items-center justify-center text-muted-foreground py-16">
+              <Package className="w-10 h-10 mb-3 opacity-20" />
+              <p className="text-sm font-medium">No sales data to display</p>
             </div>
-          </div>
-
-          {/* Table */}
-          <div className="overflow-x-auto">
-            {productRows.length === 0 ? (
-              <div className="flex flex-col items-center justify-center text-muted-foreground py-16">
-                <Package className="w-10 h-10 mb-3 opacity-20" />
-                <p className="text-sm font-medium">No sales data to display</p>
-              </div>
-            ) : (
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b-2 border-border bg-muted/30">
-                    <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                      Product ID
-                    </th>
-                    <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                      Product name
-                    </th>
-                    <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                      Product type
-                    </th>
-                    <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider text-center">
-                      <button
-                        id="sort-qty-btn"
-                        className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
-                        onClick={() => {
-                          if (sortField === "qtySold") {
-                            setSortDirection((d) => (d === "desc" ? "asc" : "desc"));
-                          } else {
-                            setSortField("qtySold");
-                            setSortDirection("desc");
-                          }
-                        }}
-                      >
-                        Qty sold
-                        <ArrowUpDown className="w-3 h-3" />
-                      </button>
-                    </th>
-                    <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider text-right">
-                      <button
-                        id="sort-total-btn"
-                        className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
-                        onClick={() => {
-                          if (sortField === "totalSales") {
-                            setSortDirection((d) => (d === "desc" ? "asc" : "desc"));
-                          } else {
-                            setSortField("totalSales");
-                            setSortDirection("desc");
-                          }
-                        }}
-                      >
-                        Total sales
-                        <ArrowUpDown className="w-3 h-3" />
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {productRows.map((row, idx) => (
-                    <tr
-                      key={row.productId}
-                      className={`border-b border-border/40 hover:bg-muted/30 transition-colors group ${
-                        idx % 2 === 0 ? "bg-card" : "bg-muted/10"
-                      }`}
+          ) : (
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b-2 border-border bg-muted/30">
+                  <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    Product ID
+                  </th>
+                  <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    Product name
+                  </th>
+                  <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    Product type
+                  </th>
+                  <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider text-center">
+                    <button
+                      id="sort-qty-btn"
+                      className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+                      onClick={() => {
+                        if (sortField === "qtySold") {
+                          setSortDirection((d) => (d === "desc" ? "asc" : "desc"));
+                        } else {
+                          setSortField("qtySold");
+                          setSortDirection("desc");
+                        }
+                      }}
                     >
-                      <td className="py-3.5 px-4 text-sm font-mono font-semibold text-muted-foreground">
-                        #{row.productId.slice(-10).toUpperCase()}
-                      </td>
-                      <td className="py-3.5 px-4 text-sm font-semibold text-foreground">
-                        {row.productName}
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span
-                          className={`inline-flex items-center px-2.5 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider ${
-                            row.productType === 1
-                              ? "bg-lime-500/10 text-lime-700 dark:text-lime-400"
-                              : "bg-orange-500/10 text-orange-700 dark:text-orange-400"
-                          }`}
-                        >
-                          {PRODUCT_TYPE_LABELS[row.productType]}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 text-center">
-                        <span className="text-sm font-bold text-foreground bg-muted px-3 py-1 rounded-lg">
-                          {row.qtySold}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 text-sm font-bold text-foreground text-right">
-                        ₱
-                        {row.totalSales.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr className="border-t-2 border-border bg-muted/20">
-                    <td
-                      colSpan={3}
-                      className="py-3.5 px-4 text-sm font-bold text-foreground uppercase tracking-wider"
+                      Qty sold
+                      <ArrowUpDown className="w-3 h-3" />
+                    </button>
+                  </th>
+                  <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider text-right">
+                    <button
+                      id="sort-total-btn"
+                      className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+                      onClick={() => {
+                        if (sortField === "totalSales") {
+                          setSortDirection((d) => (d === "desc" ? "asc" : "desc"));
+                        } else {
+                          setSortField("totalSales");
+                          setSortDirection("desc");
+                        }
+                      }}
                     >
-                      Totals
+                      Total sales
+                      <ArrowUpDown className="w-3 h-3" />
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {productRows.map((row, idx) => (
+                  <tr
+                    key={row.productId}
+                    className={`border-b border-border/40 hover:bg-muted/30 transition-colors group ${
+                      idx % 2 === 0 ? "bg-card" : "bg-muted/10"
+                    }`}
+                  >
+                    <td className="py-3.5 px-4 text-sm font-mono font-semibold text-muted-foreground">
+                      #{row.productId.slice(-10).toUpperCase()}
                     </td>
-                    <td className="py-3.5 px-4 text-center">
-                      <span className="text-sm font-extrabold text-foreground">
-                        {productRows.reduce((s, r) => s + r.qtySold, 0)}
+                    <td className="py-3.5 px-4 text-sm font-semibold text-foreground">
+                      {row.productName}
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider ${
+                          row.productType === 1
+                            ? "bg-lime-500/10 text-lime-700 dark:text-lime-400"
+                            : "bg-orange-500/10 text-orange-700 dark:text-orange-400"
+                        }`}
+                      >
+                        {PRODUCT_TYPE_LABELS[row.productType]}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-sm font-extrabold text-foreground text-right">
+                    <td className="py-3.5 px-4 text-center">
+                      <span className="text-sm font-bold text-foreground bg-muted px-3 py-1 rounded-lg">
+                        {row.qtySold}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 text-sm font-bold text-foreground text-right">
                       ₱
-                      {productRows
-                        .reduce((s, r) => s + r.totalSales, 0)
-                        .toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
+                      {row.totalSales.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
                     </td>
                   </tr>
-                </tfoot>
-              </table>
-            )}
-          </div>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr className="border-t-2 border-border bg-muted/20">
+                  <td
+                    colSpan={3}
+                    className="py-3.5 px-4 text-sm font-bold text-foreground uppercase tracking-wider"
+                  >
+                    Totals
+                  </td>
+                  <td className="py-3.5 px-4 text-center">
+                    <span className="text-sm font-extrabold text-foreground">
+                      {productRows.reduce((s, r) => s + r.qtySold, 0)}
+                    </span>
+                  </td>
+                  <td className="py-3.5 px-4 text-sm font-extrabold text-foreground text-right">
+                    ₱
+                    {productRows
+                      .reduce((s, r) => s + r.totalSales, 0)
+                      .toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          )}
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
