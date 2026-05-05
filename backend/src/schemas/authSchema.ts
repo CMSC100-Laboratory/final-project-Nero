@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// validates the registration request body
 export const registerSchema = z.object({
   body: z.object({
     firstname: z.string().nonempty("First name is required"),
@@ -13,6 +14,7 @@ export const registerSchema = z.object({
   }),
 });
 
+// validates the login request body
 export const loginSchema = z.object({
   body: z.object({
     email: z.string().email("Invalid email address").nonempty("Email is required"),
