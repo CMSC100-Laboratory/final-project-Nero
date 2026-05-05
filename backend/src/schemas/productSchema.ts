@@ -3,6 +3,7 @@ import { z } from "zod";
 // NOTE: Product routes use multer (multipart/form-data), so numeric fields
 // arrive as strings. z.coerce.number() handles the string-to-number conversion.
 
+// validates the create product request body
 export const createProductSchema = z.object({
   body: z.object({
     productName: z.string().nonempty("Product name is required"),
@@ -18,6 +19,7 @@ export const createProductSchema = z.object({
   }),
 });
 
+// validates the update product request body
 export const updateProductSchema = z.object({
   body: z.object({
     productName: z.string().nonempty("Product name is required").optional(),
