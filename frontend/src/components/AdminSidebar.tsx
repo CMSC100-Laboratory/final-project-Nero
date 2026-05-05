@@ -58,7 +58,7 @@ export default function AdminSidebar() {
 
   return (
     <aside
-      className={`flex flex-col fixed left-0 top-0 h-screen z-30 border-r border-border bg-card transition-all duration-300 ease-in-out shadow-[4px_0_24px_-12px_rgba(0,0,0,0.05)] ${isOpen ? "w-[260px]" : "w-[80px]"}`}
+      className={`flex flex-col sticky left-0 top-0 h-screen z-30 border-r border-border bg-card transition-all duration-300 ease-in-out shadow-[4px_0_24px_-12px_rgba(0,0,0,0.05)] shrink-0 ${isOpen ? "w-[260px]" : "w-[80px]"}`}
     >
       {/* Brand Logo */}
       <div

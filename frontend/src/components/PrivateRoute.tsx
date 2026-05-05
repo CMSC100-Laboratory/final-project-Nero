@@ -1,7 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import AdminSidebar from "@/components/AdminSidebar";
 
-export default function PrivateRoute({ allowedRoles }: { allowedRoles?: string[] }) {
+interface PrivateRouteProps {
+  allowedRoles?: string[];
+  layout?: "admin" | "default";
+}
+
+export default function PrivateRoute({ allowedRoles, layout = "default" }: PrivateRouteProps) {
   const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
@@ -19,6 +25,17 @@ export default function PrivateRoute({ allowedRoles }: { allowedRoles?: string[]
   // If roles are provided and the user's role isn't in the list, redirect them to their respective default home
   if (allowedRoles && user && !allowedRoles.includes(user.userType)) {
     return <Navigate to={user.userType === "admin" ? "/dashboard" : "/"} replace />;
+  }
+
+  if (layout === "admin") {
+    return (
+      <div className="min-h-screen bg-background flex">
+        <AdminSidebar />
+        <div className="flex-1 admin-content">
+          <Outlet />
+        </div>
+      </div>
+    );
   }
 
   return <Outlet />;

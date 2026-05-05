@@ -18,11 +18,14 @@ import AdminOrders from "./pages/AdminOrders";
 function App() {
   const location = useLocation();
   const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
+  const isAdminPage = ["/dashboard", "/userman", "/inventory", "/ordersman", "/analytics"].includes(
+    location.pathname
+  );
 
   return (
     <>
-      {!isAuthPage && <Navbar />}
-      {!isAuthPage && <Sagbot />}
+      {!isAuthPage && !isAdminPage && <Navbar />}
+      {!isAuthPage && !isAdminPage && <Sagbot />}
       <Routes>
         <Route element={<PrivateRoute allowedRoles={["user"]} />}>
           <Route path="/" element={<Home />} />
@@ -31,7 +34,7 @@ function App() {
           <Route path="/orders" element={<Orders />} />
         </Route>
 
-        <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+        <Route element={<PrivateRoute allowedRoles={["admin"]} layout="admin" />}>
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/userman" element={<UserManagement />} />
           <Route path="/inventory" element={<Inventory />} />
