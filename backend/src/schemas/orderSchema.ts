@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// validates the create order request body
 export const createOrderSchema = z.object({
   body: z.object({
     transactionId: z.string().nonempty("Transaction ID is required"),
