@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function AdminSidebar() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
