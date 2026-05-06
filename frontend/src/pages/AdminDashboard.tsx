@@ -341,7 +341,10 @@ export default function AdminDashboard() {
         <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold text-foreground">Popular Products</h3>
-            <button className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 text-sm font-semibold flex items-center transition-colors">
+            <button
+              onClick={() => navigate("/ordersman")}
+              className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 text-sm font-semibold flex items-center transition-colors"
+            >
               View All <ArrowUpRight className="w-4 h-4 ml-1" />
             </button>
           </div>
