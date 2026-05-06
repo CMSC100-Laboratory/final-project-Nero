@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   AreaChart,
@@ -56,7 +57,7 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [salesOrders, setSalesOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -403,7 +404,10 @@ export default function AdminDashboard() {
         <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold text-foreground">Recent Orders</h3>
-            <button className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 text-sm font-semibold flex items-center transition-colors">
+            <button
+              onClick={() => navigate("/ordersman")}
+              className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 text-sm font-semibold flex items-center transition-colors"
+            >
               View All <ArrowUpRight className="w-4 h-4 ml-1" />
             </button>
           </div>
