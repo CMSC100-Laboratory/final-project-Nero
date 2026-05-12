@@ -4,8 +4,8 @@ import { useCart } from "@/context/CartContext";
 import { useTheme } from "@/context/ThemeContext";
 import { apiFetch } from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, User, LogOut, Store, Package, ShoppingCart, Leaf, Moon, Sun } from "lucide-react";
+// import { Input } from "@/components/ui/input";
+import { User, LogOut, Store, Package, ShoppingCart, Leaf, Moon, Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,7 +60,7 @@ export default function Navbar() {
         {isAuthenticated ? (
           <>
             {/* Center - Interactive Search (Only for users) */}
-            {user?.userType === "user" && (
+            {/* {user?.userType === "user" && (
               <div className="hidden flex-1 md:flex justify-center px-6">
                 <div className="relative w-full max-w-md transition-all duration-300 focus-within:max-w-lg group">
                   <Input
@@ -73,7 +73,7 @@ export default function Navbar() {
                   </button>
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* If Admin, just spacer */}
             {user?.userType === "admin" && <div className="hidden flex-1 md:flex"></div>}

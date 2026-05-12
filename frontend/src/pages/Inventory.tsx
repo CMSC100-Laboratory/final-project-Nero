@@ -87,6 +87,10 @@ export default function Inventory() {
           return a.price - b.price;
         case "price-high":
           return b.price - a.price;
+        case "quantity-low":
+          return a.quantity - b.quantity;
+        case "quantity-high":
+          return b.quantity - a.quantity;
         case "name-az":
           return a.productName.localeCompare(b.productName);
         default:
@@ -173,6 +177,8 @@ export default function Inventory() {
                   <SelectItem value="newest">Newest</SelectItem>
                   <SelectItem value="price-low">Price ↑</SelectItem>
                   <SelectItem value="price-high">Price ↓</SelectItem>
+                  <SelectItem value="quantity-low">Quantity ↑</SelectItem>
+                  <SelectItem value="quantity-high">Quantity ↓</SelectItem>
                   <SelectItem value="name-az">Name A–Z</SelectItem>
                 </SelectContent>
               </Select>

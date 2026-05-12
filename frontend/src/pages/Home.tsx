@@ -106,6 +106,10 @@ export default function Home() {
           return a.price - b.price;
         case "price-high-low":
           return b.price - a.price;
+        case "quantity-low-high":
+          return a.quantity - b.quantity;
+        case "quantity-high-low":
+          return b.quantity - a.quantity;
         case "newest":
           return new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime();
         default:
@@ -156,8 +160,10 @@ export default function Home() {
                 </SelectTrigger>
                 <SelectContent className="rounded-xl border-border bg-card">
                   <SelectItem value="best-match">Best match</SelectItem>
-                  <SelectItem value="price-low-high">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high-low">Price: High to Low</SelectItem>
+                  <SelectItem value="price-low-high">Price ↑</SelectItem>
+                  <SelectItem value="price-high-low">Price ↓</SelectItem>
+                  <SelectItem value="quantity-low-high">Quantity ↑</SelectItem>
+                  <SelectItem value="quantity-high-low">Quantity ↓</SelectItem>
                   <SelectItem value="newest">Newest Arrivals</SelectItem>
                 </SelectContent>
               </Select>
