@@ -472,7 +472,7 @@ export default function SalesReport() {
               <p className="text-sm font-medium">No sales data to display</p>
             </div>
           ) : (
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse min-w-[600px]">
               <thead>
                 <tr className="border-b-2 border-border bg-muted/30">
                   <th className="py-3.5 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">
