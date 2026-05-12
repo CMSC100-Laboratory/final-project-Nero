@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect, useCallback } from "react";
 import Footer from "@/components/Footer";
 import { apiFetch } from "@/lib/api";
-import { Loader2, AlertTriangle, PackageSearch } from "lucide-react";
+import { Loader2, AlertTriangle, PackageSearch, XCircle } from "lucide-react";
 
 interface Product {
   _id: string;
@@ -43,6 +43,7 @@ export default function Orders() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState("All");
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -70,6 +71,27 @@ export default function Orders() {
     return STATUS_MAP[order.orderStatus] === statusFilter;
   });
 
+  const handleCancelOrder = async (transactionId: string) => {
+    try {
+      setCancellingId(transactionId);
+      const res = await apiFetch(`/api/orders/${transactionId}/cancel`, {
+        method: "PUT",
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to cancel order");
+      }
+
+      // Refresh orders after successful cancellation
+      await fetchOrders();
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Error cancelling order");
+    } finally {
+      setCancellingId(null);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <main className="container flex-1 pt-8 md:pt-14 px-4 max-w-[1200px] mx-auto animate-fade-in pb-20">
@@ -79,63 +101,65 @@ export default function Orders() {
         </h1>
 
         {/* Filters section */}
-        <ButtonGroup className="w-full">
-          <Button
-            className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all ${
-              statusFilter === "All"
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
-            size="lg"
-            onClick={() => setStatusFilter("All")}
-          >
-            All
-          </Button>
-          <Button
-            className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all ${
-              statusFilter === "Pending"
-                ? "bg-amber-500 text-white"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
-            size="lg"
-            onClick={() => setStatusFilter("Pending")}
-          >
-            Pending
-          </Button>
-          <Button
-            className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all ${
-              statusFilter === "Confirmed"
-                ? "bg-blue-500 text-white"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
-            size="lg"
-            onClick={() => setStatusFilter("Confirmed")}
-          >
-            Confirmed
-          </Button>
-          <Button
-            className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all ${
-              statusFilter === "Completed"
-                ? "bg-emerald-500 text-white"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
-            size="lg"
-            onClick={() => setStatusFilter("Completed")}
-          >
-            Completed
-          </Button>
-          <Button
-            className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all ${
-              statusFilter === "Cancelled"
-                ? "bg-red-500 text-white"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
-            size="lg"
-            onClick={() => setStatusFilter("Cancelled")}
-          >
-            Cancelled
-          </Button>
-        </ButtonGroup>
+        <div className="overflow-x-auto pb-4 sm:pb-0 mb-4 sm:mb-0 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <ButtonGroup className="min-w-max sm:min-w-0 w-full">
+            <Button
+              className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all px-6 sm:px-0 ${
+                statusFilter === "All"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+              size="lg"
+              onClick={() => setStatusFilter("All")}
+            >
+              All
+            </Button>
+            <Button
+              className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all px-6 sm:px-0 ${
+                statusFilter === "Pending"
+                  ? "bg-amber-500 text-white"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+              size="lg"
+              onClick={() => setStatusFilter("Pending")}
+            >
+              Pending
+            </Button>
+            <Button
+              className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all px-6 sm:px-0 ${
+                statusFilter === "Confirmed"
+                  ? "bg-blue-500 text-white"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+              size="lg"
+              onClick={() => setStatusFilter("Confirmed")}
+            >
+              Confirmed
+            </Button>
+            <Button
+              className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all px-6 sm:px-0 ${
+                statusFilter === "Completed"
+                  ? "bg-emerald-500 text-white"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+              size="lg"
+              onClick={() => setStatusFilter("Completed")}
+            >
+              Completed
+            </Button>
+            <Button
+              className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all px-6 sm:px-0 ${
+                statusFilter === "Cancelled"
+                  ? "bg-red-500 text-white"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+              size="lg"
+              onClick={() => setStatusFilter("Cancelled")}
+            >
+              Cancelled
+            </Button>
+          </ButtonGroup>
+        </div>
 
         {/* Orders section */}
         <div className="flex flex-col gap-4 mt-8">
@@ -254,6 +278,25 @@ export default function Orders() {
                         </p>
                       </div>
                     </div>
+                    {order.orderStatus === 0 && (
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          void handleCancelOrder(order.transactionId);
+                        }}
+                        disabled={cancellingId === order.transactionId}
+                        variant="outline"
+                        size="sm"
+                        className="rounded-full mt-2 sm:mt-3 border border-red-500/30 text-red-600 hover:border-red-600 hover:bg-red-600 hover:text-white dark:text-red-400 dark:border-red-500/30 dark:hover:bg-red-600 dark:hover:text-white bg-transparent h-8 sm:h-9 text-[10px] sm:text-[11px] px-4 sm:px-6 font-black tracking-[0.1em] transition-all duration-300 w-full sm:w-auto overflow-hidden group/cancel"
+                      >
+                        {cancellingId === order.transactionId ? (
+                          <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 animate-spin" />
+                        ) : (
+                          <XCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 group-hover/cancel:rotate-90 transition-transform duration-300" />
+                        )}
+                        CANCEL ORDER
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
