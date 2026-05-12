@@ -30,33 +30,33 @@ This repository contains the source code for the **UmaMASA** e-commerce platform
 
 ### Authentication
 
-| Login        | Sign up        |
-| ------------ | -------------- |
-| Login screen | Sign up screen |
+| Login                        | Sign up                       |
+| ---------------------------- | ----------------------------- |
+| ./docs/screenshots/Login.png | ./docs/screenshots/Signup.png |
 
 ### Shopping (customer)
 
-| Market        | Cart          | User orders |
-| ------------- | ------------- | ----------- |
-| Market / home | Shopping cart | User orders |
+| Market                        | Cart                        | User orders                        |
+| ----------------------------- | --------------------------- | ---------------------------------- |
+| ./docs/screenshots/Market.png | ./docs/screenshots/Cart.png | ./docs/screenshots/User_Orders.png |
 
 ### Assistant
 
-| Chatbot |
-| ------- |
-| Chatbot |
+| Chatbot                        |
+| ------------------------------ |
+| ./docs/screenshots/Chatbot.png |
 
 ### Admin — navigation & dashboard
 
-| Admin sidebar | Dashboard (1)   | Dashboard (2)                  |
-| ------------- | --------------- | ------------------------------ |
-| Admin sidebar | Admin dashboard | Admin dashboard alternate view |
+| Admin sidebar                  | Dashboard (1)                           | Dashboard (2)                           |
+| ------------------------------ | --------------------------------------- | --------------------------------------- |
+| ./docs/screenshots/Sidebar.png | ./docs/screenshots/Admin_Dashboard1.png | ./docs/screenshots/Admin_Dashboard2.png |
 
 ### Admin — operations & analytics
 
-| Admin orders | Inventory | User management | Analytics (1) | Analytics (2)       |
-| ------------ | --------- | --------------- | ------------- | ------------------- |
-| Admin orders | Inventory | User management | Analytics     | Analytics alternate |
+| Admin orders                        | Inventory                        | User management                        | Analytics (1)                     | Analytics (2)                     |
+| ----------------------------------- | -------------------------------- | -------------------------------------- | --------------------------------- | --------------------------------- |
+| ./docs/screenshots/Admin_Orders.png | ./docs/screenshots/Inventory.png | ./docs/screenshots/User_Management.png | ./docs/screenshots/Analytics1.png | ./docs/screenshots/Analytics2.png |
 
 ## Usage guidelines
 
