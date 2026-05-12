@@ -350,7 +350,7 @@ export default function AdminDashboard() {
             </button>
           </div>
 
-          <div className="flex-1 overflow-x-auto">
+          <div className="flex-1 overflow-x-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {popularProducts.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-muted-foreground py-10">
                 <Package className="w-8 h-8 mb-2 opacity-20" />
@@ -416,7 +416,7 @@ export default function AdminDashboard() {
             </button>
           </div>
 
-          <div className="flex-1 overflow-x-auto">
+          <div className="flex-1 overflow-x-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {recentOrders.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-muted-foreground py-10">
                 <Package className="w-8 h-8 mb-2 opacity-20" />

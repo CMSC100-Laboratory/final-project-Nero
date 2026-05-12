@@ -465,7 +465,7 @@ export default function SalesReport() {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {productRows.length === 0 ? (
             <div className="flex flex-col items-center justify-center text-muted-foreground py-16">
               <Package className="w-10 h-10 mb-3 opacity-20" />

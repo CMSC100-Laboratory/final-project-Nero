@@ -187,7 +187,7 @@ export default function Inventory() {
         </div>
 
         {/* Table Card */}
-        <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+        <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden w-full">
           {isLoading ? (
             <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground">
               <Loader2 className="h-5 w-5 animate-spin" />
@@ -220,89 +220,91 @@ export default function Inventory() {
               </Button>
             </div>
           ) : (
-            <Table className="min-w-[800px]">
-              <TableHeader>
-                <TableRow className="bg-muted/30 hover:bg-muted/30">
-                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                    Product ID
-                  </TableHead>
-                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                    Product Name
-                  </TableHead>
-                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                    Product Type
-                  </TableHead>
-                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                    Price/unit
-                  </TableHead>
-                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                    Stock
-                  </TableHead>
-                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                    Description
-                  </TableHead>
-                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground w-[100px]">
-                    Actions
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredProducts.map((product) => (
-                  <TableRow key={product._id} className="group">
-                    <TableCell className="font-mono text-xs text-muted-foreground">
-                      #{product._id.slice(-10)}
-                    </TableCell>
-                    <TableCell className="font-semibold text-sm">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center overflow-hidden shrink-0 border border-border/50">
-                          {product.imageUrl ? (
-                            <img
-                              src={product.imageUrl}
-                              alt={product.productName}
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <Plus className="h-4 w-4 text-muted-foreground/40" />
-                          )}
-                        </div>
-                        {product.productName}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {PRODUCT_TYPE_LABELS[product.productType] ?? "Unknown"}
-                    </TableCell>
-                    <TableCell className="text-sm font-medium">
-                      ₱{product.price.toFixed(2)}
-                    </TableCell>
-                    <TableCell className="text-sm">{product.quantity}</TableCell>
-                    <TableCell
-                      className="text-sm text-muted-foreground max-w-[200px]"
-                      title={product.description}
-                    >
-                      {truncate(product.description, 30)}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1 opacity-100 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => openEditModal(product)}
-                          className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
-                          title="Edit product"
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() => setDeleteTarget(product)}
-                          className="p-2 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
-                          title="Delete product"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </TableCell>
+            <div className="overflow-x-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <Table className="min-w-[800px]">
+                <TableHeader>
+                  <TableRow className="bg-muted/30 hover:bg-muted/30">
+                    <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                      Product ID
+                    </TableHead>
+                    <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                      Product Name
+                    </TableHead>
+                    <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                      Product Type
+                    </TableHead>
+                    <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                      Price/unit
+                    </TableHead>
+                    <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                      Stock
+                    </TableHead>
+                    <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                      Description
+                    </TableHead>
+                    <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground w-[100px]">
+                      Actions
+                    </TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filteredProducts.map((product) => (
+                    <TableRow key={product._id} className="group">
+                      <TableCell className="font-mono text-xs text-muted-foreground">
+                        #{product._id.slice(-10)}
+                      </TableCell>
+                      <TableCell className="font-semibold text-sm">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center overflow-hidden shrink-0 border border-border/50">
+                            {product.imageUrl ? (
+                              <img
+                                src={product.imageUrl}
+                                alt={product.productName}
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <Plus className="h-4 w-4 text-muted-foreground/40" />
+                            )}
+                          </div>
+                          {product.productName}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {PRODUCT_TYPE_LABELS[product.productType] ?? "Unknown"}
+                      </TableCell>
+                      <TableCell className="text-sm font-medium">
+                        ₱{product.price.toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-sm">{product.quantity}</TableCell>
+                      <TableCell
+                        className="text-sm text-muted-foreground max-w-[200px]"
+                        title={product.description}
+                      >
+                        {truncate(product.description, 30)}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1 opacity-100 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={() => openEditModal(product)}
+                            className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                            title="Edit product"
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteTarget(product)}
+                            className="p-2 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
+                            title="Delete product"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </div>
       </main>

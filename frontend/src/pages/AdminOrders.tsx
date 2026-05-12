@@ -202,7 +202,7 @@ export default function AdminOrders() {
       </div>
 
       {/* Table */}
-      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden w-full">
         {isLoading ? (
           <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground">
             <Loader2 className="h-5 w-5 animate-spin" />
@@ -213,130 +213,132 @@ export default function AdminOrders() {
             <p className="font-medium">No orders found.</p>
           </div>
         ) : (
-          <Table className="min-w-[800px]">
-            <TableHeader>
-              <TableRow className="bg-muted/30 hover:bg-muted/30">
-                <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                  Order ID
-                </TableHead>
-                <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                  Buyer Email
-                </TableHead>
-                <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                  Date Ordered
-                </TableHead>
-                {/* <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+          <div className="overflow-x-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <Table className="min-w-[800px]">
+              <TableHeader>
+                <TableRow className="bg-muted/30 hover:bg-muted/30">
+                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                    Order ID
+                  </TableHead>
+                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                    Buyer Email
+                  </TableHead>
+                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                    Date Ordered
+                  </TableHead>
+                  {/* <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
                     Product ID
                   </TableHead> */}
-                <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                  Product Name
-                </TableHead>
-                <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                  Quantity
-                </TableHead>
-                <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                  Total Price
-                </TableHead>
-                <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
-                  Status
-                </TableHead>
-                <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground w-[100px]">
-                  Actions
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredOrders.map((order) => (
-                <TableRow key={order._id} className="group">
-                  <TableCell className="font-mono text-xs text-muted-foreground">
-                    {order.transactionId.slice(-8).toUpperCase() + "..."}
-                  </TableCell>
-                  <TableCell className="font-semibold text-sm">{order.email}</TableCell>
-                  <TableCell className="text-sm font-medium text-muted-foreground whitespace-nowrap">
-                    {formatDate(order.createdAt)}
-                  </TableCell>
-                  {/* <TableCell className="font-mono text-xs text-muted-foreground">
+                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                    Product Name
+                  </TableHead>
+                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                    Quantity
+                  </TableHead>
+                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                    Total Price
+                  </TableHead>
+                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                    Status
+                  </TableHead>
+                  <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground w-[100px]">
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredOrders.map((order) => (
+                  <TableRow key={order._id} className="group">
+                    <TableCell className="font-mono text-xs text-muted-foreground">
+                      {order.transactionId.slice(-8).toUpperCase() + "..."}
+                    </TableCell>
+                    <TableCell className="font-semibold text-sm">{order.email}</TableCell>
+                    <TableCell className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+                      {formatDate(order.createdAt)}
+                    </TableCell>
+                    {/* <TableCell className="font-mono text-xs text-muted-foreground">
                         {order.productId?._id.slice(-8).toUpperCase() + "..." || "N/A"}
                       </TableCell> */}
-                  <TableCell className="text-sm font-medium">
-                    {order.productId?.productName || "Deleted Product"}
-                  </TableCell>
-                  <TableCell className="text-sm">{order.orderQuantity}</TableCell>
-                  <TableCell className="text-sm font-medium">
-                    ₱{((order.productId?.price || 0) * order.orderQuantity).toFixed(2)}
-                  </TableCell>
-                  <TableCell>
-                    <span
-                      className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase border ${getStatusInfo(order.orderStatus).color}`}
-                    >
-                      {getStatusInfo(order.orderStatus).label}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-foreground outline-none">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        align="end"
-                        className="w-48 rounded-xl shadow-lg border-border"
+                    <TableCell className="text-sm font-medium">
+                      {order.productId?.productName || "Deleted Product"}
+                    </TableCell>
+                    <TableCell className="text-sm">{order.orderQuantity}</TableCell>
+                    <TableCell className="text-sm font-medium">
+                      ₱{((order.productId?.price || 0) * order.orderQuantity).toFixed(2)}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase border ${getStatusInfo(order.orderStatus).color}`}
                       >
-                        <DropdownMenuLabel className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
-                          Actions
-                        </DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        {order.orderStatus === 0 && (
+                        {getStatusInfo(order.orderStatus).label}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-foreground outline-none">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="end"
+                          className="w-48 rounded-xl shadow-lg border-border"
+                        >
+                          <DropdownMenuLabel className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
+                            Actions
+                          </DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {order.orderStatus === 0 && (
+                            <DropdownMenuItem
+                              onClick={() => handleUpdateStatus(order._id, "confirm")}
+                              className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
+                            >
+                              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                              Confirm Order
+                            </DropdownMenuItem>
+                          )}
+                          {order.orderStatus === 1 && (
+                            <DropdownMenuItem
+                              onClick={() => handleUpdateStatus(order._id, "complete")}
+                              className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
+                            >
+                              <Truck className="h-4 w-4 text-blue-500" />
+                              Mark Completed
+                            </DropdownMenuItem>
+                          )}
+                          {order.orderStatus < 2 && (
+                            <DropdownMenuItem
+                              onClick={() => handleUpdateStatus(order._id, "cancel")}
+                              className="text-xs font-medium cursor-pointer flex items-center gap-2 text-red-600 focus:text-red-700 py-2"
+                            >
+                              <XCircle className="h-4 w-4" />
+                              Cancel Order
+                            </DropdownMenuItem>
+                          )}
                           <DropdownMenuItem
-                            onClick={() => handleUpdateStatus(order._id, "confirm")}
+                            onClick={() => void navigator.clipboard.writeText(order.transactionId)}
                             className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
                           >
-                            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                            Confirm Order
+                            <Hash className="h-4 w-4 text-blue-500" />
+                            Copy Order ID
                           </DropdownMenuItem>
-                        )}
-                        {order.orderStatus === 1 && (
                           <DropdownMenuItem
-                            onClick={() => handleUpdateStatus(order._id, "complete")}
+                            onClick={() =>
+                              void navigator.clipboard.writeText(order.productId?._id || "")
+                            }
                             className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
                           >
-                            <Truck className="h-4 w-4 text-blue-500" />
-                            Mark Completed
+                            <Tag className="h-4 w-4 text-blue-500" />
+                            Copy Product ID
                           </DropdownMenuItem>
-                        )}
-                        {order.orderStatus < 2 && (
-                          <DropdownMenuItem
-                            onClick={() => handleUpdateStatus(order._id, "cancel")}
-                            className="text-xs font-medium cursor-pointer flex items-center gap-2 text-red-600 focus:text-red-700 py-2"
-                          >
-                            <XCircle className="h-4 w-4" />
-                            Cancel Order
-                          </DropdownMenuItem>
-                        )}
-                        <DropdownMenuItem
-                          onClick={() => void navigator.clipboard.writeText(order.transactionId)}
-                          className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
-                        >
-                          <Hash className="h-4 w-4 text-blue-500" />
-                          Copy Order ID
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() =>
-                            void navigator.clipboard.writeText(order.productId?._id || "")
-                          }
-                          className="text-xs font-medium cursor-pointer flex items-center gap-2 py-2"
-                        >
-                          <Tag className="h-4 w-4 text-blue-500" />
-                          Copy Product ID
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         )}
       </div>
     </main>

@@ -228,7 +228,7 @@ export default function UserManagement() {
 
       {/* Modern Table Container */}
       <div className="bg-card rounded-3xl shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border overflow-hidden min-h-[400px] flex flex-col animate-in fade-in slide-in-from-bottom-8 duration-700 delay-150 fill-mode-backwards">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
               <tr className="border-b border-border bg-muted/30">
