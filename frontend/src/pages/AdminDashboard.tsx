@@ -76,6 +76,7 @@ export default function AdminDashboard() {
         setIsLoading(false);
       }
     };
+    document.title = "Dashboard - UmaMasa Admin";
     fetchData();
   }, []);
 

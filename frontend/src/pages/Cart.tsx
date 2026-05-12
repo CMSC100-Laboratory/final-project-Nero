@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
@@ -46,29 +46,36 @@ export default function Cart() {
     return orderBy === "desc" ? -cmp : cmp;
   });
 
-  if (items.length === 0) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6 animate-fade-in">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
-            <ShoppingCart className="w-12 h-12 text-primary/60" strokeWidth={1.5} />
+  useEffect(() => {
+    document.title = "My Cart - UmaMasa";
+  }, []);
+
+  if (items.length === 0)
+    if (items.length === 0) {
+      return (
+        <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6 animate-fade-in">
+          <div className="flex flex-col items-center gap-4 text-center">
+            <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
+              <ShoppingCart className="w-12 h-12 text-primary/60" strokeWidth={1.5} />
+            </div>
+            <div>
+              <h2 className="font-display text-2xl font-bold text-foreground">
+                Your cart is empty
+              </h2>
+              <p className="text-muted-foreground mt-1 text-sm">
+                Browse the market and add some fresh produce!
+              </p>
+            </div>
+            <Button
+              onClick={() => navigate("/")}
+              className="rounded-full px-8 font-semibold mt-2 shadow-sm hover:shadow-md transition-all active:scale-95"
+            >
+              Browse Market
+            </Button>
           </div>
-          <div>
-            <h2 className="font-display text-2xl font-bold text-foreground">Your cart is empty</h2>
-            <p className="text-muted-foreground mt-1 text-sm">
-              Browse the market and add some fresh produce!
-            </p>
-          </div>
-          <Button
-            onClick={() => navigate("/")}
-            className="rounded-full px-8 font-semibold mt-2 shadow-sm hover:shadow-md transition-all active:scale-95"
-          >
-            Browse Market
-          </Button>
         </div>
-      </div>
-    );
-  }
+      );
+    }
 
   return (
     <div className="min-h-screen bg-background pb-16">

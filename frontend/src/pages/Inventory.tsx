@@ -68,6 +68,7 @@ export default function Inventory() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void fetchProducts();
+    document.title = "Inventory - UmaMasa Admin";
   }, [fetchProducts]);
 
   /* ---------- filtered / sorted ---------- */

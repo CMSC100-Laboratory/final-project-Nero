@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiFetch } from "@/lib/api";
 import { User, Mail, Lock, ShieldCheck, Sun, Moon, ArrowRight, Loader2, Leaf } from "lucide-react";
@@ -21,6 +21,10 @@ export default function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    document.title = "Register - UmaMasa";
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
