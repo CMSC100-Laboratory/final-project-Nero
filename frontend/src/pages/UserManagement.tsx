@@ -135,7 +135,7 @@ export default function UserManagement() {
   };
 
   return (
-    <main className="container pt-8 md:pt-14 px-4 sm:px-8 max-w-[1200px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700 flex-1 pb-16">
+    <main className="container pt-8 md:pt-14 px-4 pl-[93px] sm:px-8 sm:pl-[109px] max-w-[1200px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700 flex-1 pb-16">
       {/* Header */}
       <div className="mb-8">
         <h1 className="font-display text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">

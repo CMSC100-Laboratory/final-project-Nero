@@ -58,12 +58,10 @@ export default function AdminSidebar() {
 
   return (
     <aside
-      className={`flex flex-col sticky left-0 top-0 h-screen z-30 border-r border-border bg-card transition-all duration-300 ease-in-out shadow-[4px_0_24px_-12px_rgba(0,0,0,0.05)] shrink-0 ${isOpen ? "w-[260px]" : "w-[80px]"}`}
+      className={`flex flex-col fixed left-0 top-0 h-screen z-30 border-r border-border bg-card transition-all duration-300 ease-in-out shadow-[4px_0_24px_-12px_rgba(0,0,0,0.05)] shrink-0 ${isOpen ? "w-[260px]" : "w-[77px]"}`}
     >
       {/* Brand Logo */}
-      <div
-        className={`flex items-center h-20 shrink-0 px-4 mb-2 mt-2 ${isOpen ? "justify-start" : "justify-center"}`}
-      >
+      <div className={`flex items-center h-20 shrink-0 px-5 mb-2 mt-2`}>
         <div
           className="flex items-center gap-2 group cursor-pointer"
           onClick={() => navigate("/dashboard")}
@@ -72,7 +70,7 @@ export default function AdminSidebar() {
             <Leaf className="h-5 w-5 text-emerald-600 dark:text-emerald-400" strokeWidth={2.5} />
           </div>
           <span
-            className={`font-display font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-800 dark:from-emerald-400 dark:to-emerald-600 tracking-tight transition-all duration-300 ${isOpen ? "opacity-100 w-auto ml-1" : "opacity-0 w-0 hidden"}`}
+            className={`font-display font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-800 dark:from-emerald-400 dark:to-emerald-600 tracking-tight transition-all duration-300 shrink-0 truncate ${isOpen ? "opacity-100 max-w-xs ml-5" : "opacity-0 max-w-0 ml-0"}`}
           >
             UmaMasa
           </span>
@@ -85,11 +83,9 @@ export default function AdminSidebar() {
           to="/dashboard"
           className={({ isActive }) => `${baseLinkStyle} ${isActive ? activeStyle : inactiveStyle}`}
         >
-          <LayoutGridIcon
-            className={`h-5 w-5 shrink-0 transition-colors ${isOpen ? "mr-4" : "mx-auto"}`}
-          />
+          <LayoutGridIcon className={`h-5 w-5 shrink-0 transition-colors ml-[2px] mr-[1px]`} />
           <span
-            className={`truncate transition-all duration-300 ${isOpen ? "opacity-100 w-auto" : "opacity-0 w-0 hidden"}`}
+            className={`truncate transition-all duration-300 ${isOpen ? "opacity-100 max-w-xs ml-5" : "opacity-0 max-w-0 ml-0"}`}
           >
             Dashboard
           </span>
@@ -99,11 +95,9 @@ export default function AdminSidebar() {
           to="/inventory"
           className={({ isActive }) => `${baseLinkStyle} ${isActive ? activeStyle : inactiveStyle}`}
         >
-          <ArchiveIcon
-            className={`h-5 w-5 shrink-0 transition-colors ${isOpen ? "mr-4" : "mx-auto"}`}
-          />
+          <ArchiveIcon className={`h-5 w-5 shrink-0 transition-colors ml-[2px] mr-[1px]`} />
           <span
-            className={`truncate transition-all duration-300 ${isOpen ? "opacity-100 w-auto" : "opacity-0 w-0 hidden"}`}
+            className={`truncate transition-all duration-300 ${isOpen ? "opacity-100 max-w-xs ml-5" : "opacity-0 max-w-0 ml-0"}`}
           >
             Inventory
           </span>
@@ -113,11 +107,9 @@ export default function AdminSidebar() {
           to="/ordersman"
           className={({ isActive }) => `${baseLinkStyle} ${isActive ? activeStyle : inactiveStyle}`}
         >
-          <TruckIcon
-            className={`h-5 w-5 shrink-0 transition-colors ${isOpen ? "mr-4" : "mx-auto"}`}
-          />
+          <TruckIcon className={`h-5 w-5 shrink-0 transition-colors ml-[2px] mr-[1px]`} />
           <span
-            className={`truncate transition-all duration-300 ${isOpen ? "opacity-100 w-auto" : "opacity-0 w-0 hidden"}`}
+            className={`truncate transition-all duration-300 ${isOpen ? "opacity-100 max-w-xs ml-5" : "opacity-0 max-w-0 ml-0"}`}
           >
             Orders
           </span>
@@ -127,11 +119,9 @@ export default function AdminSidebar() {
           to="/userman"
           className={({ isActive }) => `${baseLinkStyle} ${isActive ? activeStyle : inactiveStyle}`}
         >
-          <User2Icon
-            className={`h-5 w-5 shrink-0 transition-colors ${isOpen ? "mr-4" : "mx-auto"}`}
-          />
+          <User2Icon className={`h-5 w-5 shrink-0 transition-colors ml-[2px] mr-[1px]`} />
           <span
-            className={`truncate transition-all duration-300 ${isOpen ? "opacity-100 w-auto" : "opacity-0 w-0 hidden"}`}
+            className={`truncate transition-all duration-300 ${isOpen ? "opacity-100 max-w-xs ml-5" : "opacity-0 max-w-0 ml-0"}`}
           >
             Users
           </span>
@@ -141,11 +131,9 @@ export default function AdminSidebar() {
           to="/analytics"
           className={({ isActive }) => `${baseLinkStyle} ${isActive ? activeStyle : inactiveStyle}`}
         >
-          <PieChartIcon
-            className={`h-5 w-5 shrink-0 transition-colors ${isOpen ? "mr-4" : "mx-auto"}`}
-          />
+          <PieChartIcon className={`h-5 w-5 shrink-0 transition-colors ml-[2px] mr-[1px]`} />
           <span
-            className={`truncate transition-all duration-300 ${isOpen ? "opacity-100 w-auto" : "opacity-0 w-0 hidden"}`}
+            className={`truncate transition-all duration-300 ${isOpen ? "opacity-100 max-w-xs ml-5" : "opacity-0 max-w-0 ml-0"}`}
           >
             Analytics
           </span>
@@ -153,11 +141,11 @@ export default function AdminSidebar() {
       </div>
 
       {/* Bottom Profile Section */}
-      <div className="p-4 border-t border-border mt-auto">
+      <div className="p-2 border-t border-border mt-auto">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className={`flex items-center w-full gap-3 p-2 rounded-xl hover:bg-muted/50 transition-colors outline-none focus:ring-2 focus:ring-emerald-500/20 ${isOpen ? "justify-start" : "justify-center"}`}
+              className={`flex items-center w-full gap-3 p-2 rounded-xl hover:bg-muted/50 transition-colors outline-none focus:ring-2 focus:ring-emerald-500/20 ${!isOpen && "max-w-[56px]"}`}
             >
               <Avatar className="h-10 w-10 shrink-0 ring-2 ring-emerald-500/10">
                 <AvatarFallback className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-sm">
@@ -165,7 +153,7 @@ export default function AdminSidebar() {
                 </AvatarFallback>
               </Avatar>
               <div
-                className={`flex flex-col flex-1 text-left overflow-hidden transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0 w-0 hidden"}`}
+                className={`flex flex-col flex-1 text-left overflow-hidden transition-all duration-300 ${isOpen ? "opacity-100 max-w-xs ml-5" : "opacity-0 max-w-0 ml-0"}}`}
               >
                 <span className="text-sm font-bold text-foreground truncate w-full">
                   {user?.firstname || "Admin"} {user?.lastname || "User"}
