@@ -1,17 +1,80 @@
-# Farm-To-Table (CMSC100 Final Project)
+# UmaMASA
 
-This repository contains the source code for the Farm-To-Table e-commerce platform, built using the MERN stack with TypeScript.
+This repository contains the source code for the **UmaMASA** e-commerce platform: a MERN stack application (MongoDB, Express, React, Node) with TypeScript. Customers browse a produce market, manage a cart, and track orders; administrators manage inventory, orders, users, and analytics.
+
+## Features
+
+### Customer experience
+
+- **Authentication** — Sign up and sign in with role-based access (`user` vs `admin`).
+- **Market (home)** — Browse available products and add items to the cart.
+- **Shopping cart & checkout** — Review items and complete purchases.
+- **Order history** — View past and current orders after checkout.
+- **Assistant chatbot** — Floating helper on customer-facing pages for guidance and support-style interaction.
+
+### Admin experience
+
+- **Dashboard** — High-level overview of store activity and key metrics.
+- **Order management** — Review, confirm, and complete customer orders through the workflow.
+- **Inventory** — Maintain product listings (including image handling via Cloudinary on the backend).
+- **User management** — Inspect and manage registered accounts.
+- **Analytics / sales reporting** — Charts and summaries for sales performance.
+
+### Platform
+
+- **Responsive UI** with light/dark theme support on the admin sidebar.
+- **REST API** with JWT-protected routes and separate admin endpoints.
+- **Docker** configuration for production-style deployment.
+
+## Screenshots
+
+### Authentication
+
+| Login        | Sign up        |
+| ------------ | -------------- |
+| Login screen | Sign up screen |
+
+### Shopping (customer)
+
+| Market        | Cart          | User orders |
+| ------------- | ------------- | ----------- |
+| Market / home | Shopping cart | User orders |
+
+### Assistant
+
+| Chatbot |
+| ------- |
+| Chatbot |
+
+### Admin — navigation & dashboard
+
+| Admin sidebar | Dashboard (1)   | Dashboard (2)                  |
+| ------------- | --------------- | ------------------------------ |
+| Admin sidebar | Admin dashboard | Admin dashboard alternate view |
+
+### Admin — operations & analytics
+
+| Admin orders | Inventory | User management | Analytics (1) | Analytics (2)       |
+| ------------ | --------- | --------------- | ------------- | ------------------- |
+| Admin orders | Inventory | User management | Analytics     | Analytics alternate |
+
+## Usage guidelines
+
+1. **Roles** — New registrations default to the **user** role. The first **admin** account is created when the backend starts if no admin exists and `ADMIN_SEED_EMAIL` / `ADMIN_SEED_PASSWORD` are set in `backend/.env` (see [Local development setup](#local-development-setup)).
+2. **Where things live** — After signing in as a **user**, use the main navigation for market, cart, checkout, and orders. After signing in as an **admin**, use the **admin sidebar** for dashboard, user management, inventory, order management, and analytics.
+3. **Secrets** — Never commit real `.env` files. Use the provided `.env.example` files as templates only; rotate any credentials that were ever exposed.
+4. **Database** — The app expects a reachable MongoDB Atlas (or compatible) URI. Without a valid `MONGODB_URI`, the API will not function correctly.
+5. **Media uploads** — Product images rely on **Cloudinary** credentials in the backend `.env`. Missing or placeholder values may break or limit image upload features.
+6. **Deployment** — Follow your team’s branching policy. This project is set up so pushes to `main` can sync to hosted frontend (Vercel) and backend (Render); avoid pushing experimental work directly to `main` unless you intend to release it.
 
 ## Prerequisites
 
-Before starting, ensure you have the following installed on your machine:
+- **Node.js** v18 or higher (recommended)
+- **Git**
+- **MongoDB** connection string (Atlas is typical for this project)
+- Optional for full admin inventory flows: **Cloudinary** account (cloud name, API key, API secret)
 
-- Node.js (v18 or higher recommended)
-- Git
-
-## Local Development Setup
-
-Follow these steps to get the project running on your local machine.
+## Local development setup
 
 ### 1. Clone the repository
 
@@ -22,42 +85,52 @@ cd final-project-Nero
 
 ### 2. Install dependencies
 
-Run the following command from the root directory. This will install dependencies for the root workspace, the frontend, and the backend all at once:
+From the repository root (installs root, frontend, and backend):
 
 ```bash
 npm run install:all
 ```
 
-### 3. Set up environment variables
+### 3. Environment variables
 
-You need to create local environment files for both the frontend and backend. Templates are provided.
+**Backend — `backend/.env`**
 
-**Backend (.env)**
-Navigate to the `backend` directory, copy the example file, and update it with the MongoDB Atlas connection string (ask the repository owner for the database credentials):
+Copy the example file and fill in real values:
 
 ```bash
 cd backend
 cp .env.example .env
 ```
 
-Ensure your `backend/.env` looks like this:
+Your `backend/.env` should include at least:
 
 ```env
 PORT=4000
-MONGODB_URI=<Replace with the provided Atlas connection string>
+MONGODB_URI=<your MongoDB connection string>
 CLIENT_URL=http://localhost:5173
 NODE_ENV=development
+JWT_SECRET=<a long random string used to sign sessions>
+
+# Used once to seed the first admin if none exists
+ADMIN_SEED_EMAIL=<admin email you will log in with>
+ADMIN_SEED_PASSWORD=<strong password>
+
+# Required for product image uploads
+CLOUDINARY_CLOUD_NAME=<your Cloudinary cloud name>
+CLOUDINARY_API_KEY=<your API key>
+CLOUDINARY_API_SECRET=<your API secret>
 ```
 
-**Frontend (.env)**
-Navigate to the `frontend` directory and copy the example file:
+Ask your course team or repository maintainer for shared dev credentials if the course provides them.
+
+**Frontend — `frontend/.env`**
 
 ```bash
 cd ../frontend
 cp .env.example .env
 ```
 
-Ensure your `frontend/.env` looks like this:
+Typical local content:
 
 ```env
 VITE_API_URL=http://localhost:4000/api
@@ -65,27 +138,29 @@ VITE_API_URL=http://localhost:4000/api
 
 ### 4. Run the development servers
 
-Return to the root directory of the project and start both the frontend and backend concurrently:
+From the **repository root**:
 
 ```bash
 cd ..
 npm run dev
 ```
 
-- The frontend will be available at: http://localhost:5173
-- The backend API will be available at: http://localhost:4000
-- You can test the backend health route at: http://localhost:4000/api/health
+- **Frontend:** [http://localhost:5173](http://localhost:5173)
+- **Backend API:** [http://localhost:4000](http://localhost:4000)
+- **Health check:** [http://localhost:4000/api/health](http://localhost:4000/api/health)
 
-## Useful Scripts (Run from root)
+Log in with the seeded admin email/password after the backend has started at least once with valid admin seed variables, or register a new user for the customer flow.
 
-- `npm run dev`: Starts both frontend and backend in development mode with hot-reloading.
-- `npm run dev:frontend`: Starts only the frontend.
-- `npm run dev:backend`: Starts only the backend.
-- `npm run build`: Compiles TypeScript and builds both projects for production.
+## Useful scripts (run from repository root)
 
-## Deployment Notes
+| Script                 | Description                                          |
+| ---------------------- | ---------------------------------------------------- |
+| `npm run dev`          | Start frontend and backend together with hot reload. |
+| `npm run dev:frontend` | Start only the Vite frontend.                        |
+| `npm run dev:backend`  | Start only the Express backend.                      |
+| `npm run build`        | Build backend then frontend for production.          |
 
-- The project is configured with Docker for production deployment.
-- Code pushed to the `main` branch is automatically synced and deployed to Vercel (Frontend) and Render (Backend). Do not push directly to `main` unless you are releasing a feature.
+## Deployment notes
 
-  
+- The project includes **Docker** for production-style deployment.
+- Code pushed to `**main`** may be deployed automatically to **Vercel** (frontend) and **Render\*\* (backend). Coordinate with your team before pushing release-sensitive changes to `main`.
