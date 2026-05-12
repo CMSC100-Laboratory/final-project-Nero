@@ -30,33 +30,33 @@ This repository contains the source code for the **UmaMASA** e-commerce platform
 
 ### Authentication
 
-| Login                        | Sign up                       |
-| ---------------------------- | ----------------------------- |
-| ./docs/screenshots/Login.png | ./docs/screenshots/Signup.png |
+| Login                                       | Sign up                                        |
+| ------------------------------------------- | ---------------------------------------------- |
+| ![Login screen](docs/screenshots/Login.png) | ![Sign up screen](docs/screenshots/Signup.png) |
 
 ### Shopping (customer)
 
-| Market                        | Cart                        | User orders                        |
-| ----------------------------- | --------------------------- | ---------------------------------- |
-| ./docs/screenshots/Market.png | ./docs/screenshots/Cart.png | ./docs/screenshots/User_Orders.png |
+| Market                                        | Cart                                        | User orders                                      |
+| --------------------------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| ![Market / home](docs/screenshots/Market.png) | ![Shopping cart](docs/screenshots/Cart.png) | ![User orders](docs/screenshots/User_Orders.png) |
 
 ### Assistant
 
-| Chatbot                        |
-| ------------------------------ |
-| ./docs/screenshots/Chatbot.png |
+| Chatbot                                  |
+| ---------------------------------------- |
+| ![Chatbot](docs/screenshots/Chatbot.png) |
 
 ### Admin — navigation & dashboard
 
-| Admin sidebar                  | Dashboard (1)                           | Dashboard (2)                           |
-| ------------------------------ | --------------------------------------- | --------------------------------------- |
-| ./docs/screenshots/Sidebar.png | ./docs/screenshots/Admin_Dashboard1.png | ./docs/screenshots/Admin_Dashboard2.png |
+| Admin sidebar                                  | Dashboard (1)                                             | Dashboard (2)                                                            |
+| ---------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ![Admin sidebar](docs/screenshots/Sidebar.png) | ![Admin dashboard](docs/screenshots/Admin_Dashboard1.png) | ![Admin dashboard alternate view](docs/screenshots/Admin_Dashboard2.png) |
 
 ### Admin — operations & analytics
 
-| Admin orders                        | Inventory                        | User management                        | Analytics (1)                     | Analytics (2)                     |
-| ----------------------------------- | -------------------------------- | -------------------------------------- | --------------------------------- | --------------------------------- |
-| ./docs/screenshots/Admin_Orders.png | ./docs/screenshots/Inventory.png | ./docs/screenshots/User_Management.png | ./docs/screenshots/Analytics1.png | ./docs/screenshots/Analytics2.png |
+| Admin orders                                       | Inventory                                    | User management                                          | Analytics (1)                                 | Analytics (2)                                           |
+| -------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------- |
+| ![Admin orders](docs/screenshots/Admin_Orders.png) | ![Inventory](docs/screenshots/Inventory.png) | ![User management](docs/screenshots/User_Management.png) | ![Analytics](docs/screenshots/Analytics1.png) | ![Analytics alternate](docs/screenshots/Analytics2.png) |
 
 ## Usage guidelines
 
@@ -163,4 +163,4 @@ Log in with the seeded admin email/password after the backend has started at lea
 ## Deployment notes
 
 - The project includes **Docker** for production-style deployment.
-- Code pushed to `**main`** may be deployed automatically to **Vercel** (frontend) and **Render\*\* (backend). Coordinate with your team before pushing release-sensitive changes to `main`.
+- Code pushed to **main** may be deployed automatically to **Vercel** (frontend) and **Render** (backend). Coordinate with your team before pushing release-sensitive changes to **main**.
