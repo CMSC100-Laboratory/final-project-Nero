@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
+import Landing from "@/pages/Landing";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -27,8 +28,11 @@ function App() {
       {!isAuthPage && !isAdminPage && <Navbar />}
       {!isAuthPage && !isAdminPage && <Sagbot />}
       <Routes>
+        {/* Unauthenticated Landing Route */}
+        <Route path="/" element={<Landing />} />
+
         <Route element={<PrivateRoute allowedRoles={["user"]} />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/market" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orders" element={<Orders />} />

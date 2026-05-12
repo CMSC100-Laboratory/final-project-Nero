@@ -47,7 +47,10 @@ export default function Navbar() {
       <div className="container flex h-16 items-center justify-between gap-4">
         {/* Left - Brand */}
         <div className="flex shrink-0 items-center">
-          <Link to="/" className="flex items-center space-x-2 group">
+          <Link
+            to={isAuthenticated ? (user?.userType === "admin" ? "/dashboard" : "/market") : "/"}
+            className="flex items-center space-x-2 group"
+          >
             <div className="bg-primary/10 p-1.5 rounded-xl group-hover:bg-primary/20 transition-colors">
               <Leaf className="h-5 w-5 text-primary" strokeWidth={2.5} />
             </div>
@@ -84,7 +87,7 @@ export default function Navbar() {
                 {user?.userType === "user" ? (
                   <>
                     <Link
-                      to="/"
+                      to="/market"
                       className="group flex items-center gap-1.5 hover:text-primary transition-colors relative py-1"
                     >
                       <Store className="h-4 w-4 mb-0.5 text-primary/70 group-hover:text-primary transition-colors" />
@@ -168,7 +171,7 @@ export default function Navbar() {
                     {user?.userType === "user" ? (
                       <>
                         <DropdownMenuItem className="py-2.5 cursor-pointer rounded-md" asChild>
-                          <Link to="/" className="flex items-center gap-2">
+                          <Link to="/market" className="flex items-center gap-2">
                             <Store className="h-4 w-4 text-muted-foreground" />
                             <span className="font-medium">Market</span>
                           </Link>
