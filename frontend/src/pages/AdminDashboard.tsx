@@ -339,7 +339,7 @@ export default function AdminDashboard() {
       {/* Bottom Section: Popular Products & Recent Orders */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-1000 fill-mode-backwards">
         {/* Popular Products */}
-        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col">
+        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col min-w-0">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold text-foreground">Popular Products</h3>
             <button
@@ -357,7 +357,7 @@ export default function AdminDashboard() {
                 <p className="text-sm font-medium">No sales data yet</p>
               </div>
             ) : (
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse min-w-[500px]">
                 <thead>
                   <tr className="border-b border-border">
                     <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -405,7 +405,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Orders */}
-        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col">
+        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col min-w-0">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold text-foreground">Recent Orders</h3>
             <button
@@ -423,7 +423,7 @@ export default function AdminDashboard() {
                 <p className="text-sm font-medium">No orders yet</p>
               </div>
             ) : (
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse min-w-[500px]">
                 <thead>
                   <tr className="border-b border-border">
                     <th className="pb-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">

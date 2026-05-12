@@ -71,6 +71,7 @@
     @apply border-border;
   }
   body {
+    @apply break-words;
     @apply bg-background text-foreground font-sans;
   }
 
@@ -82,5 +83,13 @@
     -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
     -webkit-text-fill-color: white !important;
     transition: background-color 5000s ease-in-out 0s;
+  }
+}
+
+@layer utilities {
+  html,
+  body {
+    @apply break-words;
+    overflow-x: hidden;
   }
 }
