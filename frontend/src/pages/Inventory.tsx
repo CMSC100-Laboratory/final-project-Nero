@@ -214,7 +214,7 @@ export default function Inventory() {
               </Button>
             </div>
           ) : (
-            <Table>
+            <Table className="min-w-[800px]">
               <TableHeader>
                 <TableRow className="bg-muted/30 hover:bg-muted/30">
                   <TableHead className="font-bold text-xs uppercase tracking-wider text-muted-foreground">

@@ -31,7 +31,7 @@ export default function PrivateRoute({ allowedRoles, layout = "default" }: Priva
     return (
       <div className="min-h-screen bg-background flex">
         <AdminSidebar />
-        <div className="flex-1 admin-content">
+        <div className="flex-1 admin-content min-w-0">
           <Outlet />
         </div>
       </div>

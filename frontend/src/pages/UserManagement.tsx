@@ -147,20 +147,20 @@ export default function UserManagement() {
       </div>
 
       {/* Filters & Search Container */}
-      <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border mb-6 flex flex-col md:flex-row gap-4 justify-between items-center z-10 relative">
-        <div className="flex w-full md:w-auto items-center relative group">
+      <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border mb-6 flex flex-col min-[918px]:flex-row gap-4 justify-between items-center z-10 relative">
+        <div className="flex w-full min-[918px]:w-auto items-center relative group">
           <Search className="w-5 h-5 absolute left-4 text-muted-foreground group-focus-within:text-emerald-500 transition-colors" />
           <input
             type="text"
             placeholder="Search users by name or email..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full md:w-[350px] bg-muted/50 border border-border rounded-2xl pl-12 pr-4 py-3 text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50 transition-all"
+            className="w-full min-[918px]:w-[350px] bg-muted/50 border border-border rounded-2xl pl-12 pr-4 py-3 text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50 transition-all"
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-          <span className="text-sm font-semibold text-muted-foreground mr-2 hidden md:block">
+        <div className="flex flex-wrap items-center gap-3 w-full min-[918px]:w-auto">
+          <span className="text-sm font-semibold text-muted-foreground mr-2 hidden min-[918px]:block">
             {filteredAndSortedUsers.length} Users
           </span>
           <DropdownMenu>
@@ -229,7 +229,7 @@ export default function UserManagement() {
       {/* Modern Table Container */}
       <div className="bg-card rounded-3xl shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border overflow-hidden min-h-[400px] flex flex-col animate-in fade-in slide-in-from-bottom-8 duration-700 delay-150 fill-mode-backwards">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
               <tr className="border-b border-border bg-muted/30">
                 <th className="py-5 px-6 text-xs font-bold text-muted-foreground uppercase tracking-widest w-[30%]">
