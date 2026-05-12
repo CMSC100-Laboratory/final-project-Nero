@@ -6,19 +6,19 @@ This repository contains the source code for the **UmaMASA** e-commerce platform
 
 ### Customer experience
 
-- **Authentication** — Sign up and sign in with role-based access (`user` vs `admin`).
-- **Market (home)** — Browse available products and add items to the cart.
-- **Shopping cart & checkout** — Review items and complete purchases.
-- **Order history** — View past and current orders after checkout.
-- **Assistant chatbot** — Floating helper on customer-facing pages for guidance and support-style interaction.
+- **Authentication** - Sign up and sign in with role-based access (`user` vs `admin`).
+- **Market (home)** - Browse available products and add items to the cart.
+- **Shopping cart & checkout** - Review items and complete purchases.
+- **Order history** - View past and current orders after checkout.
+- **Assistant chatbot** - Floating helper on customer-facing pages for guidance and support-style interaction.
 
 ### Admin experience
 
-- **Dashboard** — High-level overview of store activity and key metrics.
-- **Order management** — Review, confirm, and complete customer orders through the workflow.
-- **Inventory** — Maintain product listings (including image handling via Cloudinary on the backend).
-- **User management** — Inspect and manage registered accounts.
-- **Analytics / sales reporting** — Charts and summaries for sales performance.
+- **Dashboard** - High-level overview of store activity and key metrics.
+- **Order management** - Review, confirm, and complete customer orders through the workflow.
+- **Inventory** - Maintain product listings (including image handling via Cloudinary on the backend).
+- **User management** - Inspect and manage registered accounts.
+- **Analytics / sales reporting** - Charts and summaries for sales performance.
 
 ### Platform
 
@@ -60,12 +60,11 @@ This repository contains the source code for the **UmaMASA** e-commerce platform
 
 ## Usage guidelines
 
-1. **Roles** — New registrations default to the **user** role. The first **admin** account is created when the backend starts if no admin exists and `ADMIN_SEED_EMAIL` / `ADMIN_SEED_PASSWORD` are set in `backend/.env` (see [Local development setup](#local-development-setup)).
-2. **Where things live** — After signing in as a **user**, use the main navigation for market, cart, checkout, and orders. After signing in as an **admin**, use the **admin sidebar** for dashboard, user management, inventory, order management, and analytics.
-3. **Secrets** — Never commit real `.env` files. Use the provided `.env.example` files as templates only; rotate any credentials that were ever exposed.
-4. **Database** — The app expects a reachable MongoDB Atlas (or compatible) URI. Without a valid `MONGODB_URI`, the API will not function correctly.
-5. **Media uploads** — Product images rely on **Cloudinary** credentials in the backend `.env`. Missing or placeholder values may break or limit image upload features.
-6. **Deployment** — Follow your team’s branching policy. This project is set up so pushes to `main` can sync to hosted frontend (Vercel) and backend (Render); avoid pushing experimental work directly to `main` unless you intend to release it.
+1. **Roles** - New registrations default to the **user** role. The first **admin** account is created when the backend starts if no admin exists and `ADMIN_SEED_EMAIL` / `ADMIN_SEED_PASSWORD` are set in `backend/.env`.
+2. **Where things live** - After signing in as a **user**, use the main navigation for market, cart, checkout, and orders. After signing in as an **admin**, use the **admin sidebar** for dashboard, user management, inventory, order management, and analytics.
+3. **Secrets** - Never commit real `.env` files. Use the provided `.env.example` files as templates only; rotate any credentials that were ever exposed.
+4. **Database** - The app expects a reachable MongoDB Atlas (or compatible) URI. Without a valid `MONGODB_URI`, the API will not function correctly.
+5. **Media uploads** - Product images rely on **Cloudinary** credentials in the backend `.env`. Missing or placeholder values may break or limit image upload features.
 
 ## Prerequisites
 
@@ -163,4 +162,4 @@ Log in with the seeded admin email/password after the backend has started at lea
 ## Deployment notes
 
 - The project includes **Docker** for production-style deployment.
-- Code pushed to **main** may be deployed automatically to **Vercel** (frontend) and **Render** (backend). Coordinate with your team before pushing release-sensitive changes to **main**.
+- Code pushed to **main** may be deployed automatically to **Vercel** (frontend) and **Render** (backend).
