@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { apiFetch } from "@/lib/api";
 import { User, Mail, Lock, ShieldCheck, Sun, Moon, ArrowRight, Loader2, Leaf } from "lucide-react";
@@ -20,6 +21,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { checkAuth } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -44,6 +46,7 @@ export default function Register() {
       });
 
       if (response.ok) {
+        await checkAuth();
         navigate("/");
       } else {
         const data = (await response.json()) as { message?: string };
