@@ -9,6 +9,10 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
 } from "recharts";
 import {
   Users,
@@ -89,6 +93,25 @@ export default function AdminDashboard() {
 
   const pendingOrdersCount = useMemo(() => {
     return orders.filter((o) => o.orderStatus === 0).length;
+  }, [orders]);
+
+  const orderStatusData = useMemo(() => {
+    let pending = 0,
+      confirmed = 0,
+      completed = 0,
+      cancelled = 0;
+    orders.forEach((o) => {
+      if (o.orderStatus === 0) pending++;
+      else if (o.orderStatus === 1) confirmed++;
+      else if (o.orderStatus === 2) cancelled++;
+      else if (o.orderStatus === 3) completed++;
+    });
+    return [
+      { name: "Pending", value: pending, color: "#f59e0b" },
+      { name: "Confirmed", value: confirmed, color: "#3b82f6" },
+      { name: "Completed", value: completed, color: "#10b981" },
+      { name: "Cancelled", value: cancelled, color: "#ef4444" },
+    ].filter((d) => d.value > 0);
   }, [orders]);
 
   const salesChartData = useMemo(() => {
@@ -274,65 +297,121 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Middle Section: Monthly Sales Analytics */}
-      <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-700 fill-mode-backwards">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-bold text-foreground">Revenue Analytics</h3>
-          <div className="px-4 py-1.5 bg-muted text-muted-foreground text-xs font-semibold rounded-full border border-border">
-            {new Date().getFullYear()}
+      {/* Middle Section: Monthly Sales Analytics & Order Status */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-700 fill-mode-backwards">
+        <div className="lg:col-span-2 bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-bold text-foreground">Revenue Analytics</h3>
+            <div className="px-4 py-1.5 bg-muted text-muted-foreground text-xs font-semibold rounded-full border border-border">
+              {new Date().getFullYear()}
+            </div>
+          </div>
+          <div className="h-[350px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={salesChartData} margin={{ top: 10, right: 0, bottom: 0, left: 0 }}>
+                <defs>
+                  <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="hsl(var(--border))" />
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 13, fontWeight: 500 }}
+                  dy={10}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 13, fontWeight: 500 }}
+                  dx={-10}
+                  tickFormatter={(val) => `₱${val >= 1000 ? (val / 1000).toFixed(1) + "k" : val}`}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "hsl(var(--card))",
+                    borderRadius: "16px",
+                    border: "1px solid hsl(var(--border))",
+                    boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+                    padding: "12px",
+                  }}
+                  itemStyle={{ color: "hsl(var(--foreground))" }}
+                  labelStyle={{
+                    color: "hsl(var(--muted-foreground))",
+                    fontWeight: "bold",
+                    marginBottom: "4px",
+                  }}
+                  formatter={(value) => [`₱${Number(value || 0).toLocaleString()}`, "Revenue"]}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="sales"
+                  stroke="#10b981"
+                  strokeWidth={4}
+                  fillOpacity={1}
+                  fill="url(#colorSales)"
+                  activeDot={{ r: 8, strokeWidth: 0 }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
         </div>
-        <div className="h-[350px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={salesChartData} margin={{ top: 10, right: 0, bottom: 0, left: 0 }}>
-              <defs>
-                <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="hsl(var(--border))" />
-              <XAxis
-                dataKey="name"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 13, fontWeight: 500 }}
-                dy={10}
-              />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 13, fontWeight: 500 }}
-                dx={-10}
-                tickFormatter={(val) => `₱${val >= 1000 ? (val / 1000).toFixed(1) + "k" : val}`}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "hsl(var(--card))",
-                  borderRadius: "16px",
-                  border: "1px solid hsl(var(--border))",
-                  boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-                  padding: "12px",
-                }}
-                itemStyle={{ color: "hsl(var(--foreground))" }}
-                labelStyle={{
-                  color: "hsl(var(--muted-foreground))",
-                  fontWeight: "bold",
-                  marginBottom: "4px",
-                }}
-                formatter={(value) => [`₱${Number(value || 0).toLocaleString()}`, "Revenue"]}
-              />
-              <Area
-                type="monotone"
-                dataKey="sales"
-                stroke="#10b981"
-                strokeWidth={4}
-                fillOpacity={1}
-                fill="url(#colorSales)"
-                activeDot={{ r: 8, strokeWidth: 0 }}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+
+        {/* Order Status Distribution */}
+        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col min-w-0">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-bold text-foreground">Order Status</h3>
+          </div>
+          <div className="flex-1 w-full flex items-center justify-center -mt-6">
+            {orderStatusData.length === 0 ? (
+              <div className="flex flex-col items-center justify-center text-muted-foreground">
+                <Package className="w-8 h-8 mb-2 opacity-20" />
+                <p className="text-sm font-medium">No order data yet</p>
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={orderStatusData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={70}
+                    outerRadius={100}
+                    paddingAngle={4}
+                    dataKey="value"
+                    stroke="none"
+                  >
+                    {orderStatusData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      borderRadius: "12px",
+                      border: "1px solid hsl(var(--border))",
+                      boxShadow: "0 10px 25px -5px rgba(0,0,0,0.15)",
+                      padding: "10px 14px",
+                    }}
+                    itemStyle={{ color: "hsl(var(--foreground))", fontWeight: 600, fontSize: 13 }}
+                  />
+                  <Legend
+                    verticalAlign="bottom"
+                    height={36}
+                    iconType="circle"
+                    formatter={(value) => (
+                      <span className="text-sm font-semibold text-muted-foreground ml-1">
+                        {value}
+                      </span>
+                    )}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
+          </div>
         </div>
       </div>
 

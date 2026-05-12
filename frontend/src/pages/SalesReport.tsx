@@ -8,6 +8,10 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
 } from "recharts";
 import { DollarSign, Package, ShoppingCart, Loader2, ArrowUpDown } from "lucide-react";
 import { apiFetch } from "@/lib/api";
@@ -174,6 +178,21 @@ export default function SalesReport() {
       .map((y) => ({ name: y, sales: yearMap[Number(y)] }));
   }, [salesOrders, timePeriod]);
 
+  // ── Product Category Breakdown Data ──────────────────────────────────────
+  const categoryData = useMemo(() => {
+    let crops = 0;
+    let poultry = 0;
+    salesOrders.forEach((order) => {
+      const rev = (order.productId?.price || 0) * order.orderQuantity;
+      if (order.productId?.productType === 1) crops += rev;
+      else if (order.productId?.productType === 2) poultry += rev;
+    });
+    return [
+      { name: "Crops", value: crops, color: "#84cc16" }, // lime-500
+      { name: "Poultry", value: poultry, color: "#f97316" }, // orange-500
+    ].filter((d) => d.value > 0);
+  }, [salesOrders]);
+
   // ── Product‐level aggregation ─────────────────────────────────────────────
 
   const productRows = useMemo(() => {
@@ -310,96 +329,157 @@ export default function SalesReport() {
         </div>
       </div>
 
-      {/* ── Revenue Analytics Area Chart ────────────────────────────────── */}
-      <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-700 fill-mode-backwards">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
-          <div className="flex items-center gap-4">
-            <h3 className="text-lg font-bold text-foreground">Revenue Analytics</h3>
-            <Select value={timePeriod} onValueChange={(v) => setTimePeriod(v as TimePeriod)}>
-              <SelectTrigger
-                id="time-period-select"
-                className="w-[110px] h-8 text-xs font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20 rounded-lg hover:bg-emerald-500/20 transition-colors"
-              >
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="rounded-xl">
-                <SelectItem value="WEEK">Week</SelectItem>
-                <SelectItem value="MONTH">Month</SelectItem>
-                <SelectItem value="YEAR">Year</SelectItem>
-              </SelectContent>
-            </Select>
+      {/* ── Revenue Analytics Area Chart & Category Chart ────────────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-700 fill-mode-backwards">
+        {/* Area Chart */}
+        <div className="lg:col-span-2 bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+            <div className="flex items-center gap-4">
+              <h3 className="text-lg font-bold text-foreground">Revenue Analytics</h3>
+              <Select value={timePeriod} onValueChange={(v) => setTimePeriod(v as TimePeriod)}>
+                <SelectTrigger
+                  id="time-period-select"
+                  className="w-[110px] h-8 text-xs font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20 rounded-lg hover:bg-emerald-500/20 transition-colors"
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                  <SelectItem value="WEEK">Week</SelectItem>
+                  <SelectItem value="MONTH">Month</SelectItem>
+                  <SelectItem value="YEAR">Year</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="px-4 py-1.5 bg-muted text-muted-foreground text-xs font-semibold rounded-full border border-border">
+              {new Date().getFullYear()}
+            </div>
           </div>
-          <div className="px-4 py-1.5 bg-muted text-muted-foreground text-xs font-semibold rounded-full border border-border">
-            {new Date().getFullYear()}
+
+          <div className="h-[380px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>
+                <defs>
+                  <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="hsl(var(--border))" />
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12, fontWeight: 500 }}
+                  dy={10}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12, fontWeight: 500 }}
+                  dx={-10}
+                  tickFormatter={(val) => `₱${val >= 1000 ? (val / 1000).toFixed(1) + "k" : val}`}
+                />
+                <Tooltip
+                  cursor={{
+                    stroke: "hsl(var(--muted-foreground))",
+                    strokeWidth: 1,
+                    strokeDasharray: "none",
+                  }}
+                  contentStyle={{
+                    backgroundColor: "hsl(var(--card))",
+                    borderRadius: "12px",
+                    border: "1px solid hsl(var(--border))",
+                    boxShadow: "0 10px 25px -5px rgba(0,0,0,0.15)",
+                    padding: "10px 14px",
+                  }}
+                  itemStyle={{ color: "hsl(var(--foreground))", fontWeight: 600, fontSize: 13 }}
+                  labelStyle={{
+                    color: "hsl(var(--muted-foreground))",
+                    fontWeight: "bold",
+                    fontSize: 13,
+                    marginBottom: "4px",
+                  }}
+                  formatter={(value) => [
+                    `₱${Number(value || 0).toLocaleString(undefined, { minimumFractionDigits: 0 })}`,
+                    "Revenue",
+                  ]}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="sales"
+                  stroke="#10b981"
+                  strokeWidth={3}
+                  fillOpacity={1}
+                  fill="url(#areaGradient)"
+                  activeDot={{
+                    r: 7,
+                    strokeWidth: 3,
+                    stroke: "hsl(var(--card))",
+                    fill: "#10b981",
+                  }}
+                  dot={false}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="h-[380px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>
-              <defs>
-                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="hsl(var(--border))" />
-              <XAxis
-                dataKey="name"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12, fontWeight: 500 }}
-                dy={10}
-              />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12, fontWeight: 500 }}
-                dx={-10}
-                tickFormatter={(val) => `₱${val >= 1000 ? (val / 1000).toFixed(1) + "k" : val}`}
-              />
-              <Tooltip
-                cursor={{
-                  stroke: "hsl(var(--muted-foreground))",
-                  strokeWidth: 1,
-                  strokeDasharray: "none",
-                }}
-                contentStyle={{
-                  backgroundColor: "hsl(var(--card))",
-                  borderRadius: "12px",
-                  border: "1px solid hsl(var(--border))",
-                  boxShadow: "0 10px 25px -5px rgba(0,0,0,0.15)",
-                  padding: "10px 14px",
-                }}
-                itemStyle={{ color: "hsl(var(--foreground))", fontWeight: 600, fontSize: 13 }}
-                labelStyle={{
-                  color: "hsl(var(--muted-foreground))",
-                  fontWeight: "bold",
-                  fontSize: 13,
-                  marginBottom: "4px",
-                }}
-                formatter={(value) => [
-                  `₱${Number(value || 0).toLocaleString(undefined, { minimumFractionDigits: 0 })}`,
-                  "Revenue",
-                ]}
-              />
-              <Area
-                type="monotone"
-                dataKey="sales"
-                stroke="#10b981"
-                strokeWidth={3}
-                fillOpacity={1}
-                fill="url(#areaGradient)"
-                activeDot={{
-                  r: 7,
-                  strokeWidth: 3,
-                  stroke: "hsl(var(--card))",
-                  fill: "#10b981",
-                }}
-                dot={false}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+        {/* Category breakdown */}
+        <div className="bg-card rounded-3xl p-6 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-border flex flex-col min-w-0">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-bold text-foreground">Revenue by Category</h3>
+          </div>
+          <div className="flex-1 w-full flex items-center justify-center -mt-6">
+            {categoryData.length === 0 ? (
+              <div className="flex flex-col items-center justify-center text-muted-foreground">
+                <Package className="w-8 h-8 mb-2 opacity-20" />
+                <p className="text-sm font-medium">No sales data yet</p>
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={70}
+                    outerRadius={100}
+                    paddingAngle={4}
+                    dataKey="value"
+                    stroke="none"
+                  >
+                    {categoryData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      borderRadius: "12px",
+                      border: "1px solid hsl(var(--border))",
+                      boxShadow: "0 10px 25px -5px rgba(0,0,0,0.15)",
+                      padding: "10px 14px",
+                    }}
+                    itemStyle={{ color: "hsl(var(--foreground))", fontWeight: 600, fontSize: 13 }}
+                    formatter={(value) => [
+                      `₱${Number(value || 0).toLocaleString(undefined, { minimumFractionDigits: 0 })}`,
+                      "Revenue",
+                    ]}
+                  />
+                  <Legend
+                    verticalAlign="bottom"
+                    height={36}
+                    iconType="circle"
+                    formatter={(value) => (
+                      <span className="text-sm font-semibold text-muted-foreground ml-1">
+                        {value}
+                      </span>
+                    )}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
+          </div>
         </div>
       </div>
 
