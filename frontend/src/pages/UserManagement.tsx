@@ -53,6 +53,7 @@ export default function UserManagement() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void fetchUsers();
+    document.title = "User Management - UmaMasa Admin";
   }, []);
 
   const handleDeleteUser = async (userId: string) => {

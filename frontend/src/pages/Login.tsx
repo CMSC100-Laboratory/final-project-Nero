@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { apiFetch } from "@/lib/api";
@@ -20,6 +20,10 @@ export default function Login() {
   const navigate = useNavigate();
   const { checkAuth } = useAuth();
   const { theme, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    document.title = "Login - UmaMasa";
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

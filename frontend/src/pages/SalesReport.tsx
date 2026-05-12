@@ -85,6 +85,7 @@ export default function SalesReport() {
       }
     };
     fetchData();
+    document.title = "Sales Report - UmaMasa Admin";
   }, []);
 
   // ── KPI calculations ─────────────────────────────────────────────────────

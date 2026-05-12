@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { apiFetch } from "@/lib/api";
@@ -33,6 +33,10 @@ export default function Checkout() {
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
   const [orderError, setOrderError] = useState("");
+
+  useEffect(() => {
+    document.title = "Checkout - UmaMasa";
+  }, []);
 
   const handlePlaceOrder = async () => {
     if (!address.trim()) {

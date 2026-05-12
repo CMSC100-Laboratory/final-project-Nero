@@ -96,6 +96,7 @@ export default function AdminOrders() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void fetchOrders();
+    document.title = "Orders - UmaMasa Admin";
   }, [fetchOrders]);
 
   const handleUpdateStatus = async (id: string, action: "confirm" | "complete" | "cancel") => {

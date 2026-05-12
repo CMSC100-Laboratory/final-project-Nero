@@ -62,6 +62,7 @@ export default function Orders() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void fetchOrders();
+    document.title = "My Orders - UmaMasa";
   }, [fetchOrders]);
 
   const filteredOrders = orders.filter((order) => {
