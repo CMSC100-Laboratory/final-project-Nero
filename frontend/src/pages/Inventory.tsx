@@ -114,15 +114,15 @@ export default function Inventory() {
 
   return (
     <>
-      <main className="container pt-8 md:pt-14 px-4 max-w-[1200px] mx-auto animate-fade-in flex-1 pb-16">
+      <main className="container pt-8 md:pt-14 px-4 pl-[93px] max-w-[1200px] mx-auto animate-fade-in flex-1 pb-16">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-2">
           <div>
             <h1 className="font-display text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
               Inventory
             </h1>
-            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mt-1">
-              Products List
+            <p className="text-sm font-medium text-muted-foreground mt-2">
+              View and manage products to be sold
             </p>
           </div>
           <Button

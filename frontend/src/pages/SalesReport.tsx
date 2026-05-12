@@ -230,7 +230,7 @@ export default function SalesReport() {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <main className="container pt-8 md:pt-14 px-4 sm:px-8 max-w-[1200px] mx-auto animate-fade-in flex-1 pb-16">
+    <main className="container pt-8 md:pt-14 px-4 pl-[93px] sm:px-8 sm:pl-[109px] max-w-[1200px] mx-auto animate-fade-in flex-1 pb-16">
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-backwards">
         <div>
