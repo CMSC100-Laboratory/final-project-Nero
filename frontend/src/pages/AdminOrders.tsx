@@ -155,20 +155,20 @@ export default function AdminOrders() {
       </div>
 
       {/* Subheader: count + filters */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 mt-4">
+      <div className="flex flex-col min-[680px]:flex-row justify-between items-start min-[680px]:items-center gap-4 mb-6 mt-4">
         <p className="text-sm text-muted-foreground">
           Showing <span className="font-semibold text-foreground">{filteredOrders.length}</span> of{" "}
           <span className="font-semibold text-foreground">{orders.length}</span> products
         </p>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
+        <div className="flex flex-col min-[680px]:flex-row items-start min-[680px]:items-center gap-4 w-full min-[680px]:w-auto">
           {/* Filter */}
-          <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="flex items-center gap-3 w-full min-[680px]:w-auto">
             <span className="text-xs font-semibold tracking-widest text-muted-foreground uppercase whitespace-nowrap">
               Filter by Status
             </span>
             <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="w-full sm:w-[130px] h-9 bg-muted/50 border-border focus:ring-primary/40 rounded-full text-xs font-medium">
+              <SelectTrigger className="w-full min-[680px]:w-[130px] h-9 bg-muted/50 border-border focus:ring-primary/40 rounded-full text-xs font-medium">
                 <SelectValue placeholder="None" />
               </SelectTrigger>
               <SelectContent className="rounded-xl border-border bg-card">
@@ -182,12 +182,12 @@ export default function AdminOrders() {
           </div>
 
           {/* Sort */}
-          <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="flex items-center gap-3 w-full min-[680px]:w-auto">
             <span className="text-xs font-semibold tracking-widest text-muted-foreground uppercase whitespace-nowrap">
               Sort by
             </span>
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-full sm:w-[140px] h-9 bg-muted/50 border-border focus:ring-primary/40 rounded-full text-xs font-medium">
+              <SelectTrigger className="w-full min-[680px]:w-[140px] h-9 bg-muted/50 border-border focus:ring-primary/40 rounded-full text-xs font-medium">
                 <SelectValue placeholder="Newest" />
               </SelectTrigger>
               <SelectContent className="rounded-xl border-border bg-card">
