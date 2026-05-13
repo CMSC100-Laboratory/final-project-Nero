@@ -101,7 +101,7 @@ export default function Orders() {
         </h1>
 
         {/* Filters section */}
-        <div className="overflow-x-auto pb-4 sm:pb-0 mb-4 sm:mb-0 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="overflow-x-auto pb-4 sm:pb-0 mb-4 sm:mb-0 w-full">
           <ButtonGroup className="min-w-max sm:min-w-0 w-full">
             <Button
               className={`w-full rounded-full font-bold h-12 text-[14px] border-transparent shadow-none transition-all px-6 sm:px-0 ${
