@@ -3,24 +3,47 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 210 20% 98%; /* #f8f9fa */
-    --foreground: 195 7% 11%; /* #191c1d */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+  }
 
-    --card: 0 0% 100%; /* #ffffff */
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  :root {
+    --background: 210 20% 98%;
+    /* #f8f9fa */
+    --foreground: 195 7% 11%;
+    /* #191c1d */
+
+    --card: 0 0% 100%;
+    /* #ffffff */
     --card-foreground: 195 7% 11%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 195 7% 11%;
 
-    --primary: 156 100% 9%; /* #002d1c */
-    --primary-foreground: 0 0% 100%; /* #ffffff */
+    --primary: 156 100% 9%;
+    /* #002d1c */
+    --primary-foreground: 0 0% 100%;
+    /* #ffffff */
 
-    --secondary: 79 38% 81%; /* #d7e5bb */
-    --secondary-foreground: 80 20% 34%; /* #5a6745 */
+    --secondary: 79 38% 81%;
+    /* #d7e5bb */
+    --secondary-foreground: 80 20% 34%;
+    /* #5a6745 */
 
-    --muted: 210 11% 94%; /* #edeeef */
-    --muted-foreground: 20 33% 15%; /* #322319 */
+    --muted: 210 11% 94%;
+    /* #edeeef */
+    --muted-foreground: 20 33% 15%;
+    /* #322319 */
 
     --accent: 210 11% 94%;
     --accent-foreground: 195 7% 11%;
@@ -28,8 +51,10 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 135 7% 76%; /* #c1c8c2 */
-    --input: 210 4% 91%; /* #e7e8e9 */
+    --border: 135 7% 76%;
+    /* #c1c8c2 */
+    --input: 210 4% 91%;
+    /* #e7e8e9 */
     --ring: 156 100% 9%;
 
     --radius: 0.5rem;
@@ -45,7 +70,8 @@
     --popover: 195 7% 11%;
     --popover-foreground: 210 20% 98%;
 
-    --primary: 147 68% 82%; /* #b1f0ce */
+    --primary: 147 68% 82%;
+    /* #b1f0ce */
     --primary-foreground: 156 100% 9%;
 
     --secondary: 80 20% 34%;
@@ -70,6 +96,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply break-words;
     @apply bg-background text-foreground font-sans;
