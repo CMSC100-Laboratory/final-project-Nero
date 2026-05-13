@@ -333,7 +333,7 @@ export default function Register() {
             >
               Already have an account?{" "}
               <Link
-                to="/"
+                to="/login"
                 className="font-black text-primary hover:text-primary/80 transition-colors border-b-2 border-primary/20 hover:border-primary/50 pb-0.5"
               >
                 Sign in here

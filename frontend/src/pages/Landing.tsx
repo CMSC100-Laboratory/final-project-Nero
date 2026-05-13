@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Leaf, ShieldCheck, ShoppingCart, ArrowRight } from "lucide-react";
+import { Check } from "lucide-react";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/context/AuthContext";
-import { Navigate } from "react-router-dom";
 
 export default function Landing() {
   const { isAuthenticated, user } = useAuth();
@@ -17,90 +16,142 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col font-sans">
-      <main className="flex-1 flex flex-col relative overflow-hidden">
-        {/* Animated Background blob */}
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-emerald-500/10 blur-[100px] pointer-events-none" />
-        <div className="absolute top-[20%] right-[-5%] w-[30%] h-[50%] rounded-full bg-blue-500/10 blur-[100px] pointer-events-none" />
-
-        <div className="container max-w-[1200px] mx-auto px-4 md:px-8 py-24 md:py-32 flex flex-col items-center text-center relative z-10">
-          <div className="bg-primary/10 text-primary px-4 py-2 rounded-full font-bold text-xs uppercase tracking-widest mb-6 inline-flex items-center gap-2">
-            <Leaf className="w-4 h-4" /> Fresh Local Produce
+      <main className="flex-1 w-full flex flex-col">
+        {/* HERO SECTION */}
+        <section className="relative w-full pt-16 flex flex-col items-center">
+          {/* Split Background */}
+          <div className="absolute inset-0 flex w-full h-full z-0">
+            <div className="w-[55%] h-full bg-emerald-50 dark:bg-emerald-950/40" />
+            <div className="w-[45%] h-full bg-amber-50 dark:bg-amber-950/20" />
           </div>
-          <h1 className="font-display text-5xl md:text-7xl font-extrabold text-foreground tracking-tight leading-[1.1] mb-8 max-w-4xl">
-            Connecting local farmers <br className="hidden md:block" /> directly to you.
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl font-medium mb-12">
-            Bypass the middleman. Access fresh crops and premium poultry straight from the source.
-            Affordable prices for you, better margins for farmers.
-          </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center">
+          {/* Text Content */}
+          <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto mt-8 md:mt-16">
+            <div className="mb-6 flex flex-col items-center">
+              <div className="w-20 h-20 rounded-full border-[2px] border-emerald-800 dark:border-emerald-200 flex items-center justify-center mb-4 text-emerald-900 dark:text-emerald-100">
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-center leading-tight">
+                  Farmer
+                  <br />
+                  Approved
+                </span>
+              </div>
+              <h1 className="font-display text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-emerald-950 dark:text-emerald-50 leading-[0.9]">
+                Produce <br /> Perfected
+              </h1>
+            </div>
+
+            <p className="text-lg md:text-xl font-medium text-emerald-900/80 dark:text-emerald-100/80 mb-8 max-w-2xl px-4">
+              UmaMasa provides farm-fresh, premium quality crops at a jaw-dropping price.
+            </p>
+
             <Button
               asChild
-              size="lg"
-              className="rounded-full px-8 h-14 text-base font-bold shadow-xl shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all w-full sm:w-auto overflow-hidden group"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-500 dark:hover:bg-emerald-600 rounded-none px-12 py-7 text-sm sm:text-base tracking-widest uppercase font-bold mb-12 border-none"
             >
-              <Link to="/register">
-                Get Started
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="rounded-full px-8 h-14 text-base font-bold bg-background/50 backdrop-blur-sm border-2 hover:bg-muted/50 transition-all w-full sm:w-auto"
-            >
-              <Link to="/login">Sign In</Link>
+              <Link to="/register">Shop Now</Link>
             </Button>
           </div>
-        </div>
 
-        {/* Features Section */}
-        <div className="w-full bg-muted/30 border-t border-border/50 flex-1 relative z-10">
-          <div className="container max-w-[1200px] mx-auto px-4 md:px-8 py-20">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-foreground">
-                Why choose UmaMasa?
+          {/* Product Layout/Image */}
+          <div className="w-full max-w-4xl mx-auto px-4 z-10 -mb-2 relative hidden md:block">
+            <img
+              src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1200"
+              alt="Fresh local produce"
+              className="w-full h-[350px] object-cover border-[12px] border-white dark:border-background shadow-2xl bg-white"
+            />
+          </div>
+        </section>
+
+        {/* GREEN BANNER */}
+        <section className="w-full bg-emerald-800 dark:bg-emerald-950 py-6 md:py-8 z-20 relative border-y border-emerald-700/50">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-emerald-600/50 text-white text-center">
+              <div className="flex-1 flex flex-col w-full py-2">
+                <span className="text-[10px] sm:text-xs font-bold opacity-90 tracking-widest mb-1 underline underline-offset-4 decoration-emerald-500/50 text-emerald-100">
+                  Top Local Marketplace
+                </span>
+                <span className="font-black text-lg sm:text-xl uppercase tracking-wider text-emerald-50">
+                  Ask The Farmers
+                </span>
+              </div>
+              <div className="flex-1 flex flex-col w-full py-2">
+                <span className="text-[10px] sm:text-xs font-bold opacity-90 tracking-widest mb-1 underline underline-offset-4 decoration-emerald-500/50 text-emerald-100">
+                  Best Alternative to Retail
+                </span>
+                <span className="font-black text-lg sm:text-xl uppercase tracking-wider text-emerald-50">
+                  Direct Access
+                </span>
+              </div>
+              <div className="flex-1 flex flex-col w-full py-2">
+                <span className="text-[10px] sm:text-xs font-bold opacity-90 tracking-widest mb-1 underline underline-offset-4 decoration-emerald-500/50 text-emerald-100">
+                  2026 Sustainability Standard
+                </span>
+                <span className="font-black text-lg sm:text-xl uppercase tracking-wider text-emerald-50">
+                  Zero Waste
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* DETAILS SECTION */}
+        <section className="w-full relative bg-background py-20 md:py-40 px-4 overflow-hidden">
+          {/* Angle Background */}
+          <div className="absolute right-0 bottom-[-10%] top-[40%] md:top-[20%] w-[150%] md:w-[65%] bg-emerald-50 dark:bg-emerald-900/20 transform -skew-y-12 origin-bottom-right z-0 border-t-[20px] border-emerald-100 dark:border-emerald-800/20" />
+
+          <div className="container mx-auto max-w-6xl relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
+            {/* Left Text */}
+            <div className="flex flex-col items-start pt-10 md:pt-0 pb-10 md:pb-0">
+              <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-emerald-950 dark:text-emerald-50 leading-[1.0] mb-8">
+                Maximum Fresh. <br />
+                Fraction of the price.
               </h2>
+              <Button
+                asChild
+                className="bg-amber-500 hover:bg-amber-600 text-white rounded-none px-12 py-8 text-sm sm:text-base tracking-widest uppercase font-bold border-none"
+              >
+                <Link to="/register">Shop UmaMasa</Link>
+              </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-card p-6 md:p-8 rounded-3xl border border-border/50 shadow-sm hover:shadow-md transition-shadow group">
-                <div className="w-14 h-14 bg-emerald-500/10 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Leaf className="w-7 h-7" />
+            {/* Right Image with Callouts */}
+            <div className="relative w-full h-[400px] md:h-[500px] flex items-center justify-center">
+              <img
+                src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&q=80&w=800"
+                alt="Organic box"
+                className="w-[85%] h-[110%] object-cover shadow-2xl relative z-10 -rotate-3"
+              />
+
+              {/* Callouts */}
+              <div className="absolute top-[10%] left-[5%] md:left-[-5%] z-20 flex items-center gap-3 bg-transparent">
+                <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg">
+                  <Check className="w-3 h-3" strokeWidth={4} />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">Freshness Guaranteed</h3>
-                <p className="text-muted-foreground font-medium">
-                  Because we connect you directly to farmers, you receive crops and poultry at peak
-                  freshness.
-                </p>
+                <span className="font-black text-sm md:text-lg uppercase tracking-widest text-emerald-950 dark:text-emerald-50">
+                  Organic Harvest
+                </span>
               </div>
 
-              <div className="bg-card p-6 md:p-8 rounded-3xl border border-border/50 shadow-sm hover:shadow-md transition-shadow group">
-                <div className="w-14 h-14 bg-blue-500/10 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <ShoppingCart className="w-7 h-7" />
+              <div className="absolute top-[40%] right-[0%] md:right-[-10%] z-20 flex items-center gap-3 bg-transparent">
+                <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg">
+                  <Check className="w-3 h-3" strokeWidth={4} />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">Fair Market Prices</h3>
-                <p className="text-muted-foreground font-medium">
-                  No artificial markups from retailers. Buy what you need, paying a fair price
-                  straight to the producer.
-                </p>
+                <span className="font-black text-sm md:text-lg uppercase tracking-widest text-emerald-950 dark:text-emerald-50">
+                  No Middlemen
+                </span>
               </div>
 
-              <div className="bg-card p-6 md:p-8 rounded-3xl border border-border/50 shadow-sm hover:shadow-md transition-shadow group">
-                <div className="w-14 h-14 bg-amber-500/10 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <ShieldCheck className="w-7 h-7" />
+              <div className="absolute bottom-[20%] left-[10%] md:left-[5%] z-20 flex items-center gap-3 bg-transparent">
+                <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg">
+                  <Check className="w-3 h-3" strokeWidth={4} />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">Secure Transactions</h3>
-                <p className="text-muted-foreground font-medium">
-                  Track your orders from processing to completion, with full transparency on every
-                  transaction.
-                </p>
+                <span className="font-black text-sm md:text-lg uppercase tracking-widest text-emerald-950 dark:text-emerald-50">
+                  Delivered Fast
+                </span>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </main>
       <Footer />
     </div>
